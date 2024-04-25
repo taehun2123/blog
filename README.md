@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# DevSe 1번째 프로젝트 - 개인 포트폴리오 블로그
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+###리액트 + 파이어베이스 + 다양한 리액트 라이브러리로 동적인 블로그 개발
 
 ## Available Scripts
 
