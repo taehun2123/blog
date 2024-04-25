@@ -2,9 +2,12 @@
 
 @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
 
+html {
+  padding: 0;
+  margin: 0;
+}
+
 body {
-  width: 100%;
-  height: 100%;
   padding: 0;
   margin: 0;
   font-family: 'NanumSquare';
@@ -25,12 +28,13 @@ ul{
 }
 
 svg{
-  fill:var(--font-main-color);
+  fill:var(--font-icon-color);
 }
 
 .body{
   margin: 0;
   padding: 0;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -41,6 +45,7 @@ svg{
 :root{
   --font-main-color: rgb(75,115,240);
   --font-sub-color: rgb(17, 56, 255);
+  --font-icon-color: lightgray;
 }
 
 /* =-=-=-=-=-=-=-= 배너 스타일 =-=-=-=-=-=-=-= */
@@ -62,25 +67,56 @@ svg{
   box-sizing: border-box;
 }
 
-.title{
-  max-width: 720px;
-  height: 420px;
-  margin: 0 auto;
-  background: url(./banner.png) no-repeat 50% 0;
+.title {
+  max-width: 100%;
+  height: 100vh;
+  /* 배경 이미지 관련 속성 제거 */
+  position: relative; /* 비디오 태그 위치 조정을 위한 추가 */
+  background-color: black;
+  overflow: hidden;
+}
+
+.title video {
+  position: absolute; /* 부모 요소 상대 위치 지정 */
+  top: 0;
+  left: 0;
+  width: 109%; /* 부모 요소 전체 영역 채움 */
+  height: 100%; /* 부모 요소 전체 영역 채움 */
+  object-fit: cover; /* 비디오가 부모 요소 크기에 맞게 cover */
   background-size: cover;
-  object-fit: cover;
+  opacity: 0.5;
+}
+
+.logo-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 80vh;
+  font-size: 80px;
+  font-weight: bold;
+  color: var(--font-icon-color);
+  text-align: center;
+  transform: translateY(50%);
 }
 
 /* =-=-=-=-=-=-=-= 상단바 네비게이션 =-=-=-=-=-=-=-= */
 
+.nav-wrapper{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+}
+
 .nav{
+  position: relative;
+  max-width: inherit;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  width: 100%;
-  border: 1px solid lightgray;
-  gap: 1em;
+  z-index: 999;
 }
 
 .nav-list{
@@ -89,12 +125,10 @@ svg{
   justify-content: center;
   align-items: center;
   list-style-type: none;
-  font-size: larger;
-  gap: 3em;
+  gap: 1em;
 }
 
 .nav-link{
-  font-size: larger;
   padding: 0.1em 1em;
   cursor: pointer;
   display: flex;
@@ -102,9 +136,14 @@ svg{
   justify-content: center;
   gap: 0.5em;
   align-items: center;
-  font-weight: 650;
 }
 
+.nav-logo{
+  font-size: larger;
+  font-weight: 750;
+  color: var(--font-icon-color);
+  cursor: pointer;
+}
 /* =-=-=-=-=-=-=-= 중단 메인 =-=-=-=-=-=-=-= */
 
 .main{
