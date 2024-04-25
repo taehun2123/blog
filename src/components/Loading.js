@@ -1,9 +1,16 @@
+import Typewriter from "typewriter-effect";
 function Loading() {
     return (
-        <div>
-            Loading
+        <div className="loading">
+        <Typewriter
+            options={{
+            strings: ["Loading"],
+            autoStart: true,
+            loop: true,
+            }}
+        />
         </div>
-    )
-}
+    );
+    }
 
-export default Loading
+export default Loading;
