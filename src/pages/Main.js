@@ -1,9 +1,10 @@
 // firebase.js에서 db를 import
 import { db } from "../firebase";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 // firestore의 메서드 import
 import { doc, getDoc } from "firebase/firestore";
 import { Logo } from "../components/Logo";
+import { Intro } from "../components/Intro";
 
 function Main() {
   const [test, setTest] = useState();
@@ -22,14 +23,39 @@ function Main() {
   useEffect(() => {
     getTest();
   }, []);
+
+  const [isFixed, setIsFixed] = useState(false); //상단바 고정 상태관리
+  const targetComponentRef = useRef(null); // 특정 컴포넌트 DOM 타겟
+
+  //상단바 고정을 위한 스크롤 이벤트 리스너
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  //스크롤 핸들러
+  const handleScroll = () => {
+    const targetComponentTop =
+      targetComponentRef.current.getBoundingClientRect().top;
+    const windowHeight = window.innerHeight;
+
+    if (window.scrollY >= targetComponentTop + windowHeight) {
+      setIsFixed(true);
+    } else {
+      setIsFixed(false);
+    }
+  };
+
   return (
     <div>
       <div class="body">
-        <Logo />
-        <main class="main">
+        <Logo isFixed={isFixed} />
+        <main class="main" ref={targetComponentRef}>
           <div class="wrapper">
-            <section class="section">
-              <article class="post">
+            <Intro/>
+            <section class="section" data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
+              <article class="post" >
+                <h1>새로운 게시글</h1>
                 <ul class="post-list">
                   {test !== undefined && (
                     <li class="post-card">
