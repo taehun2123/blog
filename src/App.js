@@ -6,9 +6,7 @@ import 'aos/dist/aos.css'; // Include AOS CSS styles
 
 function App() {
   useEffect(() => {
-    AOS.init({
-      // AOS options here
-    });
+    AOS.init();
   }, []);
   
   return (

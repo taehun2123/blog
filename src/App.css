@@ -113,14 +113,6 @@ svg{
 }
 
 /* =-=-=-=-=-=-=-= 상단바 네비게이션 =-=-=-=-=-=-=-= */
-
-.nav-wrapper{
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-}
-
 .nav{
   position: relative;
   max-width: inherit;
@@ -129,25 +121,6 @@ svg{
   justify-content: space-around;
   align-items: center;
   z-index: 999;
-}
-
-.nav-list{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  list-style-type: none;
-  gap: 1em;
-}
-
-.nav-link{
-  padding: 0.1em 1em;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.5em;
-  align-items: center;
 }
 
 .nav-logo{
@@ -236,15 +209,4 @@ svg{
 footer{
   height: 150px;
   border-top: 1px solid lightgray;
-}
-
-/* 당신이 누군데 */
-.whoAmI{
-  width: 100%;
-  height: 10vh;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  font-size: 80px;
 }
