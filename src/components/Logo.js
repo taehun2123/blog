@@ -1,5 +1,5 @@
 import { Topbar } from "./Topbar";
-import logoVideo from "./logo_background.mp4";
+import logoVideo from "./Items/logo_background.mp4";
 import Typewriter from "typewriter-effect";
 export function Logo({ isFixed }) {
   return (

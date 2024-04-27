@@ -32,6 +32,11 @@ svg{
   fill:var(--font-icon-color);
 }
 
+h1{
+  font-size: 50px;
+  margin-bottom: 1em;
+}
+
 .body{
   margin: 0;
   padding: 0;
