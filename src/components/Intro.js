@@ -30,20 +30,21 @@ export function Intro() {
     );
   }
   return (
-    <section style={{ margin: "10em 0" }}>
+    <section style={{ margin: "7em 0" }}>
       <Banner
         data-aos="fade-up"
         data-aos-anchor-placement="top-center"
         aos-easing="ease-in-sine"
         aos-duration="5000"
       >
-        <h1>나를 소개합니다</h1>
+        <h1 style={{marginBottom: '2.5em'}}>나를 소개합니다</h1>
       </Banner>
       <Container
         data-aos="fade-down"
-        data-aos-anchor-placement="center-center"
+        data-aos-anchor-placement="top-center"
+        aos-offset="600"
         aos-easing="ease-in-sine"
-        aos-duration="3000"
+        aos-duration="1000"
       >
         <ImageWrapper />
         {dolist()}
@@ -63,7 +64,7 @@ const Banner = styled.div`
 
 const Container = styled.div`
   width: 100%;
-  height: 40vh;
+  height: 50vh;
   display: flex;
   flex-direction: row;
   align-items: center;
