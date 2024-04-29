@@ -36,17 +36,6 @@ export function Post(){
             )}
           </ul>
         </article>
-        <nav class="category">
-          <ul class="category-list">
-            <li class="category-card">카테고리 1번</li>
-            <ul class="category-low-ul">
-              <li class="category-low-li">카테고리1-1</li>
-              <li class="category-low-li">카테고리1-2</li>
-            </ul>
-            <li class="category-card">카테고리 2번</li>
-            <li class="category-card">카테고리 3번</li>
-          </ul>
-        </nav>
       </section>
   )
 }
