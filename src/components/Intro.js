@@ -40,7 +40,6 @@ export function Intro() {
         <h1 style={{marginBottom: '2.5em'}}>나를 소개합니다</h1>
       </Banner>
       <Container
-        className="introContainer"
         data-aos="fade-down"
         data-aos-anchor-placement="top-center"
         aos-offset="600"
@@ -67,7 +66,7 @@ const Banner = styled.div`
 
 const Container = styled.div`
   width: 100%;
-  height: 50vh;
+  min-height: 50vh;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -86,7 +85,6 @@ const ImageWrapper = styled.div`
   overflow: hidden;
   justify-content: center;
   border: 3px dotted lightblue;
-  flex-wrap: wrap;
 `;
 
 const IntroTitle= styled.li`
