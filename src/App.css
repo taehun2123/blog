@@ -71,6 +71,7 @@ footer{
   border-top: 1px solid lightgray;
 }
 
+
 /* =-=-=-=-=-=-=-= 자주쓰는 목록 변수화 =-=-=-=-=-=-=-= */
 
 :root{
@@ -239,11 +240,4 @@ footer{
   justify-content: flex-start;
   align-items: flex-start;
   gap: 3em;
-}
-
-.post-meta{
-  display: flex;
-  flex-direction: row;
-  gap: 1em;
-  margin-top: 1em;
 }

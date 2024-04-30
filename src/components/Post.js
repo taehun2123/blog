@@ -2,6 +2,8 @@ import { db } from "../firebase";
 import { useEffect, useState } from "react";
 // firestore의 메서드 import
 import { doc, getDoc } from "firebase/firestore";
+import styled from "styled-components";
+import image from "../banner.png";
 
 export function Post(){
   const [test, setTest] = useState();
@@ -25,17 +27,51 @@ export function Post(){
         <article class="post" >
           <ul class="post-list">
             {test !== undefined && (
-              <li class="post-card">
-                <h3>{test.title}</h3>
-                <p>{test.contents}</p>
-                <span class="post-meta">
-                  <span>DEVH</span>
-                  <span>2024. 4. 25.</span>
-                </span>
-              </li>
+              <PostCard>
+                <PostImage/>
+                <PostContent>
+                  <PostMeta>
+                    <span>DEVH</span>
+                    <span>2024. 4. 25.</span>
+                  </PostMeta>
+                  <h3>{test.title}</h3>
+                </PostContent>
+              </PostCard>
             )}
           </ul>
         </article>
       </section>
   )
 }
+
+const PostCard = styled.li`
+  min-width: 300px;
+  min-height: 400px;
+  border-radius: 2em;
+  box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
+`
+
+const PostImage = styled.div`
+  display: flex;
+  justify-content: center;
+  alien-items: center;
+  width: 100%;
+  height: 270px;
+  overflow: hidden;
+  border-radius: 2em 2em 0 0;
+  background: url(${image}) no-repeat 50%;
+  background-size: cover;
+  background-color: black;
+  object-fit: contain;
+`
+
+const PostContent = styled.div`
+  padding: 1em;
+`
+
+const PostMeta = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  margin: 0.5em 0;
+`

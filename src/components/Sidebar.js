@@ -35,19 +35,19 @@ export function Sidebar() {
       title: "Java-Script",
     },
     {
-      icon: <i class="fab fa-js-square"></i>,
+      icon: <i class="fab fa-react"></i>,
       title: "React",
     },
     {
-      icon: <i class="fab fa-js-square"></i>,
-      title: "NodeJs",
+      icon: <i class="fab fa-node"></i>,
+      title: "ExpressJS",
     },
     {
-      icon: <i class="fab fa-js-square"></i>,
+      icon: <i class="fab fa-java"></i>,
       title: "Java",
     },
     {
-      icon: <i class="fab fa-js-square"></i>,
+      icon: <i class="fab fa-node-js"></i>,
       title: "Java-Spring",
     },
   ];
@@ -66,7 +66,7 @@ export function Sidebar() {
       <div key={category.title}>
         <MenuItem onClick={() => handleCategoryClick(index)}>
           <div style={{display:'flex', alignItems:'center', gap:'1em'}}>{category.icon}{category.title}</div>
-          <span><i class="far fa-angle-right"></i></span>
+          <span><i class={`far fa-angle-${index === expandedCategoryIndex ? 'down' : 'right'}`}></i></span>
         </MenuItem>
         {isExpanded && (
           <SubCategoryList>
@@ -132,6 +132,7 @@ export function Sidebar() {
             return (
               <MenuItem>
                 <div style={{display:'flex', alignItems:'center', gap:'1em'}}>{item.icon}{item.title}</div>
+                <span><i class="far fa-angle-right"></i></span>
               </MenuItem>
             )
           })}
