@@ -149,7 +149,7 @@ const Profile = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 600px;
+  height: 150px;
   padding: 2em 0;
   border-bottom: 2px dotted lightblue;
   gap: 0.5em;
