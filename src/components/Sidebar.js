@@ -141,6 +141,8 @@ export function Sidebar() {
   );
 }
 
+// Styled Components Source
+
 const Profile = styled.div`
   display: flex;
   flex-direction: column;

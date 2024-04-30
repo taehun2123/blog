@@ -173,6 +173,46 @@ h1{
 .nav.fixed svg{
   fill:var(--font-main-color);
 }
+
+/* -=-=-=-=-= 반응형 상단바 디자인 =-=-=-=-=- */
+
+/* 사이드바 열린 상단바 미디어 쿼리 */
+@media (max-width: 1405px){
+  .nav.fixed.opened{
+    left: 7vw;
+  }
+}
+
+@media (max-width: 1200px){
+  .nav.fixed.opened{
+    left: 5vw;
+  }
+}
+
+@media (max-width: 900px){
+  .nav.fixed.opened{
+    left: 2vw;
+  }
+}
+
+/* 사이드바 닫힌 상단바 미디어 쿼리 */
+@media (max-width: 1100px){
+  .nav.fixed{
+    left: 15vw;
+  }
+}
+@media (max-width: 700px){
+  .nav.fixed{
+    left: 10vw;
+  }
+}
+
+/* flex-wrap에 대응하는 padding 값 조정 */
+@media (max-width: 969px){
+  .introContainer{
+    padding: 0 0 25em 0;
+  }
+}
 /* =-=-=-=-=-=-=-= 중단 메인 =-=-=-=-=-=-=-= */
 
 .main{

@@ -40,6 +40,7 @@ export function Intro() {
         <h1 style={{marginBottom: '2.5em'}}>나를 소개합니다</h1>
       </Banner>
       <Container
+        className="introContainer"
         data-aos="fade-down"
         data-aos-anchor-placement="top-center"
         aos-offset="600"
@@ -52,6 +53,8 @@ export function Intro() {
     </section>
   );
 }
+
+// Styled Components Source
 
 const Banner = styled.div`
   width: 100%;
@@ -69,6 +72,7 @@ const Container = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+  flex-wrap: wrap;
 `;
 
 const ImageWrapper = styled.div`
@@ -77,9 +81,12 @@ const ImageWrapper = styled.div`
   width: 400px;
   height: 400px;
   background: url(${profile}) no-repeat 50% 0;
-  background-size: contain;
+  background-size: cover;
+  object-fit: contain;
   overflow: hidden;
+  justify-content: center;
   border: 3px dotted lightblue;
+  flex-wrap: wrap;
 `;
 
 const IntroTitle= styled.li`
@@ -88,4 +95,5 @@ const IntroTitle= styled.li`
 `
 const IntroList = styled.li`
   padding: 0.5em;
+  text-wrap: balance;
 `

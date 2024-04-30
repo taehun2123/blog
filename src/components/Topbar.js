@@ -7,7 +7,8 @@ export function Topbar({ isFixed }) {
   const {setIsOpened} = useSidebarActions();
   const navigate = useNavigate();
   function handleSidebar(){
-    setIsOpened();
+    if(window.innerWidth >= 720)
+      setIsOpened();
   }
   return (
     <Wrapper>
@@ -74,6 +75,8 @@ export function Topbar({ isFixed }) {
     </Wrapper>
   );
 }
+
+// Styled Components Source
 
 const Wrapper = styled.div`
   position: absolute;

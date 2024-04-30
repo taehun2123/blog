@@ -6,6 +6,10 @@ const useSidebarStore = create(set => ({
     setIsOpened : () => 
       set(state => ({
         isOpened: !state.isOpened
+      })),
+    setClosed: () =>
+      set(state => ({
+        isOpened: false
       }))
   }
 }))
