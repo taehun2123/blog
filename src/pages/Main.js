@@ -4,14 +4,14 @@ import { Intro } from "../components/Intro";
 import { Sidebar } from "../components/Sidebar";
 import { MainPost } from "../components/Main/MainPost";
 import logoVideo from "../components/Items/logo_background.mp4";
-import { MainTypeWriter } from "../components/Main/MainTypeWriter";
+import { TypeWriter } from "../components/TypeWriter";
 
 
 function Main({isFixed, targetComponentRef}) {
   return (
     <div className="container">
       <div className="body">
-        <Logo isFixed={isFixed} background={logoVideo} Writer={MainTypeWriter()}/>
+        <Logo isFixed={isFixed} background={logoVideo} writer={<TypeWriter prev={'Hello,'} writer={['DEVH WORLD', 'Developer Hun']}/>}/>
         <main className="main" ref={targetComponentRef}>
           <div className="wrapper">
             <Intro/>

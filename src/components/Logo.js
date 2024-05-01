@@ -1,5 +1,5 @@
 import { Topbar } from "./Topbar";
-export function Logo({ isFixed, background, Writer }) {
+export function Logo({ isFixed, background, writer }) {
   return (
     <header class="header" role="banner">
       <div class="wrapper">
@@ -9,7 +9,7 @@ export function Logo({ isFixed, background, Writer }) {
             <source src={background} type="video/mp4" />
           </video>
         </div>
-        {Writer}
+        {writer}
       </div>
     </header>
   );

@@ -1,12 +1,12 @@
 import Typewriter from "typewriter-effect";
-export function MainTypeWriter(){
+export function TypeWriter({prev, writer}){
   return(
     <div className="logo-text">
-    Hello,
+    {prev}
     <span style={{ color: "lightblue" }}>
       <Typewriter
         options={{
-          strings: ["Developer Hun", "DEVH World"],
+          strings: writer,
           autoStart: true,
           loop: true,
         }}
