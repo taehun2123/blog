@@ -1,40 +1,43 @@
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
 // firestore의 메서드 import
-import { doc, getDoc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import styled from "styled-components";
 import image from "../banner.png";
 
 export function Post(){
-  const [test, setTest] = useState();
+  const [test, setTest] = useState([]);
   // async - await로 데이터 fetch 대기
-  async function getTest() {
-    // document에 대한 참조 생성
-    const docRef = doc(db, "blogging", "bSGeTMHZ4ThkF5PdW3DA");
-    // 참조에 대한 Snapshot 쿼리
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      setTest(docSnap.data());
+  async function fetchData() {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'blogging'));
+      const result = querySnapshot.docs.map(doc => ({...doc.data(), date: doc.data().date.toDate(), id: doc.id}));
+      setTest(result);
+    } catch (error) {
+      console.error('Error fetching data: ', error);
     }
   }
   // 최초 마운트 시에 getTest import
   useEffect(() => {
-    getTest();
+    fetchData();
   }, []);
   return(
     <section class="section" data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
         <article class="post" >
           <ul class="post-list">
-            {test !== undefined && (
+            {test && test.map((item) => 
               <PostCard>
                 <PostImage/>
                 <PostContent>
+                  <PostCategory>
+                    <PostComment>{item.category}</PostComment>
+                    <PostComment><i class="fas fa-comments-alt"></i> 0 </PostComment>
+                  </PostCategory>
+                  <h3>{item.title}</h3>
                   <PostMeta>
-                    <span>DEVH</span>
-                    <span>2024. 4. 25.</span>
+                    <span>DEVH</span>|
+                    <span>{new Date(item.date).toLocaleDateString()}</span>
                   </PostMeta>
-                  <h3>{test.title}</h3>
                 </PostContent>
               </PostCard>
             )}
@@ -49,6 +52,14 @@ const PostCard = styled.li`
   min-height: 400px;
   border-radius: 2em;
   box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
+  transition: background 0.5s, color 0.5s, box-shadow 0.5s, transform 0.5s;
+  cursor: pointer;
+  &:hover {
+    background: cornflowerblue;
+    color: white;
+    box-shadow: 3px 5px 6px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-10px);
+  }
 `
 
 const PostImage = styled.div`
@@ -66,12 +77,36 @@ const PostImage = styled.div`
 `
 
 const PostContent = styled.div`
+  flex: 1;
   padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5em;
+  align-items: flex-start;
 `
 
 const PostMeta = styled.div`
+  font-size: 11px;
+  width: 100%;
   display: flex;
   flex-direction: row;
+  justify-content: flex-end;
   gap: 1em;
-  margin: 0.5em 0;
+`
+
+const PostCategory = styled.div`
+width:100%;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+alien-items: center;
+`
+
+const PostComment = styled.div`
+font-size: 12px;
+padding: 0.5em 1em;
+background-color: rgb(219 234 254);
+border-radius: 2em;
+color: var(--font-main-color);
 `
