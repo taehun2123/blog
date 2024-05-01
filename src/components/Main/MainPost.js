@@ -12,7 +12,7 @@ export function MainPost(){
     try {
       const querySnapshot = await getDocs(collection(db, 'blogging'));
       const result = querySnapshot.docs.map(doc => ({...doc.data(), date: doc.data().date.toDate(), id: doc.id}));
-      setPost(result);
+      setPost(result.splice(0,3));
     } catch (error) {
       console.error('Error fetching data: ', error);
     }

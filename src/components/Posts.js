@@ -5,17 +5,12 @@ import image from "../banner.png";
 import useFetch from "../customFn/useFetch";
 
 export function Posts({category, value}){
-  const [post, setPost] = useState([]);
   const {data} = useFetch(category, value);
-  useEffect(() => {
-    if(data)
-      setPost(data);
-  }, []);
   return(
     <section class="section" data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
         <article class="post" >
           <ul class="post-list">
-            {post && post.map((item) => 
+            {data && data.map((item) => 
               <PostCard>
                 <PostImage/>
                 <PostContent>

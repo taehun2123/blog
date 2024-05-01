@@ -2,9 +2,10 @@ import styled from "styled-components";
 import { useSidebar } from "../store/useSidebarStore";
 import profile from "./Items/profile.jpeg";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 export function Sidebar() {
   const isOpened = useSidebar();
-
+  const navigate = useNavigate();
   const Side = styled.aside`
     display: ${isOpened ? "flex" : "none"};
     top: 0;
@@ -130,7 +131,7 @@ export function Sidebar() {
         <MenuList>
           {skills.map(item => {
             return (
-              <MenuItem>
+              <MenuItem onClick={()=> navigate(`/board/${item.title}`)}>
                 <div style={{display:'flex', alignItems:'center', gap:'1em'}}>{item.icon}{item.title}</div>
                 <span><i class="far fa-angle-right"></i></span>
               </MenuItem>
