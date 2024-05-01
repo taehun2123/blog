@@ -5,6 +5,7 @@
 html {
   padding: 0;
   margin: 0;
+  background-color: white;
 }
 
 body {
@@ -12,11 +13,20 @@ body {
   margin: 0;
   font-family: 'NanumSquare';
   overflow-x: hidden;
+  z-index: 1;
 }
 
 h1,h2,h3,h4,h5,h6,p{
   padding: 0;
   margin: 0;
+}
+
+h1, h3{
+  animation: textAnim 5s ease-out infinite;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 250% 500%;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 a{
@@ -36,7 +46,57 @@ svg{
 h1{
   font-size: 50px;
   margin-bottom: 1em;
+  animation: textAnim 5s ease-out infinite;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 250% 500%;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
+
+/* 텍스트 레인보우 색깔변화 */
+@keyframes textAnim {
+  0% {
+      background-position: 0 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0 50%;
+  }
+}
+
+/* 아이콘 흔들 약함*/
+@keyframes swing {
+  0% {
+      transform: rotate(0deg);
+  }
+  10% {
+      transform: rotate(10deg);
+  }
+  30% {
+      transform: rotate(0deg);
+  }
+  40% {
+      transform: rotate(-10deg);
+  }
+  50% {
+      transform: rotate(0deg);
+  }
+  60% {
+      transform: rotate(5deg);
+  }
+  70% {
+      transform: rotate(0deg);
+  }
+  80% {
+      transform: rotate(-5deg);
+  }
+  100% {
+      transform: rotate(0deg);
+  }
+}
+
 
 .container{
   margin: 0;
@@ -70,6 +130,7 @@ h1{
 footer{
   height: 150px;
   border-top: 1px solid lightgray;
+  background-color: white;
 }
 
 
@@ -78,6 +139,7 @@ footer{
 :root{
   --font-main-color: rgb(75,115,240);
   --font-sub-color: rgb(17, 56, 255);
+  --background-main-color: rgb(247, 250, 255);
   --font-icon-color: lightgray;
 }
 
@@ -107,10 +169,11 @@ footer{
   position: relative; /* 비디오 태그 위치 조정을 위한 추가 */
   background-color: black;
   overflow: hidden;
+  z-index: -1;
 }
 
 .title video {
-  position: absolute; /* 부모 요소 상대 위치 지정 */
+  position: fixed; /* 부모 요소 상대 위치 지정 */
   top: 0;
   left: 0;
   width: 109%; /* 부모 요소 전체 영역 채움 */
@@ -118,6 +181,7 @@ footer{
   object-fit: cover; /* 비디오가 부모 요소 크기에 맞게 cover */
   background-size: cover;
   opacity: 0.5;
+  z-index: -1;
 }
 
 .logo-text {
@@ -149,6 +213,7 @@ footer{
   font-weight: 750;
   color: var(--font-icon-color);
   cursor: pointer;
+  display: flex;
 }
 
 /* 상단바가 고정됐을 때 */
@@ -219,6 +284,7 @@ footer{
 .main{
   padding: 60px 0;
   flex: 1;
+  background-color: white;
 }
 
 .section{

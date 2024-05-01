@@ -33,7 +33,7 @@ export function MainPost(){
                     <PostComment>{item.category.study ? item.category.study : item.category.project}</PostComment>
                     <PostComment><i class="fas fa-comments-alt"></i> 0 </PostComment>
                   </PostCategory>
-                  <h3>{item.title}</h3>
+                  <h4>{item.title}</h4>
                   <PostMeta>
                     <span>DEVH</span>|
                     <span>{new Date(item.date).toLocaleDateString()}</span>

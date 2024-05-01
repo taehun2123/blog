@@ -52,6 +52,38 @@ export function Sidebar() {
       title: "Java-Spring",
     },
   ];
+  const categories = [
+    {
+      icon: <i class="fab fa-css3-alt"/>,
+      subIcon: <i class="fas fa-code"></i>,
+      title: "Front-End",
+      subCategories: [
+        {title: "Sub Category 1" },
+        {title: "Sub Category 2" },
+        {title: "Sub Category 3" },
+      ],
+    },
+    {
+      icon: <i className="fab fa-java"/>,
+      subIcon:<i class="fas fa-code"></i>,
+      title: "Back-End",
+      subCategories: [
+        { title: "Sub Category 4" },
+        { title: "Sub Category 5" },
+        { title: "Sub Category 6" },
+      ],
+    },
+    {
+      icon: <i className="fab fa-node-js"></i>,
+      subIcon: <i class="fas fa-code"></i>,
+      title: "Full-Stack",
+      subCategories: [
+        { title: "Sub Category 7" },
+        { title: "Sub Category 8" },
+        { title: "Sub Category 9" },
+      ],
+    },
+  ];
 
 
   const [expandedCategoryIndex, setExpandedCategoryIndex] = useState(null);
@@ -65,15 +97,15 @@ export function Sidebar() {
 
     return (
       <div key={category.title}>
-        <MenuItem onClick={() => handleCategoryClick(index)}>
-          <div style={{display:'flex', alignItems:'center', gap:'1em'}}>{category.icon}{category.title}</div>
+        <MenuItem style={{background: isExpanded ? 'rgb(240, 240, 255)' : 'none', color: isExpanded ? 'var(--font-main-color)' : 'none'}} onClick={() => handleCategoryClick(index)}>
+          <div style={{display:'flex', alignItems:'center', gap:'1em'}}><Icon>{category.icon}</Icon>{category.title}</div>
           <span><i class={`far fa-angle-${index === expandedCategoryIndex ? 'down' : 'right'}`}></i></span>
         </MenuItem>
         {isExpanded && (
           <SubCategoryList>
             {category.subCategories.map((subCategory) => (
               <SubCategoryItem key={subCategory.title}>
-                <div style={{display:'flex', alignItems:'center', gap:'1em'}}>{category.subIcon}{subCategory.title}</div>
+                <div style={{display:'flex', alignItems:'center', gap:'1em'}}><SubIcon>{category.subIcon}</SubIcon>{subCategory.title}</div>
               </SubCategoryItem>
             ))}
           </SubCategoryList>
@@ -81,40 +113,6 @@ export function Sidebar() {
       </div>
     );
   };
-
-  const categories = [
-    {
-      icon: <i class="fab fa-css3-alt"/>,
-      subIcon: <i class="fad fa-code"/>,
-      title: "Front-End",
-      subCategories: [
-        {title: "Sub Category 1" },
-        {title: "Sub Category 2" },
-        {title: "Sub Category 3" },
-      ],
-    },
-    {
-      icon: <i className="fab fa-java"/>,
-      subIcon: <i class="fad fa-code"/>,
-      title: "Back-End",
-      subCategories: [
-        { title: "Sub Category 4" },
-        { title: "Sub Category 5" },
-        { title: "Sub Category 6" },
-      ],
-    },
-    {
-      icon: <i className="fab fa-node-js"></i>,
-      subIcon: <i class="fad fa-code"/>,
-      title: "Full-Stack",
-      subCategories: [
-        { title: "Sub Category 7" },
-        { title: "Sub Category 8" },
-        { title: "Sub Category 9" },
-      ],
-    },
-  ];
-
 
   return (
     <Side>
@@ -132,7 +130,7 @@ export function Sidebar() {
           {skills.map(item => {
             return (
               <MenuItem onClick={()=> navigate(`/board/${item.title}`)}>
-                <div style={{display:'flex', alignItems:'center', gap:'1em'}}>{item.icon}{item.title}</div>
+                <div style={{display:'flex', alignItems:'center', gap:'1em'}}><Icon>{item.icon}</Icon>{item.title}</div>
                 <span><i class="far fa-angle-right"></i></span>
               </MenuItem>
             )
@@ -181,6 +179,11 @@ const MenuItem = styled.li`
   padding: 1em;
   margin-top: 0.2em;
   cursor: pointer;
+  border-radius: 0.5em;
+  &:hover{
+    color: cornflowerblue;
+  }
+
 `;
 
 const SubCategoryList = styled.ul`
@@ -194,5 +197,28 @@ const SubCategoryItem = styled.li`
   margin-bottom: 0.5rem;
   padding: 0.5rem;
   cursor: pointer;
-  position: relative; /* Enable relative positioning */
+  position: relative;
+  &:hover{
+    background: linear-gradient(-45deg, cornflowerblue, #23a6d5, #23d5ab);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 `;
+
+const Icon = styled.span`
+${MenuItem}:hover & {
+  background: linear-gradient(-45deg, cornflowerblue, #23a6d5, #23d5ab);
+  background-clip: text;
+  animation: swing 0.5s ease-out;
+  -webkit-text-fill-color: transparent;
+}
+`
+
+const SubIcon = styled.span`
+${SubCategoryItem}:hover & {
+  background: linear-gradient(-45deg, cornflowerblue, #23a6d5, #23d5ab);
+  background-clip: text;
+  animation: swing 0.5s ease-out;
+  -webkit-text-fill-color: transparent;
+}
+`

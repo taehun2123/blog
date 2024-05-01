@@ -23,7 +23,8 @@ export function Topbar({ isFixed }) {
             });
           }}
         >
-          DEVH WORLD
+          <div class="animate__animated animate__swing animate__infinite">/&gt;</div>
+          <span>EVH WORLD</span>
         </h2>
         <Box>
           <Item>
