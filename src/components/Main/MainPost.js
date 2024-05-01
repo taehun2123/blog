@@ -1,18 +1,18 @@
-import { db } from "../firebase";
+import { db } from "../../firebase";
 import { useEffect, useState } from "react";
 // firestore의 메서드 import
 import { collection, getDocs } from "firebase/firestore";
 import styled from "styled-components";
-import image from "../banner.png";
+import image from "../../banner.png";
 
-export function Post(){
-  const [test, setTest] = useState([]);
+export function MainPost(){
+  const [post, setPost] = useState([]);
   // async - await로 데이터 fetch 대기
   async function fetchData() {
     try {
       const querySnapshot = await getDocs(collection(db, 'blogging'));
       const result = querySnapshot.docs.map(doc => ({...doc.data(), date: doc.data().date.toDate(), id: doc.id}));
-      setTest(result);
+      setPost(result);
     } catch (error) {
       console.error('Error fetching data: ', error);
     }
@@ -25,12 +25,12 @@ export function Post(){
     <section class="section" data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
         <article class="post" >
           <ul class="post-list">
-            {test && test.map((item) => 
+            {post && post.map((item) => 
               <PostCard>
                 <PostImage/>
                 <PostContent>
                   <PostCategory>
-                    <PostComment>{item.category}</PostComment>
+                    <PostComment>{item.category.study ? item.category.study : item.category.project}</PostComment>
                     <PostComment><i class="fas fa-comments-alt"></i> 0 </PostComment>
                   </PostCategory>
                   <h3>{item.title}</h3>
