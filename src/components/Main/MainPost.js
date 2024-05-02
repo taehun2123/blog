@@ -30,7 +30,7 @@ export function MainPost(){
                 <PostImage/>
                 <PostContent>
                   <PostCategory>
-                    <PostComment>{item.category.study ? item.category.study : item.category.project}</PostComment>
+                    <PostComment>{item.category.current}</PostComment>
                     <PostComment><i class="fas fa-comments-alt"></i> 0 </PostComment>
                   </PostCategory>
                   <h4>{item.title}</h4>

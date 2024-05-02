@@ -17,7 +17,7 @@ function Router({ isFixed, targetComponentRef }) {
                     }
                 />
                 <Route
-                    path="/board/:id"
+                    path="/board/:type/:name"
                     element={<Board isFixed={isFixed} targetComponentRef={targetComponentRef}/>}
                 />
             </Routes>

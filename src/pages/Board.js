@@ -6,15 +6,15 @@ import logoVideo from "../components/Items/logo_background.mp4";
 import { TypeWriter } from "../components/TypeWriter";
 
 export function Board({ isFixed, targetComponentRef }) {
-  let name = useParams();
+  let {type, name} = useParams();
 
   return (
     <div className="container">
       <div className="body">
-        <Logo isFixed={isFixed} background={logoVideo} writer={<TypeWriter prev={'할 수 있다,'} writer={[`${name.id} !!`, 'Developer !!']}/>}/>
+        <Logo isFixed={isFixed} background={logoVideo} writer={<TypeWriter prev={'할 수 있다,'} writer={[`${name} !!`, 'Developer !!']}/>}/>
         <main className="main" ref={targetComponentRef}>
           <div className="wrapper">
-            <Posts category={"category.study"} value={name.id} />
+            <Posts category={`category.current`} value={name} />
           </div>
         </main>
         <footer></footer>
