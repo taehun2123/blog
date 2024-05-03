@@ -14,6 +14,7 @@ export function Board({ isFixed, targetComponentRef }) {
         <Logo isFixed={isFixed} background={logoVideo} writer={<TypeWriter prev={'할 수 있다,'} writer={[`${name} !!`, 'Developer !!']}/>}/>
         <main className="main" ref={targetComponentRef}>
           <div className="wrapper">
+            <h1 className="effectFont">{name} 관련 게시글</h1>
             <Card category={`category.current`} value={name} />
           </div>
         </main>

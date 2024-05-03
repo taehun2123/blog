@@ -47,7 +47,14 @@ a{
   color: black;
 }
 
-ul{
+article, section{
+  padding: 0;
+  margin: 0;
+}
+
+ul, li{
+  margin: 0;
+  padding: 0.3em 0;
   list-style-type: none;
 }
 
@@ -131,7 +138,9 @@ svg{
 }
 
 footer{
-  height: 150px;
+  display: block;
+  z-index: 999;
+  height: 200px;
   border-top: 1px solid lightgray;
   background-color: white;
 }
@@ -168,9 +177,9 @@ footer{
 .wrapper{
   position: relative;
   max-width: 1100px;
-  height: 100%;
+  min-height: 100%;
   margin: 0 auto;
-  padding: 0 30px;
+  padding: 0 1em;
   box-sizing: border-box;
 }
 
@@ -189,11 +198,20 @@ footer{
   top: 0;
   left: 0;
   width: 109%; /* 부모 요소 전체 영역 채움 */
-  height: 100%; /* 부모 요소 전체 영역 채움 */
+  height: 100vh; /* 부모 요소 전체 영역 채움 */
   object-fit: cover; /* 비디오가 부모 요소 크기에 맞게 cover */
   background-size: cover;
   opacity: 0.5;
   z-index: -1;
+}
+
+.writer {
+  position: absolute;
+  top: 100vh; /* 페이지 하단에 위치하도록 설정 */
+  height: 100vh;
+  width: 100%;
+  background-color: white;
+  z-index: 0;
 }
 
 .logo-text {
@@ -237,17 +255,18 @@ footer{
   transition: 0.5s ease-in-out;
   box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  left: 18%;
-  width: 60%;
-  right: 20%;
+  left: 10%;
+  /* width: 80%; <-- 이게 80%라서 그럼*/
+  right: 10%;
   justify-content: space-between;
   z-index: 999;
-  padding: 0 3em;
+  padding: 0 3%;
   align-items: center;
 }
 
 .nav.fixed.opened{
   left: 10vw;
+  right: 27vw;
 }
 
 .nav.fixed .nav-logo{
@@ -303,19 +322,20 @@ footer{
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  align-items: flex-start;
 }
 
 /* =-=-=-=-=-=-=-= 게시글 =-=-=-=-=-=-=-= */
 
 .post{
   flex: 1;
-  height: 70vh;
+  min-height: 50vh;
 }
 
 .post-list{
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-start;
   gap: 3em;
   flex-wrap: wrap;

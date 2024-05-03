@@ -98,7 +98,7 @@ const PostMeta = styled.div`
 `
 
 const PostCategory = styled.div`
-width:100%;
+width: 100%;
 display: flex;
 flex-direction: row;
 justify-content: space-between;
