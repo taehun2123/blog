@@ -37,8 +37,8 @@ export function Logo({ isFixed, background, writer }) {
           </video>
         </div>
         {writer}
-        <div className="writer" ref={writerRef}>
-        </div>
+      </div>
+      <div className="writer" ref={writerRef}>
       </div>
     </header>
   );

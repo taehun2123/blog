@@ -208,7 +208,6 @@ footer{
 .writer {
   position: absolute;
   top: 100vh; /* 페이지 하단에 위치하도록 설정 */
-  height: 100vh;
   width: 100%;
   background-color: white;
   z-index: 0;
