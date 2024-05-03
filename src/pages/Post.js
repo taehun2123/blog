@@ -53,7 +53,27 @@ export function Post({ isFixed, targetComponentRef }) {
           writer={postWriter()}/>
         <main className="main" ref={targetComponentRef}>
           <div className="wrapper">
-            {data?.contents}
+            <ContentContainer>
+              {data?.contents}
+            </ContentContainer>
+            <CommentContainer>
+              <CommentPlaceHolderBox>
+                <i style={{fontSize: '3em'}} class="fas fa-comment-alt-edit effectFont"></i>
+                <h2 className="effectFont">댓글을 작성해주세요!</h2>
+              </CommentPlaceHolderBox>
+              <CommentWriterBox>
+                <CommentAuthorBox>
+                  <CommentAuthorInputBox><CommentAuthorInput placeholder="이름"/></CommentAuthorInputBox>
+                  <CommentAuthorInputBox><CommentAuthorInput type="password" placeholder="비밀번호"/></CommentAuthorInputBox>
+                </CommentAuthorBox>
+                <CommentBox>
+                  <CommentTextarea placeholder="댓글을 작성해주세요!"/>
+                  <CommentSubmitBox>
+                    <CommentSubmit><i class="fas fa-paper-plane"></i></CommentSubmit>
+                  </CommentSubmitBox>
+                </CommentBox>
+              </CommentWriterBox>
+            </CommentContainer>
           </div>
         </main>
         <footer></footer>
@@ -94,4 +114,119 @@ const MetaItem = styled.span`
     content: '\t·\t'; 
     margin: 0 8px; /* 좌우 마진을 추가하여 간격 조정 */
   }
+`
+
+const ContentContainer = styled.div`
+width: 100%;
+min-height: 50vh;
+box-sizing: border-box;
+`
+
+const CommentContainer = styled.div`
+width: 100%;
+border-radius: 5em 5em 0 0;
+background: var(--background-sub-color);
+min-height: 50vh;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: flex-start;
+padding: 3em;
+box-sizing: border-box;
+`
+
+const CommentPlaceHolderBox = styled.div`
+  display: flex;
+  gap: 1em;
+`
+
+const CommentWriterBox = styled.div`
+display: flex;
+flex-direction: column;
+gap: 0.5em;
+width: 100%;
+max-width: 100%;
+min-height: 30vh;
+margin-top: 1em;
+background: white;
+border-radius: 3em;
+padding: 1em;
+box-sizing: border-box;
+`
+
+const CommentAuthorBox = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em;
+  box-sizing: border-box;
+`
+
+const CommentAuthorInputBox = styled.div`
+border-radius: 2em;
+width: 100%;
+max-width: 49.5%;
+background: var(--background-input-color);
+height: 2em;
+position: relative;
+box-sizing: border-box;
+display: flex;
+justify-content: center;
+align-items:center;
+`
+
+const CommentAuthorInput = styled.input`
+width: 90%;
+border: none;
+background: none;
+&:focus{
+  outline: none;
+}
+`
+
+const CommentBox = styled.div`
+  flex: 1;
+  width: 100%;
+  padding: 1em;
+  border-radius: 2em 2em;
+  background: var(--background-input-color);
+  min-height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+`
+
+const CommentTextarea = styled.textarea`
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: none;
+  resize: none;
+  overflow-Y: auto;
+  &:focus{
+    outline: none;
+  }
+`
+
+const CommentSubmitBox = styled.div`
+display: flex;
+justify-content: flex-end;
+align-items: center;
+width: 100%;
+box-sizing: border-box;
+padding: 1em 0 0 0;
+`
+
+const CommentSubmit = styled.div`
+display: flex;
+justify-content: center;
+width: 30px;
+border-radius: 2em;
+padding: 0.5em;
+background: white;
+cursor:pointer;
 `

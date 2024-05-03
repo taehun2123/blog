@@ -15,7 +15,7 @@ function Main({isFixed, targetComponentRef}) {
         <main className="main" ref={targetComponentRef}>
           <div className="wrapper">
             <Intro/>
-            <h1 className="effectFont" data-aos="fade-down" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">최근 올라온 게시글</h1>
+            <h1 className="effectFont" data-aos="fade-down" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">최신 게시글</h1>
             <MainPost/>
           </div>
         </main>

@@ -159,7 +159,10 @@ footer{
 :root{
   --font-main-color: rgb(75,115,240);
   --font-sub-color: rgb(17, 56, 255);
+  --site-main-color: rgb(79, 136, 241);
   --background-main-color: rgb(247, 250, 255);
+  --background-sub-color: rgb(211, 234, 250);
+  --background-input-color: rgb(222, 222, 222);
   --font-icon-color: lightgray;
 }
 
@@ -312,7 +315,7 @@ footer{
 /* =-=-=-=-=-=-=-= 중단 메인 =-=-=-=-=-=-=-= */
 
 .main{
-  padding: 60px 0;
+  padding: 60px 0 10px 0;
   flex: 1;
   background-color: white;
 }
