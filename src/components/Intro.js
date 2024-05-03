@@ -37,7 +37,7 @@ export function Intro() {
         aos-easing="ease-in-sine"
         aos-duration="5000"
       >
-        <h1 style={{marginBottom: '2.5em'}}>나를 소개합니다</h1>
+        <h1 className="effectFont" style={{marginBottom: '2.5em'}}>나를 소개합니다</h1>
       </Banner>
       <Container
         data-aos="fade-down"
@@ -57,7 +57,7 @@ export function Intro() {
 
 const Banner = styled.div`
   width: 100%;
-  height: 10vh;
+  height: 1vh;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -66,7 +66,7 @@ const Banner = styled.div`
 
 const Container = styled.div`
   width: 100%;
-  min-height: 50vh;
+  min-height: 20vh;
   display: flex;
   flex-direction: row;
   align-items: center;

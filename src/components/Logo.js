@@ -1,10 +1,10 @@
 import { Topbar } from "./Topbar";
-export function Logo({ isFixed, background, writer }) {
+export function Logo({ isFixed, background, writer, isPost }) {
   return (
-    <header class="header" role="banner">
-      <div class="wrapper">
+    <header className="header" role="banner">
+      <div className="wrapper">
         <Topbar isFixed={isFixed}/>
-        <div class="title">
+        <div className="title">
           <video autoPlay loop muted playsInline>
             <source src={background} type="video/mp4" />
           </video>

@@ -3,15 +3,17 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import image from "../banner.png";
 import useFetch from "../customFn/useFetch";
+import { useNavigate } from "react-router-dom";
 
-export function Posts({category, value}){
+export function Card({category, value}){
   const {data} = useFetch(category, value);
+  const navigate = useNavigate();
   return(
     <section class="section" data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
         <article class="post" >
           <ul class="post-list">
             {data && data.map((item) => 
-              <PostCard key={item.id}>
+              <PostCard key={item.id} onClick={()=>navigate(`/post/${item.id}`)}>
                 <PostImage/>
                 <PostContent>
                   <PostCategory>

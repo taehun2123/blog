@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Loading from "./components/Loading";
 import { Board } from "./pages/Board";
+import { Post } from "./pages/Post";
 
 const Main = React.lazy(() => import("./pages/Main"));
 
@@ -19,6 +20,10 @@ function Router({ isFixed, targetComponentRef }) {
                 <Route
                     path="/board/:type/:name"
                     element={<Board isFixed={isFixed} targetComponentRef={targetComponentRef}/>}
+                />
+                <Route
+                    path="/post/:id"
+                    element={<Post isFixed={isFixed} targetComponentRef={targetComponentRef}/>}
                 />
             </Routes>
         </Suspense>

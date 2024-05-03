@@ -163,9 +163,9 @@ export function Sidebar() {
         <h4>Dev_hun</h4>
       </Profile>
       <Menu>
-        <h3>Project-Menu</h3>
+        <h3 className="effectFont">Project-Menu</h3>
         <MenuList>{categories.map(renderCategory)}</MenuList>
-        <h3>Available Skill</h3>
+        <h3 className="effectFont">Available Skill</h3>
         <MenuList>{skills.map(renderSkill)}</MenuList>
       </Menu>
     </Side>

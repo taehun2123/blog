@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import styled from "styled-components";
 import image from "../../banner.png";
+import { useNavigate } from "react-router-dom";
 
 export function MainPost(){
   const [post, setPost] = useState([]);
+  const navigate = useNavigate();
   // async - await로 데이터 fetch 대기
   async function fetchData() {
     try {
@@ -26,7 +28,7 @@ export function MainPost(){
         <article class="post" >
           <ul class="post-list">
             {post && post.map((item) => 
-              <PostCard>
+              <PostCard onClick={()=>navigate(`/post/${item.id}`)}>
                 <PostImage/>
                 <PostContent>
                   <PostCategory>
