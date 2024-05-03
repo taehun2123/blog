@@ -92,7 +92,7 @@ const Box = styled.ul`
   justify-content: center;
   align-items: center;
   list-style-type: none;
-  gap: 2em;
+  gap: 1.2rem;
 `;
 
 const Item = styled.li`

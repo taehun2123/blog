@@ -257,7 +257,7 @@ footer{
   left: 10%;
   /* width: 80%; <-- 이게 80%라서 그럼*/
   right: 10%;
-  justify-content: space-between;
+  justify-content: space-around;
   z-index: 999;
   padding: 0 3%;
   align-items: center;
