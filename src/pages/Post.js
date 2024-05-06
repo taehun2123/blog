@@ -2,14 +2,35 @@ import { useParams } from "react-router-dom";
 import { Logo } from "../components/Logo";
 import { Sidebar } from "../components/Sidebar";
 import logoVideo from "../components/Items/logo_background.mp4";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, collection, setDoc,query, orderBy, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useComment, useCommentActions } from "../store/useCommentStore";
+import { update } from "firebase/database";
 
 export function Post({ isFixed, targetComponentRef }) {
   let {id} = useParams();
   const [data, setData] = useState(null);
+  const [comments, setComments] = useState([]);
+  const {author, comment, passwd} = useComment();
+  const {setAuthor, setComment, setPasswd, resetCommentInput} = useCommentActions();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0
+    });
+  }, [])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const docData = await getDocument();  // 비동기 함수에서 데이터 받기
+      setData(docData);  // 상태 설정
+    };
+    
+    fetchData();  // 함수 실행
+    getComments();
+  }, []); 
 
   const getDocument = async () => {
     const docRef = doc(db, 'blogging', id);  // 문서 참조 생성
@@ -19,15 +40,37 @@ export function Post({ isFixed, targetComponentRef }) {
       return docSnap.data();  // 문서 데이터 반환
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const docData = await getDocument();  // 비동기 함수에서 데이터 받기
-      setData(docData);  // 상태 설정
-    };
-    
-    fetchData();  // 함수 실행
-  }, []);  // 의존성 배열에 id 추가
+  const updateComment = async () => {
+    try {
+      const requestData = {
+        author, comment, passwd,
+        createdAt: new Date()
+      };
+      const commentRef = doc(collection(db, 'blogging', id, 'Comments'));
+      await setDoc(commentRef, requestData);
+      alert('작성을 완료했습니다!');
+    } catch (error) {
+      console.log(error);
+    } finally {
+      resetCommentInput();
+      getComments();
+    }
+  }
 
+  const getComments = async () => {
+    const q = query(collection(db, 'blogging', id, 'Comments'), orderBy('createdAt', 'desc'));
+  
+    try {
+      const querySnapshot = await getDocs(q);
+      const comments = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),  
+        commentId: doc.id  
+      }));
+      setComments(comments);
+    } catch (error) {
+      console.error("Failed to fetch comments:", error);
+    }
+  };
 
   function postWriter(){
     return(
@@ -63,16 +106,29 @@ export function Post({ isFixed, targetComponentRef }) {
               </CommentPlaceHolderBox>
               <CommentWriterBox>
                 <CommentAuthorBox>
-                  <CommentAuthorInputBox><CommentAuthorInput placeholder="이름"/></CommentAuthorInputBox>
-                  <CommentAuthorInputBox><CommentAuthorInput type="password" placeholder="비밀번호"/></CommentAuthorInputBox>
+                  <CommentAuthorInputBox><CommentAuthorInput placeholder="이름" value={author} onChange={(e) => setAuthor(e.target.value)}/></CommentAuthorInputBox>
+                  <CommentAuthorInputBox><CommentAuthorInput type="password" value={passwd} onChange={(e) => setPasswd(e.target.value)} placeholder="비밀번호"/></CommentAuthorInputBox>
                 </CommentAuthorBox>
                 <CommentBox>
-                  <CommentTextarea placeholder="댓글을 작성해주세요!"/>
+                  <CommentTextarea placeholder="댓글을 작성해주세요!" value={comment} onChange={(e)=> setComment(e.target.value)}/>
                   <CommentSubmitBox>
-                    <CommentSubmit><i class="fas fa-paper-plane"></i></CommentSubmit>
+                    <CommentSubmit onClick={()=>updateComment()}><i class="fas fa-paper-plane"></i></CommentSubmit>
                   </CommentSubmitBox>
                 </CommentBox>
               </CommentWriterBox>
+              <CommentOtherBox>
+                {comments.length > 0 ? comments.map((item,index) => 
+                <CommentPersonalBox key={index}>
+                  <CommentPersonalAuthor>{item.author}</CommentPersonalAuthor>
+                  <CommentPersonalComment>{item.comment}</CommentPersonalComment>
+                </CommentPersonalBox>
+                )
+              :
+              <CommentPersonalBox>
+                <CommentPersonalComment>새로운 댓글이 없어요 ㅠㅠ</CommentPersonalComment>
+              </CommentPersonalBox>
+              }
+              </CommentOtherBox>
             </CommentContainer>
           </div>
         </main>
@@ -126,6 +182,7 @@ const CommentContainer = styled.div`
 width: 100%;
 border-radius: 5em 5em 0 0;
 background: var(--background-sub-color);
+box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
 min-height: 50vh;
 display: flex;
 flex-direction: column;
@@ -148,10 +205,56 @@ width: 100%;
 max-width: 100%;
 min-height: 30vh;
 margin-top: 1em;
-background: white;
 border-radius: 3em;
-padding: 1em;
+padding: 1.5em;
 box-sizing: border-box;
+background: var(--background-main-color);
+box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
+`
+
+const CommentOtherBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  width: 100%;
+  max-width: 100%;
+  min-height: 10vh;
+  margin-top: 1em;
+  border-radius: 3em;
+  padding: 2em;
+  background: var(--background-main-color);
+  box-sizing: border-box;
+  box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
+`
+
+const CommentPersonalBox = styled.div`
+  display: flex;
+  flex-direction:column;
+  gap: 0.5em;
+  width: 60%;
+  min-height: 10vh;
+  background: var(--background-input-color);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 1em;
+  box-sizing: border-box;
+  border-radius: 0 1em 1em 1em;
+`
+
+const CommentPersonalAuthor = styled.div`
+  padding: 0.5em;
+  background: var(--background-main-color);
+  border-radius: 1em;
+`
+
+const CommentPersonalComment = styled.div`
+  width: 100%;
+  padding: 0.5em;
+  background: var(--background-main-color);
+  min-height: 10vh;
+  border-radius: 1em;
+  box-sizing: border-box;
 `
 
 const CommentAuthorBox = styled.div`
@@ -165,7 +268,7 @@ const CommentAuthorBox = styled.div`
 `
 
 const CommentAuthorInputBox = styled.div`
-border-radius: 2em;
+border-radius: 0.8em;
 width: 100%;
 max-width: 49.5%;
 background: var(--background-input-color);
@@ -190,7 +293,7 @@ const CommentBox = styled.div`
   flex: 1;
   width: 100%;
   padding: 1em;
-  border-radius: 2em 2em;
+  border-radius: 1.5em;
   background: var(--background-input-color);
   min-height: 100%;
   box-sizing: border-box;

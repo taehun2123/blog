@@ -1,13 +1,14 @@
 import { db } from "../../firebase";
 import { useEffect, useState } from "react";
 // firestore의 메서드 import
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs,query } from "firebase/firestore";
 import styled from "styled-components";
 import image from "../../banner.png";
 import { useNavigate } from "react-router-dom";
 
 export function MainPost(){
   const [post, setPost] = useState([]);
+  const [includeData, setIncludeData] = useState([]);
   const navigate = useNavigate();
   // async - await로 데이터 fetch 대기
   async function fetchData() {
@@ -23,17 +24,37 @@ export function MainPost(){
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const newData = await Promise.all(post?.map(async (item) => {
+          const q = query(collection(db, 'blogging', item.id, 'Comments'));
+          const querySnapshot = await getDocs(q);
+          const comments = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),  
+            commentId: doc.id  
+          }));
+        return {
+          ...item,
+          commentSu: comments.length
+        };
+      }));
+      setIncludeData(newData);
+    };
+
+    fetchData();
+  }, [post]);
   return(
     <section class="section" data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
         <article class="post" >
           <ul class="post-list">
-            {post && post.map((item) => 
+            {includeData && includeData.map((item) => 
               <PostCard onClick={()=>navigate(`/post/${item.id}`)}>
                 <PostImage/>
                 <PostContent>
                   <PostCategory>
                     <PostComment>{item.category.current}</PostComment>
-                    <PostComment><i class="fas fa-comments-alt"></i> 0 </PostComment>
+                    <PostComment><i class="fas fa-comments-alt"></i> {item.commentSu} </PostComment>
                   </PostCategory>
                   <h4>{item.title}</h4>
                   <PostMeta>

@@ -4,21 +4,46 @@ import styled from "styled-components";
 import image from "../banner.png";
 import useFetch from "../customFn/useFetch";
 import { useNavigate } from "react-router-dom";
+import { collection, query, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 
 export function Card({category, value}){
   const {data} = useFetch(category, value);
+  const [includeData, setIncludeData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const newData = await Promise.all(data?.map(async (item) => {
+          const q = query(collection(db, 'blogging', item.id, 'Comments'));
+          const querySnapshot = await getDocs(q);
+          const comments = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),  
+            commentId: doc.id  
+          }));
+        return {
+          ...item,
+          commentSu: comments.length
+        };
+      }));
+      setIncludeData(newData);
+    };
+
+    fetchData();
+  }, [data]);
+
   const navigate = useNavigate();
+  
   return(
     <section class="section" data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
         <article class="post" >
           <ul class="post-list">
-            {data && data.map((item) => 
+            {includeData && includeData.map((item) => 
               <PostCard key={item.id} onClick={()=>navigate(`/post/${item.id}`)}>
                 <PostImage/>
                 <PostContent>
                   <PostCategory>
                     <PostComment>{item.category.current}</PostComment>
-                    <PostComment><i class="fas fa-comments-alt"></i> 0 </PostComment>
+                    <PostComment><i class="fas fa-comments-alt"></i> {item.commentSu}</PostComment>
                   </PostCategory>
                   <h4>{item.title}</h4>
                   <PostMeta>

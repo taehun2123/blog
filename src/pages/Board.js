@@ -4,8 +4,15 @@ import { Sidebar } from "../components/Sidebar";
 import { Card } from "../components/Card";
 import logoVideo from "../components/Items/logo_background.mp4";
 import { TypeWriter } from "../components/TypeWriter";
+import { useEffect } from "react";
 
 export function Board({ isFixed, targetComponentRef }) {
+  useEffect(() => {
+    window.scrollTo({
+      top: 0
+    });
+  }, [])
+
   let {type, name} = useParams();
 
   return (

@@ -159,10 +159,10 @@ footer{
 :root{
   --font-main-color: rgb(75,115,240);
   --font-sub-color: rgb(17, 56, 255);
-  --site-main-color: rgb(79, 136, 241);
+  --site-main-color: rgb(171, 199, 251);
   --background-main-color: rgb(247, 250, 255);
   --background-sub-color: rgb(211, 234, 250);
-  --background-input-color: rgb(222, 222, 222);
+  --background-input-color: rgb(225, 241, 251);
   --font-icon-color: lightgray;
 }
 
