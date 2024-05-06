@@ -7,15 +7,11 @@ import {
   getDoc,
   collection,
   setDoc,
-  query,
-  orderBy,
-  getDocs,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useComment, useCommentActions } from "../store/useCommentStore";
-import { update } from "firebase/database";
 import useCommentFetch from "../customFn/useCommentFetch";
 
 export function Post({ isFixed, targetComponentRef }) {
@@ -91,7 +87,7 @@ export function Post({ isFixed, targetComponentRef }) {
         <main className="main" ref={targetComponentRef}>
           <div className="wrapper">
             <ContentContainer>{data?.contents}</ContentContainer>
-            <CommentContainer>
+            <CommentContainer data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
               <CommentScreenContainer>
                 <CommentTopbar/>
                 <CommentPlaceHolderBox>
@@ -142,6 +138,9 @@ export function Post({ isFixed, targetComponentRef }) {
                         <CommentPersonalComment>
                           {item.comment}
                         </CommentPersonalComment>
+                        <CommentPersonalMeta>
+                          {new Date(item.createdAt.toDate()).toLocaleString()}
+                        </CommentPersonalMeta>
                       </CommentPersonalBox>
                     ))
                   ) : (
@@ -253,7 +252,7 @@ const CommentWriterBox = styled.div`
   border-radius: 3em;
   padding: 1.5em;
   box-sizing: border-box;
-  background: var(--background-main-color);
+  background: var(--background-sub-color);
   box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
 `;
 
@@ -267,7 +266,7 @@ const CommentOtherBox = styled.div`
   margin-top: 1em;
   border-radius: 3em;
   padding: 2em;
-  background: var(--background-main-color);
+  background: var(--background-sub-color);
   box-sizing: border-box;
   box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
 `;
@@ -278,7 +277,7 @@ const CommentPersonalBox = styled.div`
   gap: 0.5em;
   width: auto;
   min-height: 10vh;
-  background: var(--background-input-color);
+  background: var(--background-main-color);
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
   justify-content: flex-start;
   align-items: flex-start;
@@ -289,8 +288,10 @@ const CommentPersonalBox = styled.div`
 
 const CommentPersonalAuthor = styled.div`
   padding: 0.5em;
-  background: var(--background-main-color);
+  background: var(--site-sub-color);
   border-radius: 1em;
+  color: white;
+  font-weight: 650;
 `;
 
 const CommentPersonalComment = styled.div`
@@ -301,6 +302,19 @@ const CommentPersonalComment = styled.div`
   border-radius: 1em;
   box-sizing: border-box;
 `;
+
+const CommentPersonalMeta = styled.div`
+width: 100%;
+display: flex;
+justify-content: flex-end;
+align-items: center;
+min-height: 1vh;
+padding: 1em;
+border-radius: 0 0 1em 1em;
+font-size: 12px;
+background: var(--site-main-color);
+box-sizing: border-box;
+`
 
 const CommentAuthorBox = styled.div`
   width: 100%;
@@ -316,7 +330,7 @@ const CommentAuthorInputBox = styled.div`
   border-radius: 0.8em;
   width: 100%;
   max-width: 49.5%;
-  background: var(--background-input-color);
+  background: var(--background-main-color);
   height: 2em;
   position: relative;
   box-sizing: border-box;
@@ -339,7 +353,7 @@ const CommentBox = styled.div`
   width: 100%;
   padding: 1em;
   border-radius: 1.5em;
-  background: var(--background-input-color);
+  background: var(--background-main-color);
   min-height: 100%;
   box-sizing: border-box;
   display: flex;
@@ -375,6 +389,8 @@ const CommentSubmit = styled.div`
   width: 30px;
   border-radius: 2em;
   padding: 0.5em;
-  background: white;
+  background: var(--background-main-color);
   cursor: pointer;
+  color: var(--font-main-color);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 `;
