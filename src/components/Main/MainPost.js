@@ -7,7 +7,6 @@ import image from "../../banner.png";
 import { useNavigate } from "react-router-dom";
 
 export function MainPost(){
-  const [post, setPost] = useState([]);
   const [includeData, setIncludeData] = useState([]);
   const navigate = useNavigate();
   // async - await로 데이터 fetch 대기
@@ -15,7 +14,19 @@ export function MainPost(){
     try {
       const querySnapshot = await getDocs(collection(db, 'blogging'));
       const result = querySnapshot.docs.map(doc => ({...doc.data(), date: doc.data().date.toDate(), id: doc.id}));
-      setPost(result.splice(0,3));
+      const newData = await Promise.all(result.splice(0,3)?.map(async (item) => {
+        const q = query(collection(db, 'blogging', item.id, 'Comments'));
+        const querySnapshot = await getDocs(q);
+        const comments = querySnapshot.docs.map((doc) => ({
+          ...doc.data(),  
+          commentId: doc.id  
+        }));
+      return {
+        ...item,
+        commentSu: comments.length
+      };
+    }));
+    setIncludeData(newData);
     } catch (error) {
       console.error('Error fetching data: ', error);
     }
@@ -25,25 +36,6 @@ export function MainPost(){
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const newData = await Promise.all(post?.map(async (item) => {
-          const q = query(collection(db, 'blogging', item.id, 'Comments'));
-          const querySnapshot = await getDocs(q);
-          const comments = querySnapshot.docs.map((doc) => ({
-            ...doc.data(),  
-            commentId: doc.id  
-          }));
-        return {
-          ...item,
-          commentSu: comments.length
-        };
-      }));
-      setIncludeData(newData);
-    };
-
-    fetchData();
-  }, [post]);
   return(
     <section class="section" data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
         <article class="post" >
