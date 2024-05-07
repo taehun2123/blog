@@ -6,6 +6,7 @@ import { MainPost } from "../components/Main/MainPost";
 import logoVideo from "../components/Items/logo_background.mp4";
 import { TypeWriter } from "../components/TypeWriter";
 import { Skill } from "../components/Skill";
+import styled from "styled-components";
 
 
 function Main({isFixed, targetComponentRef}) {
@@ -17,7 +18,6 @@ function Main({isFixed, targetComponentRef}) {
           <div className="wrapper">
             <Intro/>
             <Skill/>
-            <h1 className="effectFont" data-aos="fade-down" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">Posts</h1>
             <MainPost/>
           </div>
         </main>
@@ -29,5 +29,5 @@ function Main({isFixed, targetComponentRef}) {
 }
 
 
-
 export default Main;
+

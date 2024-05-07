@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import Router from "./Router";
 import AOS from 'aos';
-import 'aos/dist/aos.css'; // Include AOS CSS styles
+import 'aos/dist/aos.css'; // AOS CSS styles
 import 'animate.css/animate.min.css'; // animate.css를 import
 import { useSidebarActions } from './store/useSidebarStore';
 

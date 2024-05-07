@@ -30,14 +30,14 @@ export function Intro() {
     );
   }
   return (
-    <section style={{ margin: "7em 0" }}>
+    <section style={{ padding: "7em 0" }}>
       <Banner
         data-aos="fade-up"
         data-aos-anchor-placement="top-center"
         aos-easing="ease-in-sine"
         aos-duration="5000"
       >
-        <h1 className="effectFont" style={{marginBottom: '2.5em'}}>Who am I</h1>
+        <h1 className="effectFont" style={{marginBottom: '2.5em'}}><i class="fas fa-kiss-wink-heart"></i> Who am I</h1>
       </Banner>
       <Container
         data-aos="fade-down"
@@ -54,7 +54,6 @@ export function Intro() {
 }
 
 // Styled Components Source
-
 const Banner = styled.div`
   width: 100%;
   height: 1vh;
