@@ -163,9 +163,23 @@ export function Sidebar() {
         <h4>Dev_hun</h4>
       </Profile>
       <Menu>
-        <h3 className="effectFont">Project-Menu</h3>
+        <h3 className="effectFont">Project</h3>
         <MenuList>{categories.map(renderCategory)}</MenuList>
-        <h3 className="effectFont">Available Skill</h3>
+        <h3 className="effectFont">Resume</h3>
+        <MenuList>
+          <MenuItem>
+          <div
+          style={{ display: "flex", alignItems: "center", gap: "1em" }}
+        >
+            <Icon><i class="fas fa-file-user"></i></Icon>
+            View Resume
+            </div>
+            <span>
+              <i className="far fa-angle-right"></i>
+            </span>
+          </MenuItem>
+        </MenuList>
+        <h3 className="effectFont">Skill-Blog</h3>
         <MenuList>{skills.map(renderSkill)}</MenuList>
       </Menu>
     </Side>

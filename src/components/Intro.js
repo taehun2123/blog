@@ -37,7 +37,7 @@ export function Intro() {
         aos-easing="ease-in-sine"
         aos-duration="5000"
       >
-        <h1 className="effectFont" style={{marginBottom: '2.5em'}}>나를 소개합니다</h1>
+        <h1 className="effectFont" style={{marginBottom: '2.5em'}}>Who am I</h1>
       </Banner>
       <Container
         data-aos="fade-down"

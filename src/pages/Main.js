@@ -5,6 +5,7 @@ import { Sidebar } from "../components/Sidebar";
 import { MainPost } from "../components/Main/MainPost";
 import logoVideo from "../components/Items/logo_background.mp4";
 import { TypeWriter } from "../components/TypeWriter";
+import { Skill } from "../components/Skill";
 
 
 function Main({isFixed, targetComponentRef}) {
@@ -15,7 +16,8 @@ function Main({isFixed, targetComponentRef}) {
         <main className="main" ref={targetComponentRef}>
           <div className="wrapper">
             <Intro/>
-            <h1 className="effectFont" data-aos="fade-down" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">최신 게시글</h1>
+            <Skill/>
+            <h1 className="effectFont" data-aos="fade-down" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">Posts</h1>
             <MainPost/>
           </div>
         </main>
