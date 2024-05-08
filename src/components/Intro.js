@@ -9,9 +9,9 @@ export function Intro() {
         <ul>
           <IntroList>울산과학대학교 컴퓨터IT학부 입학</IntroList>
           <IntroList>울산과학대학교 컴퓨터IT학부 SW개발 전공</IntroList>
-          <IntroList>
+          <IntroList className="special">
             (주)성동물산 B2B 쇼핑몰 외주 프로젝트 착수 (Full Stack)
-            <ul>
+            <ul style={{padding: '0'}}>
               <IntroSubList>
                 <i class="far fa-hand-point-right"></i>
                 <IntroLink
@@ -36,9 +36,9 @@ export function Intro() {
           <IntroList>
             DevSe(울산대, 영산대, 울과대 연합동아리) 학술 SW 팀장 취임
           </IntroList>
-          <IntroList>
+          <IntroList className="special">
             캡스톤 디자인 - 셔틀버스 트래커 프로젝트 착수 (BackEnd)
-            <ul>
+            <ul style={{padding: '0'}}>
               <IntroSubList>
               <i class="far fa-hand-point-right"></i>{" "}
                 <IntroLink
@@ -46,7 +46,7 @@ export function Intro() {
                     window.open("https://github.com/2024UCapstone", "_blank")
                   }
                 >
-                  팀 GitHub 보기
+                  자세히 보기
                 </IntroLink>
               </IntroSubList>
             </ul>
@@ -139,12 +139,11 @@ const IntroList = styled.li`
   text-wrap: balance;
 `;
 const IntroSubList = styled.li`
-  padding-left: 1em;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  gap: 1em;
+  gap: 0.5em;
 `;
 const IntroLink = styled.button`
   padding: 1em 2em;
@@ -155,6 +154,7 @@ const IntroLink = styled.button`
   color: white;
   font-weight: 750;
   text-decoration: underline;
+  transition: background 0.5s;
   &:hover{
     background: var(--button-hover-color);
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);

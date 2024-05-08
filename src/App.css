@@ -345,3 +345,57 @@ footer{
   gap: 3em;
   flex-wrap: wrap;
 }
+
+.special{
+  border: 3px dotted lightblue;
+}
+
+.b1{
+  animation: floatup 10s linear infinite, sideways 5s ease-in-out infinite alternate;
+  left: 5%;
+  top: 10%; 
+}
+.b2{
+  animation: floatup 5s linear infinite, sideways 4s ease-in-out 1s infinite alternate;
+  left: 10%;
+  top: 20%;
+  transform: scale(.7);
+}
+.b3{
+  animation: floatup 4s linear infinite, sideways 6s ease-in-out 6s infinite alternate;
+  left: 20%;
+  top: 20%;
+  transform: scale(1.2);
+}
+.b4{
+  animation: floatup 6s linear infinite, sideways 5s ease-in-out 3s infinite alternate;
+  left: 0%;
+  top:0%;
+  transform: scale(.8);
+}
+.b5{
+  animation: floatup 8s linear infinite, sideways 6s ease-in-out 3s infinite alternate;
+  left: 0%;
+  top:30%;
+  transform: scale(1.1);
+}
+.b6{
+  animation: floatup 7s linear infinite, sideways 4s ease-in-out 3.5s infinite alternate;
+  left:10%;
+  top: 5%;
+  transform: scale(.7);
+}
+.b7{
+  animation: floatup 6s linear infinite, sideways 5s ease-in-out 4s infinite alternate;
+  left: 10%;
+  top:0%;
+  transform: scale(.6);
+}
+@keyframes floatup{
+  0% {margin-top: -100%;}
+  100% {margin-top: 100%;}
+}
+@keyframes sideways{
+  0% {margin-left: -40%;}
+  100%{margin-left: 50%;}
+}

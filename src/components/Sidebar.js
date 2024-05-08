@@ -39,9 +39,9 @@ export function Sidebar() {
       title: "Java-Spring",
     },
   ];
-  const { data: frontData } = useFetch("category.prev", "front");
-  const { data: backData } = useFetch("category.prev", "back");
-  const { data: fullData } = useFetch("category.prev", "full");
+  const { data: frontData } = useFetch("category.prev", "FrontEnd");
+  const { data: backData } = useFetch("category.prev", "BackEnd");
+  const { data: verData } = useFetch("category.prev", "Version");
   const categories = [
     {
       icon: <i className="fab fa-css3-alt" />,
@@ -58,8 +58,8 @@ export function Sidebar() {
     {
       icon: <i className="fab fa-node-js"></i>,
       subIcon: <i className="fas fa-code"></i>,
-      title: "Full-Stack",
-      subCategories: fullData,
+      title: "Version-Control",
+      subCategories: verData,
     },
   ];
 
@@ -177,10 +177,8 @@ export function Sidebar() {
             </span>
           </MenuItem>
         </MenuList>
-        <h3 className="effectFont">Project-Blog</h3>
+        <h3 className="effectFont">Stack-Blog</h3>
         <MenuList>{categories.map(renderCategory)}</MenuList>
-        <h3 className="effectFont">Skill-Blog</h3>
-        <MenuList>{skills.map(renderSkill)}</MenuList>
       </Menu>
     </Side>
   );

@@ -22,7 +22,12 @@ export function Board({ isFixed, targetComponentRef }) {
         <main className="main" ref={targetComponentRef}>
           <div className="wrapper">
             <h1 className="effectFont">{name} 관련 게시글</h1>
-            <Card category={`category.current`} value={name} />
+            {type === "list"
+            ?
+              <Card category={`category.prev`} value={name} />
+            : 
+              <Card category={`category.current`} value={name} />
+            }
           </div>
         </main>
         <footer></footer>

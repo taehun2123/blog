@@ -8,39 +8,67 @@ import bearImg from "./Items/bear.jpg";
 import mysqlImg from "./Items/mysql.png";
 import tanstackImg from "./Items/tanstack.svg";
 import tsImg from "./Items/ts.webp";
+import fireImg from "./Items/fire.webp"
+import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion"
+
 
 export function Skill() {
-  const imgObjd = [
-    {img: htmlImg, name: "HTML"},
-    {img: cssImg, name: "CSS"},
-    {img: javasciptImg, name: "JavaScript"},
-    {img: reactImg, name: "React"},
-    {img: tanstackImg, name: "React-Query"},
-    {img: bearImg, name: "Zustand"},
-    {img: mysqlImg, name: "MySql"},
-    {img: nodeImg, name: "Express"},
-    {img: tsImg, name: "TypeScript"}
+  const navigate = useNavigate();
+  const frontArr = [
+    { img: htmlImg, name: "HTML" },
+    { img: cssImg, name: "CSS" },
+    { img: javasciptImg, name: "JavaScript" },
+    { img: reactImg, name: "React" },
+    { img: tanstackImg, name: "React-Query" },
+    { img: bearImg, name: "Zustand" },
   ];
+  const backArr = [
+    { img: mysqlImg, name: "MySql" },
+    { img: nodeImg, name: "Express" },
+    { img: tsImg, name: "TypeScript" },
+    { img: fireImg, name: "Firebase" },
+  ];
+
+  
+
   return (
     <div
-      style={{marginBottom: '4em'}}
+      style={{ marginBottom: "4em" }}
       data-aos="fade-up"
       aos-offset="600"
       aos-easing="ease-in-sine"
       aos-duration="1200"
     >
-      <h1 className="effectFont"><i class="fas fa-code"></i> Skills</h1>
+      <h1 className="effectFont">
+        <i class="fas fa-code"></i> Skills
+      </h1>
       <SkillContainer>
-        {imgObjd.map((item, index) => (
-          <SkillCard>
-            <SkillImageBox key={index}>
-              <SkillImage src={item.img} alt="Skill Image" />
-            </SkillImageBox>
-            <SkillDesciptionBox>
-              <h3>{item.name}</h3>
-            </SkillDesciptionBox>
-          </SkillCard>
-        ))}
+        <SkillCard onClick={() => navigate(`/board/list/FrontEnd`)}>
+          <CardTitle>
+            <h3 className="effectFont">FrontEnd</h3>
+          </CardTitle>
+          <SkillImageBox>
+            {frontArr.map((item, index) => 
+            <SKillBall className={`b${index + 1}`}>
+              <SkillImage src={item.img}/>
+            </SKillBall>
+            )}
+          </SkillImageBox>
+        </SkillCard>
+        <SkillCard onClick={() => navigate(`/board/list/BackEnd`)}>
+          <CardTitle>
+            <h3 className="effectFont">BackEnd</h3>
+          </CardTitle>
+          <SkillImageBox>
+            {backArr.map((item, index) => 
+            <SKillBall className={`b${index + 1}`}>
+              <SkillImage src={item.img}/>
+            </SKillBall>
+            )}
+          </SkillImageBox>
+        </SkillCard>
       </SkillContainer>
     </div>
   );
@@ -50,52 +78,60 @@ const SkillContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
   box-sizing: border-box;
-  min-height: 100vh;
-  flex-wrap: wrap;
+  min-height: 50vh;
   gap: 0.5em;
   margin-bottom: 1em;
 `;
 
 const SkillCard = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  min-width: 350px;
-  min-height: 200px;
+  width: 350px;
+  min-height: 50vh;
   box-sizing: border-box;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1em;
+  box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
   border-radius: 1em;
-  gap: 1em;
+  transition: transform 0.5s;
+  &:hover {
+    box-shadow: 3px 5px 6px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-10px);
+    cursor: pointer;
+  }
+`;
+
+const CardTitle = styled.div`
+  width: 90%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1em;
+  border-bottom: 1px solid lightgray;
 `;
 
 const SkillImageBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items:center;
-  min-width: 150px
-  min-height: 150px;
-  border-radius: 50%;
-  object-fit:cover;
-  border: 2px dotted lightgray;
-  overflow: hidden;
-`;
-
-const SkillImage = styled.img`
-  object-fit: cover;
-  width: 120px;
-  height:120px;
-`;
-
-const SkillDesciptionBox = styled.div`
-  flex: 1;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-left: 3px dotted lightgray;
+  height: 50vh;
+  overflow: hidden;
+  position: relative;
+`;
+
+const SKillBall = styled.div`
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden; 
+  position:absolute;
+  box-shadow: inset 0 20px 30px rgba(255, 255, 255, 0.4), inset 1em 1em 1em rgba(255, 255, 255, 0.6), 0 1em 2em rgba(0, 0, 0, 0.25);
+`
+const SkillImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
