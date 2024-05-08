@@ -163,8 +163,6 @@ export function Sidebar() {
         <h4>Dev_hun</h4>
       </Profile>
       <Menu>
-        <h3 className="effectFont">Project</h3>
-        <MenuList>{categories.map(renderCategory)}</MenuList>
         <h3 className="effectFont">Resume</h3>
         <MenuList>
           <MenuItem>
@@ -179,6 +177,8 @@ export function Sidebar() {
             </span>
           </MenuItem>
         </MenuList>
+        <h3 className="effectFont">Project-Blog</h3>
+        <MenuList>{categories.map(renderCategory)}</MenuList>
         <h3 className="effectFont">Skill-Blog</h3>
         <MenuList>{skills.map(renderSkill)}</MenuList>
       </Menu>

@@ -9,20 +9,52 @@ export function Intro() {
         <ul>
           <IntroList>울산과학대학교 컴퓨터IT학부 입학</IntroList>
           <IntroList>울산과학대학교 컴퓨터IT학부 SW개발 전공</IntroList>
-          <IntroList>(주)성동물산 B2B 쇼핑몰 외주 프로젝트 착수</IntroList>
+          <IntroList>
+            (주)성동물산 B2B 쇼핑몰 외주 프로젝트 착수 (Full Stack)
+            <ul>
+              <IntroSubList>
+                <i class="far fa-hand-point-right"></i>
+                <IntroLink
+                  onClick={() =>
+                    window.open(
+                      "https://github.com/DevSe-project/Sungdong-FrontEnd",
+                      "_blank"
+                    )
+                  }
+                >
+                  자세히 보기
+                </IntroLink>
+              </IntroSubList>
+            </ul>
+          </IntroList>
           <IntroList>ADSP, GA, ISTQB 자격증 취득</IntroList>
-          <IntroList>(주)펩시스 장학금 선발(1)</IntroList>
-          <IntroList>1학년 성적 4.5 마무리</IntroList>
+          <IntroList>외부업체((주)펩시스) 장학금 선발(1)</IntroList>
         </ul>
         <IntroTitle>2024</IntroTitle>
         <ul>
-          <IntroList>(주)펩시스 장학금 선발(2)</IntroList>
-          <IntroList>DevSe(울산대, 영산대, 울과대 연합동아리) 학술 SW 팀장 취임</IntroList>
-          <IntroList>캡스톤 디자인 - 버스 트래커 프로젝트 착수</IntroList>
+          <IntroList>외부업체((주)펩시스) 장학금 선발(2)</IntroList>
+          <IntroList>
+            DevSe(울산대, 영산대, 울과대 연합동아리) 학술 SW 팀장 취임
+          </IntroList>
+          <IntroList>
+            캡스톤 디자인 - 셔틀버스 트래커 프로젝트 착수 (BackEnd)
+            <ul>
+              <IntroSubList>
+              <i class="far fa-hand-point-right"></i>{" "}
+                <IntroLink
+                  onClick={() =>
+                    window.open("https://github.com/2024UCapstone", "_blank")
+                  }
+                >
+                  팀 GitHub 보기
+                </IntroLink>
+              </IntroSubList>
+            </ul>
+          </IntroList>
           <IntroList>
             울과대 튜터링 너랑나랑, DevSe 활동
             <ul>
-              <li>- 개인 포트폴리오 블로그 만들기 튜터</li>
+              <IntroSubList>- 개인 포트폴리오 블로그 만들기 튜터</IntroSubList>
             </ul>
           </IntroList>
         </ul>
@@ -37,7 +69,9 @@ export function Intro() {
         aos-easing="ease-in-sine"
         aos-duration="5000"
       >
-        <h1 className="effectFont" style={{marginBottom: '2.5em'}}><i class="fas fa-kiss-wink-heart"></i> Who am I</h1>
+        <h1 className="effectFont" style={{ marginBottom: "2.5em" }}>
+          <i class="fas fa-kiss-wink-heart"></i> Who am I
+        </h1>
       </Banner>
       <Container
         data-aos="fade-down"
@@ -46,7 +80,10 @@ export function Intro() {
         aos-easing="ease-in-sine"
         aos-duration="1000"
       >
-        <ImageWrapper />
+        <LeftSideBox>
+          <ImageWrapper />
+            <IntroLink>이력서 열람하기</IntroLink>
+        </LeftSideBox>
         {dolist()}
       </Container>
     </section>
@@ -73,6 +110,13 @@ const Container = styled.div`
   flex-wrap: wrap;
 `;
 
+const LeftSideBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+`
 const ImageWrapper = styled.div`
   display: flex;
   alien-items: center;
@@ -86,11 +130,33 @@ const ImageWrapper = styled.div`
   border: 3px dotted lightblue;
 `;
 
-const IntroTitle= styled.li`
+const IntroTitle = styled.li`
   font-size: 20px;
   font-weight: 650;
-`
+`;
 const IntroList = styled.li`
   padding: 0.5em;
   text-wrap: balance;
-`
+`;
+const IntroSubList = styled.li`
+  padding-left: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1em;
+`;
+const IntroLink = styled.button`
+  padding: 1em 2em;
+  background: var(--button-main-color);
+  border-radius: 1em;
+  cursor: pointer;
+  border: none;
+  color: white;
+  font-weight: 750;
+  text-decoration: underline;
+  &:hover{
+    background: var(--button-hover-color);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+`;
