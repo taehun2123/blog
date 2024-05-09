@@ -6,7 +6,7 @@ html {
   padding: 0;
   margin: 0;
   background-color: white;
-  font-family: 'NanumSquare';
+  font-family: "NanumSquare";
 }
 
 body {
@@ -16,99 +16,113 @@ body {
   z-index: 1;
 }
 
-h1,h2,h3,h4,h5,h6,p{
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   padding: 0;
   margin: 0;
 }
 
-h1{
+h1 {
   font-size: 50px;
   font-weight: 650;
   margin-bottom: 0.5em;
 }
 
-h2{
+h2 {
   font-size: 36px;
   font-weight: 650;
 }
 
-h3{
+h3 {
   font-size: 24px;
   font-weight: 650;
 }
 
-
-h4{
-  
+h4 {
 }
 
-a{
+a {
   text-decoration: none;
   color: black;
 }
 
-article, section{
+article,
+section {
   padding: 0;
   margin: 0;
 }
 
-ul, li{
+ul,
+li {
   margin: 0;
   padding: 0.3em 0;
   list-style-type: none;
 }
 
-svg{
+svg {
   transition: 0.5s ease-in-out;
-  fill:var(--font-icon-color);
+  fill: var(--font-icon-color);
+}
+
+code {
+  padding: 3px 6px;
+  border: none;
+  border-radius: 3px;
+  background-color: #e9ecef;
+  font-size: 1.6rem;
+  font-family: "Pretendard", "Malgun Gothic", sans-serif;
 }
 
 /* 텍스트 레인보우 색깔변화 */
 @keyframes textAnim {
   0% {
-      background-position: 0 50%;
+    background-position: 0 50%;
   }
   50% {
-      background-position: 100% 50%;
+    background-position: 100% 50%;
   }
   100% {
-      background-position: 0 50%;
+    background-position: 0 50%;
   }
 }
 
 /* 아이콘 흔들 약함*/
 @keyframes swing {
   0% {
-      transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   10% {
-      transform: rotate(10deg);
+    transform: rotate(10deg);
   }
   30% {
-      transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   40% {
-      transform: rotate(-10deg);
+    transform: rotate(-10deg);
   }
   50% {
-      transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   60% {
-      transform: rotate(5deg);
+    transform: rotate(5deg);
   }
   70% {
-      transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   80% {
-      transform: rotate(-5deg);
+    transform: rotate(-5deg);
   }
   100% {
-      transform: rotate(0deg);
+    transform: rotate(0deg);
   }
 }
 
-
-.container{
+.container {
   margin: 0;
   padding: 0;
   max-width: 100%;
@@ -116,7 +130,7 @@ svg{
   display: flex;
 }
 
-.body{
+.body {
   flex: 1;
   margin: 0;
   padding: 0;
@@ -126,7 +140,7 @@ svg{
   min-height: 100vh;
 }
 
-.loading{
+.loading {
   width: 100vw;
   height: 100vh;
   margin: 0 auto;
@@ -137,7 +151,7 @@ svg{
   font-size: 100px;
 }
 
-footer{
+footer {
   display: block;
   z-index: 999;
   height: 200px;
@@ -145,7 +159,7 @@ footer{
   background-color: white;
 }
 
-.effectFont{
+.effectFont {
   animation: textAnim 5s ease-out infinite;
   background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
   background-size: 250% 500%;
@@ -153,13 +167,12 @@ footer{
   -webkit-text-fill-color: transparent;
 }
 
-
 /* =-=-=-=-=-=-=-= 자주쓰는 목록 변수화 =-=-=-=-=-=-=-= */
 
-:root{
-  --font-main-color: rgb(75,115,240);
+:root {
+  --font-main-color: rgb(75, 115, 240);
   --font-sub-color: rgb(17, 56, 255);
-  --button-main-color: rgb(75,115,240);
+  --button-main-color: rgb(75, 115, 240);
   --button-hover-color: rgb(108, 141, 240);
   --site-main-color: rgb(171, 199, 251);
   --site-sub-color: rgb(152, 186, 249);
@@ -171,16 +184,16 @@ footer{
 
 /* =-=-=-=-=-=-=-= 배너 스타일 =-=-=-=-=-=-=-= */
 
-.header{
+.header {
   display: block;
 }
 
-.header .wrapper{
+.header .wrapper {
   max-width: inherit;
   padding: 0;
 }
 
-.wrapper{
+.wrapper {
   position: relative;
   max-width: 1100px;
   min-height: 100%;
@@ -233,7 +246,7 @@ footer{
 }
 
 /* =-=-=-=-=-=-=-= 상단바 네비게이션 =-=-=-=-=-=-=-= */
-.nav{
+.nav {
   position: relative;
   max-width: inherit;
   display: flex;
@@ -243,7 +256,7 @@ footer{
   z-index: 999;
 }
 
-.nav-logo{
+.nav-logo {
   font-size: larger;
   font-weight: 750;
   color: var(--font-icon-color);
@@ -269,17 +282,17 @@ footer{
   align-items: center;
 }
 
-.nav.fixed.opened{
+.nav.fixed.opened {
   left: 10vw;
   right: 27vw;
 }
 
-.nav.fixed .nav-logo{
+.nav.fixed .nav-logo {
   transition: 0.5s ease-in-out;
   color: var(--font-main-color);
 }
-.nav.fixed svg{
-  fill:var(--font-main-color);
+.nav.fixed svg {
+  fill: var(--font-main-color);
 }
 
 .bar {
@@ -301,45 +314,45 @@ footer{
 /* -=-=-=-=-= 반응형 상단바 디자인 =-=-=-=-=- */
 
 /* 사이드바 열린 상단바 미디어 쿼리 */
-@media (max-width: 1405px){
-  .nav.fixed.opened{
+@media (max-width: 1405px) {
+  .nav.fixed.opened {
     left: 7vw;
   }
 }
 
-@media (max-width: 1200px){
-  .nav.fixed.opened{
+@media (max-width: 1200px) {
+  .nav.fixed.opened {
     left: 5vw;
   }
 }
 
-@media (max-width: 900px){
-  .nav.fixed.opened{
+@media (max-width: 900px) {
+  .nav.fixed.opened {
     left: 2vw;
   }
 }
 
 /* 사이드바 닫힌 상단바 미디어 쿼리 */
-@media (max-width: 1100px){
-  .nav.fixed{
+@media (max-width: 1100px) {
+  .nav.fixed {
     left: 15vw;
   }
 }
-@media (max-width: 700px){
-  .nav.fixed{
+@media (max-width: 700px) {
+  .nav.fixed {
     left: 10vw;
   }
 }
 
 /* =-=-=-=-=-=-=-= 중단 메인 =-=-=-=-=-=-=-= */
 
-.main{
+.main {
   padding: 60px 0 10px 0;
   flex: 1;
   background-color: white;
 }
 
-.section{
+.section {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -348,12 +361,12 @@ footer{
 
 /* =-=-=-=-=-=-=-= 게시글 =-=-=-=-=-=-=-= */
 
-.post{
+.post {
   flex: 1;
   min-height: 50vh;
 }
 
-.post-list{
+.post-list {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -362,56 +375,71 @@ footer{
   flex-wrap: wrap;
 }
 
-.special{
+.special {
   border: 3px dotted lightblue;
 }
 
-.b1{
-  animation: floatup 10s linear infinite, sideways 5s ease-in-out infinite alternate;
+.b1 {
+  animation: floatup 10s linear infinite,
+    sideways 5s ease-in-out infinite alternate;
   left: 5%;
-  top: 10%; 
+  top: 10%;
 }
-.b2{
-  animation: floatup 5s linear infinite, sideways 4s ease-in-out 1s infinite alternate;
+.b2 {
+  animation: floatup 5s linear infinite,
+    sideways 4s ease-in-out 1s infinite alternate;
   left: 10%;
   top: 20%;
-  transform: scale(.7);
+  transform: scale(0.7);
 }
-.b3{
-  animation: floatup 4s linear infinite, sideways 6s ease-in-out 6s infinite alternate;
+.b3 {
+  animation: floatup 4s linear infinite,
+    sideways 6s ease-in-out 6s infinite alternate;
   left: 20%;
   top: 20%;
   transform: scale(1.2);
 }
-.b4{
-  animation: floatup 6s linear infinite, sideways 5s ease-in-out 3s infinite alternate;
+.b4 {
+  animation: floatup 6s linear infinite,
+    sideways 5s ease-in-out 3s infinite alternate;
   left: 0%;
-  top:0%;
-  transform: scale(.8);
+  top: 0%;
+  transform: scale(0.8);
 }
-.b5{
-  animation: floatup 8s linear infinite, sideways 6s ease-in-out 3s infinite alternate;
+.b5 {
+  animation: floatup 8s linear infinite,
+    sideways 6s ease-in-out 3s infinite alternate;
   left: 0%;
-  top:30%;
+  top: 30%;
   transform: scale(1.1);
 }
-.b6{
-  animation: floatup 7s linear infinite, sideways 4s ease-in-out 3.5s infinite alternate;
-  left:10%;
-  top: 5%;
-  transform: scale(.7);
-}
-.b7{
-  animation: floatup 6s linear infinite, sideways 5s ease-in-out 4s infinite alternate;
+.b6 {
+  animation: floatup 7s linear infinite,
+    sideways 4s ease-in-out 3.5s infinite alternate;
   left: 10%;
-  top:0%;
-  transform: scale(.6);
+  top: 5%;
+  transform: scale(0.7);
 }
-@keyframes floatup{
-  0% {margin-top: -100%;}
-  100% {margin-top: 100%;}
+.b7 {
+  animation: floatup 6s linear infinite,
+    sideways 5s ease-in-out 4s infinite alternate;
+  left: 10%;
+  top: 0%;
+  transform: scale(0.6);
 }
-@keyframes sideways{
-  0% {margin-left: -40%;}
-  100%{margin-left: 50%;}
+@keyframes floatup {
+  0% {
+    margin-top: -100%;
+  }
+  100% {
+    margin-top: 100%;
+  }
+}
+@keyframes sideways {
+  0% {
+    margin-left: -40%;
+  }
+  100% {
+    margin-left: 50%;
+  }
 }

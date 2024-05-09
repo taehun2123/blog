@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Loading from "./components/Loading";
 import { Board } from "./pages/Board";
 import { Post } from "./pages/Post";
+import { EditPost } from "./pages/EditPost";
 
 const Main = React.lazy(() => import("./pages/Main"));
 
@@ -24,6 +25,10 @@ function Router({ isFixed, targetComponentRef }) {
                 <Route
                     path="/post/:id"
                     element={<Post isFixed={isFixed} targetComponentRef={targetComponentRef}/>}
+                />
+                <Route
+                    path="/edit"
+                    element={<EditPost isFixed={isFixed} targetComponentRef={targetComponentRef}/>}
                 />
             </Routes>
         </Suspense>
