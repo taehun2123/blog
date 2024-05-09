@@ -43,7 +43,12 @@ export function MainPost() {
   }, []);
 
   return (
-    <div>
+    <div
+      style={{
+        paddingTop: "5em",
+        paddingBottom: "5em",
+      }}
+    >
       <h1
         className="effectFont"
         data-aos="fade-down"

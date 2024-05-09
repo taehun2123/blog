@@ -1,66 +1,33 @@
 import styled from "styled-components";
 import profile from "./Items/profile.jpeg";
+import { motion } from 'framer-motion';
 
 export function Intro() {
-  function dolist() {
-    return (
-      <ul>
-        <IntroTitle>2023</IntroTitle>
-        <ul>
-          <IntroList>울산과학대학교 컴퓨터IT학부 입학</IntroList>
-          <IntroList>울산과학대학교 컴퓨터IT학부 SW개발 전공</IntroList>
-          <IntroList className="special">
-            (주)성동물산 B2B 쇼핑몰 외주 프로젝트 착수 (Full Stack)
-            <ul style={{padding: '0'}}>
-              <IntroSubList>
-                <i class="far fa-hand-point-right"></i>
-                <IntroLink
-                  onClick={() =>
-                    window.open(
-                      "https://github.com/DevSe-project/Sungdong-FrontEnd",
-                      "_blank"
-                    )
-                  }
-                >
-                  자세히 보기
-                </IntroLink>
-              </IntroSubList>
-            </ul>
-          </IntroList>
-          <IntroList>ADSP, GA, ISTQB 자격증 취득</IntroList>
-          <IntroList>외부업체((주)펩시스) 장학금 선발(1)</IntroList>
-        </ul>
-        <IntroTitle>2024</IntroTitle>
-        <ul>
-          <IntroList>외부업체((주)펩시스) 장학금 선발(2)</IntroList>
-          <IntroList>
-            DevSe(울산대, 영산대, 울과대 연합동아리) 학술 SW 팀장 취임
-          </IntroList>
-          <IntroList className="special">
-            캡스톤 디자인 - 셔틀버스 트래커 프로젝트 착수 (BackEnd)
-            <ul style={{padding: '0'}}>
-              <IntroSubList>
-              <i class="far fa-hand-point-right"></i>{" "}
-                <IntroLink
-                  onClick={() =>
-                    window.open("https://github.com/2024UCapstone", "_blank")
-                  }
-                >
-                  자세히 보기
-                </IntroLink>
-              </IntroSubList>
-            </ul>
-          </IntroList>
-          <IntroList>
-            울과대 튜터링 너랑나랑, DevSe 활동
-            <ul>
-              <IntroSubList>- 개인 포트폴리오 블로그 만들기 튜터</IntroSubList>
-            </ul>
-          </IntroList>
-        </ul>
-      </ul>
-    );
-  }
+  const introArr = [
+    { icon: <i class="fas fa-user-tag"></i>, title: "이름", content: "김태훈" },
+    { icon: <i class="fas fa-birthday-cake"></i>, title: "생년월일", content: "01.05.30" },
+    { icon: <i class="fa-solid fa-phone"></i>, title: "연락처", content: "010-3343-8636" },
+    { icon: <i class="fa-solid fa-envelopes-bulk"></i>, title: "이메일", content: "pyoneng_@naver.com" },
+  ];
+
+  const list = {
+    hidden: {
+      opacity: 0
+    },
+    visible: {
+      opacity: 1,
+      transition: {
+        when: "beforeChildren",
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const items = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
     <section style={{ padding: "7em 0" }}>
       <Banner
@@ -82,9 +49,24 @@ export function Intro() {
       >
         <LeftSideBox>
           <ImageWrapper />
+          <LinkBox>
             <IntroLink>이력서 열람하기</IntroLink>
+            <IntroLink>프로젝트 열람하기</IntroLink>
+          </LinkBox>
         </LeftSideBox>
-        {dolist()}
+        <RightSideBox>
+          <IntroListContainer variants={list} initial="hidden" animate="visible">
+            {introArr.map((item, index) => (
+              <IntroListBox key={index} variants={items}>
+                <Icon>{item.icon}</Icon>
+                <DescriptionBox>
+                  <DescriptionTitle>{item.title}</DescriptionTitle>
+                  <Description>{item.content}</Description>
+                </DescriptionBox>
+              </IntroListBox>
+            ))}
+          </IntroListContainer>
+        </RightSideBox>
       </Container>
     </section>
   );
@@ -116,7 +98,7 @@ const LeftSideBox = styled.div`
   justify-content: center;
   align-items: center;
   gap: 1em;
-`
+`;
 const ImageWrapper = styled.div`
   display: flex;
   alien-items: center;
@@ -130,21 +112,14 @@ const ImageWrapper = styled.div`
   border: 3px dotted lightblue;
 `;
 
-const IntroTitle = styled.li`
-  font-size: 20px;
-  font-weight: 650;
-`;
-const IntroList = styled.li`
-  padding: 0.5em;
-  text-wrap: balance;
-`;
-const IntroSubList = styled.li`
+const LinkBox = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   gap: 0.5em;
-`;
+`
+
 const IntroLink = styled.button`
   padding: 1em 2em;
   background: var(--button-main-color);
@@ -155,8 +130,72 @@ const IntroLink = styled.button`
   font-weight: 750;
   text-decoration: underline;
   transition: background 0.5s;
-  &:hover{
+  &:hover {
     background: var(--button-hover-color);
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
+`;
+
+const RightSideBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+`;
+
+const IntroListContainer = styled(motion.ul)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  gap: 1em;
+  flex: 1;
+  padding: 0 1em;
+`;
+
+const IntroListBox = styled(motion.li)`
+  min-width: 100%;
+  background-color: var(--background-main-color);
+  border-radius: 1em;
+  min-height: 10vh;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1em;
+  transition: all 0.5s;
+  &:hover {
+    background: var(--background-sub-color);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const Icon = styled.div`
+  width: 100%;
+  font-size: 2em;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const DescriptionBox = styled.div`
+  width: 100%;
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justifty-content: flex-start;
+  align-items: flex-start;
+  gap: 0.5em;
+`;
+
+const DescriptionTitle = styled.div`
+  font-size: 1.5rem;
+  font-weight: 750;
+`;
+
+const Description = styled.div`
+  font-size: 1rem;
 `;

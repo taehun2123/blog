@@ -6,9 +6,13 @@ import reactImg from "./Items/logo.svg";
 import nodeImg from "./Items/node.png";
 import bearImg from "./Items/bear.jpg";
 import mysqlImg from "./Items/mysql.png";
-import tanstackImg from "./Items/tanstack.svg";
+import tanstackImg from "./Items/image.jpeg";
 import tsImg from "./Items/ts.webp";
 import fireImg from "./Items/fire.webp"
+import javaImg from "./Items/java.png"
+import mongImg from "./Items/mong.png"
+
+
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion"
@@ -23,19 +27,21 @@ export function Skill() {
     { img: reactImg, name: "React" },
     { img: tanstackImg, name: "React-Query" },
     { img: bearImg, name: "Zustand" },
+    { img: tsImg, name: "TypeScript" },
   ];
   const backArr = [
     { img: mysqlImg, name: "MySql" },
     { img: nodeImg, name: "Express" },
-    { img: tsImg, name: "TypeScript" },
     { img: fireImg, name: "Firebase" },
+    { img: javaImg, name: "Java" },
+    { img: mongImg, name: "MongoDB" },
   ];
 
   
 
   return (
     <div
-      style={{ marginBottom: "4em" }}
+      style={{ paddingBottom: "5em", borderTop: '1px solid lightgray', borderBottom: '1px solid lightgray', paddingTop: '5em'}}
       data-aos="fade-up"
       aos-offset="600"
       aos-easing="ease-in-sine"
@@ -52,7 +58,7 @@ export function Skill() {
           <SkillImageBox>
             {frontArr.map((item, index) => 
             <SKillBall className={`b${index + 1}`}>
-              <SkillImage src={item.img}/>
+              <SkillImage src={item.img} alt="Skill Image"/>
             </SKillBall>
             )}
           </SkillImageBox>
@@ -64,7 +70,19 @@ export function Skill() {
           <SkillImageBox>
             {backArr.map((item, index) => 
             <SKillBall className={`b${index + 1}`}>
-              <SkillImage src={item.img}/>
+              <SkillImage src={item.img} alt="Skill Image"/>
+            </SKillBall>
+            )}
+          </SkillImageBox>
+        </SkillCard>
+        <SkillCard onClick={() => navigate(`/board/list/Version`)}>
+          <CardTitle>
+            <h3 className="effectFont">Version Control</h3>
+          </CardTitle>
+          <SkillImageBox>
+            {backArr.map((item, index) => 
+            <SKillBall className={`b${index + 1}`}>
+              <SkillImage src={item.img} alt="Skill Image"/>
             </SKillBall>
             )}
           </SkillImageBox>
@@ -84,6 +102,7 @@ const SkillContainer = styled.div`
   min-height: 50vh;
   gap: 0.5em;
   margin-bottom: 1em;
+  flex-wrap;
 `;
 
 const SkillCard = styled.div`
@@ -97,6 +116,7 @@ const SkillCard = styled.div`
   box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
   border-radius: 1em;
   transition: transform 0.5s;
+  overflow: hidden;
   &:hover {
     box-shadow: 3px 5px 6px 4px rgba(0, 0, 0, 0.1);
     transform: translateY(-10px);

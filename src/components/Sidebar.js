@@ -94,45 +94,45 @@ export function Sidebar() {
           </span>
         </MenuItem>
 
-          <SubCategoryList
-            isExpanded={isExpanded}
-            su={category.subCategories.length}
-            >
-            {category.subCategories.length > 0 ? (
-              category.subCategories.map((subCategory, index) => (
-                <SubCategoryItem
-                  key={index}
-                  onClick={() =>
-                    navigate(
-                      `/board/${subCategory.category.prev}/${subCategory.category.current}`
-                    )
-                  }
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "1em",
-                    }}
-                  >
-                    <SubIcon>{category.subIcon}</SubIcon>
-                    {subCategory.category.current}
-                  </div>
-                </SubCategoryItem>
-              ))
-            ) : (
-              <SubCategoryItem key={index}>
+        <SubCategoryList
+          isExpanded={isExpanded}
+          su={category.subCategories.length}
+        >
+          {category.subCategories.length > 0 ? (
+            category.subCategories.map((subCategory, index) => (
+              <SubCategoryItem
+                key={index}
+                onClick={() =>
+                  navigate(
+                    `/board/${subCategory.category.prev}/${subCategory.category.current}`
+                  )
+                }
+              >
                 <div
-                  style={{ display: "flex", alignItems: "center", gap: "1em" }}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1em",
+                  }}
                 >
-                  <ErrIcon>
-                    <i className="fas fa-exclamation-triangle"></i>
-                  </ErrIcon>
-                  비어있음!
+                  <SubIcon>{category.subIcon}</SubIcon>
+                  {subCategory.category.current}
                 </div>
               </SubCategoryItem>
-            )}
-          </SubCategoryList>
+            ))
+          ) : (
+            <SubCategoryItem key={index}>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "1em" }}
+              >
+                <ErrIcon>
+                  <i className="fas fa-exclamation-triangle"></i>
+                </ErrIcon>
+                비어있음!
+              </div>
+            </SubCategoryItem>
+          )}
+        </SubCategoryList>
       </div>
     );
   };
@@ -143,9 +143,7 @@ export function Sidebar() {
         key={index}
         onClick={() => navigate(`/board/study/${skill.title}`)}
       >
-        <div
-          style={{ display: "flex", alignItems: "center", gap: "1em" }}
-        >
+        <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
           <Icon>{skill.icon}</Icon>
           {skill.title}
         </div>
@@ -153,8 +151,8 @@ export function Sidebar() {
           <i className="far fa-angle-right"></i>
         </span>
       </MenuItem>
-    )
-  }
+    );
+  };
 
   return (
     <Side isOpened={isOpened}>
@@ -163,21 +161,32 @@ export function Sidebar() {
         <h4>Dev_hun</h4>
       </Profile>
       <Menu>
-        <h3 className="effectFont">Resume</h3>
+        <h4 className="effectFont">About Me</h4>
         <MenuList>
           <MenuItem>
-          <div
-          style={{ display: "flex", alignItems: "center", gap: "1em" }}
-        >
-            <Icon><i class="fas fa-file-user"></i></Icon>
-            View Resume
+            <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
+              <Icon>
+                <i class="fas fa-file-user"></i>
+              </Icon>
+              View Resume
+            </div>
+            <span>
+              <i className="far fa-angle-right"></i>
+            </span>
+          </MenuItem>
+          <MenuItem>
+            <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
+              <Icon>
+                <i class="fas fa-file-chart-line"></i>
+              </Icon>
+              View Project
             </div>
             <span>
               <i className="far fa-angle-right"></i>
             </span>
           </MenuItem>
         </MenuList>
-        <h3 className="effectFont">Stack-Blog</h3>
+        <h4 className="effectFont">Stack-Blog</h4>
         <MenuList>{categories.map(renderCategory)}</MenuList>
       </Menu>
     </Side>
@@ -223,11 +232,13 @@ const Image = styled.div`
 
 const Menu = styled.div`
   padding: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 `;
 
 const MenuList = styled.ul`
-  margin: 1.5em 0;
-  padding: 0;
+  padding-bottom: 1em;
   border-bottom: 2px dotted lightblue;
 `;
 
@@ -247,19 +258,18 @@ const SubCategoryList = styled.ul`
   list-style: none;
   transition: all 0.3s;
   padding: 0 1rem;
-  overflow: hidden; 
-  ${props => props.isExpanded ?
-  `
+  overflow: hidden;
+  ${(props) =>
+    props.isExpanded
+      ? `
   height: ${props.su ? props.su * 50 : 50}px ;
   opacity: 1;
   padding: 0.2rem 1rem;
   `
-  :
-  `
+      : `
   height : 0;
   opacity: 0;
-  `
-  }
+  `}
 `;
 
 const SubCategoryItem = styled.li`

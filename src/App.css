@@ -282,6 +282,22 @@ footer{
   fill:var(--font-main-color);
 }
 
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 0.8vmin;
+  border-radius: 0 1em 1em 0;
+  transition: all 0.2s;
+  transform-origin: 0;
+  animation: textAnim 5s infinite;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  z-index: 999;
+  background-size: 200% 100%; /* 배경 이미지를 넓게 설정하여 애니메이션 효과가 눈에 띄도록 함 */
+}
 /* -=-=-=-=-= 반응형 상단바 디자인 =-=-=-=-=- */
 
 /* 사이드바 열린 상단바 미디어 쿼리 */
