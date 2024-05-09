@@ -174,6 +174,8 @@ footer {
   --font-sub-color: rgb(17, 56, 255);
   --button-main-color: rgb(75, 115, 240);
   --button-hover-color: rgb(108, 141, 240);
+  --button-sub-color: lightgray;
+  --button-sub-hover-color: rgb(222, 220, 220);
   --site-main-color: rgb(171, 199, 251);
   --site-sub-color: rgb(152, 186, 249);
   --background-main-color: rgb(247, 250, 255);
