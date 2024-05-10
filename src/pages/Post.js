@@ -13,6 +13,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useComment, useCommentActions } from "../store/useCommentStore";
 import useCommentFetch from "../customFn/useCommentFetch";
+import { Viewer } from "@toast-ui/react-editor";
+import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 
 export function Post({ isFixed, targetComponentRef }) {
   let { id } = useParams();
@@ -33,9 +35,9 @@ export function Post({ isFixed, targetComponentRef }) {
       const docData = await getDocument(); // 비동기 함수에서 데이터 받기
       setData(docData); // 상태 설정
     };
-
-    fetchData(); // 함수 실행
-  }, []);
+  
+    fetchData();
+  }, [id]); 
 
   const getDocument = async () => {
     const docRef = doc(db, "blogging", id); // 문서 참조 생성
@@ -79,14 +81,15 @@ export function Post({ isFixed, targetComponentRef }) {
       </div>
     );
   }
-
   return (
     <div className="container">
       <div className="body">
         <Logo isFixed={isFixed} background={logoVideo} writer={postWriter()} />
         <main className="main" ref={targetComponentRef}>
           <div className="wrapper">
-            <ContentContainer>{data?.contents}</ContentContainer>
+            {data != null &&
+            <Viewer initialValue={data.contents}/>
+            }
             <CommentContainer data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
               <CommentScreenContainer>
                 <CommentTopbar/>

@@ -5,42 +5,40 @@ import { collection, getDocs, query } from "firebase/firestore";
 import styled from "styled-components";
 import image from "../../banner.png";
 import { useNavigate } from "react-router-dom";
+import useFetch from "../../customFn/useFetch";
 
 export function MainPost() {
   const [includeData, setIncludeData] = useState([]);
   const navigate = useNavigate();
+  const { data, loading } = useFetch();
   // async - await로 데이터 fetch 대기
   async function fetchData() {
-    try {
-      const querySnapshot = await getDocs(collection(db, "blogging"));
-      const result = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        date: doc.data().date.toDate(),
-        id: doc.id,
-      }));
-      const newData = await Promise.all(
-        result.splice(0, 3)?.map(async (item) => {
-          const q = query(collection(db, "blogging", item.id, "Comments"));
-          const querySnapshot = await getDocs(q);
-          const comments = querySnapshot.docs.map((doc) => ({
-            ...doc.data(),
-            commentId: doc.id,
-          }));
-          return {
-            ...item,
-            commentSu: comments.length,
-          };
-        })
-      );
-      setIncludeData(newData);
-    } catch (error) {
-      console.error("Error fetching data: ", error);
+    if (!loading && data.length > 0) {
+      try {
+        const newData = await Promise.all(
+          data?.splice(0, 3)?.map(async (item) => {
+            const q = query(collection(db, "blogging", item.id, "Comments"));
+            const querySnapshot = await getDocs(q);
+            const comments = querySnapshot.docs.map((doc) => ({
+              ...doc.data(),
+              commentId: doc.id,
+            }));
+            return {
+              ...item,
+              commentSu: comments.length,
+            };
+          })
+        );
+        setIncludeData(newData);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
     }
   }
   // 최초 마운트 시에 getTest import
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [loading, data]);
 
   return (
     <div

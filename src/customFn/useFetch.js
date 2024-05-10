@@ -8,36 +8,55 @@ function useFetch(category, value) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Ensure category and value are valid to prevent unnecessary queries
+        let fetchData;
+        setLoading(true);
         if (!category || !value) {
-            setLoading(false);
-            return;
-        }
-
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const q = query(collection(db, "blogging"), where(category, "==", value));
-                const querySnapshot = await getDocs(q);
-                const result = querySnapshot.docs.map(doc => ({
-                    ...doc.data(), 
-                    date: doc.data().date.toDate(), // Ensure you handle date conversion correctly
-                    id: doc.id
-                }));
-                setData(result);
-                setError(null);
-            } catch (error) {
-                console.error('Error fetching data: ', error);
-                setError(error);
-            } finally {
-                setLoading(false);
+            fetchData = async () => {
+                try {
+                    const q = query(collection(db, "blogging"));
+                    const querySnapshot = await getDocs(q);
+                    const result = querySnapshot.docs.map(doc => ({
+                        ...doc.data(), 
+                        date: doc.data().date.toDate(), // Ensure you handle date conversion correctly
+                        id: doc.id
+                    }));
+                    setData(result);
+                    setError(null);
+                    return;
+                } catch (error) {
+                    console.error('Error fetching data: ', error);
+                    setError(error);
+                    return;
+                } finally{
+                    setLoading(false);
+                }
             }
-        };
+        }
+        else {
+            fetchData = async () => {
+                try {
+                    const q = query(collection(db, "blogging"), where(category, "==", value));
+                    const querySnapshot = await getDocs(q);
+                    const result = querySnapshot.docs.map(doc => ({
+                        ...doc.data(), 
+                        date: doc.data().date.toDate(), // Ensure you handle date conversion correctly
+                        id: doc.id
+                    }));
+                    setData(result);
+                    setError(null);
+                } catch (error) {
+                    console.error('Error fetching data: ', error);
+                    setError(error);
+                } finally{
+                    setLoading(false);
+                }
+            };
+        }
 
         fetchData();
     }, [category, value]);
 
-    return { data, error, loading };
+    return { data, loading, error };
 }
 
 export default useFetch;
