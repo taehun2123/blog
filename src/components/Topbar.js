@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { useSidebar, useSidebarActions } from "../store/useSidebarStore";
 import { useLogin, useLoginActions, useUserImg, useUserName } from "../store/useIsLoggin";
-import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signOut} from "firebase/auth";
 import { authService } from "../firebase";
 
 
@@ -12,7 +12,7 @@ export function Topbar({ isFixed }) {
   const navigate = useNavigate();
   const isLoggedin = useLogin();
   const userImg = useUserImg();
-  const {setUserData, setUserImg} = useLoginActions();
+  const {setUserData} = useLoginActions();
   function handleSidebar() {
     if (window.innerWidth >= 720) setIsOpened();
   }
@@ -22,11 +22,9 @@ export function Topbar({ isFixed }) {
       const provider = new GoogleAuthProvider();
       signInWithPopup(authService, provider)
       .then((data)=> {
-        setUserData(data.user);
-        setUserImg(data.user.photoURL);
         navigate("/");
         alert("성공적으로 로그인 되었습니다.");
-        console.log(data.user.photoURL) // console로 들어온 데이터 표시
+        console.log(data.user) // console로 들어온 데이터 표시
       })
     } catch (error) {
       console.error(error);
@@ -37,7 +35,9 @@ export function Topbar({ isFixed }) {
     signOut(authService)
     .then(() => {
       alert("성공적으로 로그아웃 되었습니다!");
+      setUserData(null);
       navigate("/");
+      window.location.reload();
     })
   }
   return (

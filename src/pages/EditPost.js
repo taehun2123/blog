@@ -17,10 +17,11 @@ import styled from "styled-components";
 import useFetch from "../customFn/useFetch";
 import { usePost, usePostActions } from "../store/usePostStore";
 
-import {ref, uploadBytes, listAll, getDownloadURL} from "firebase/storage";
-import {storage, db} from "../firebase";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import {storage, db, authService} from "../firebase";
 import { addDoc, collection, getDoc, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { useLogin, useUserData } from "../store/useIsLoggin";
 
 export function EditPost({ isFixed, targetComponentRef }) {
   const {data} = useFetch();
@@ -30,6 +31,17 @@ export function EditPost({ isFixed, targetComponentRef }) {
   const {title, contents, category} = usePost();
   const {setTitle, setContents, setCategoryPrev, setCategoryCurrent} = usePostActions();
   const uniqueCategories = Array.from(new Set(data.map(item => item.category.prev)));
+
+  useEffect(() => {
+    authService.onAuthStateChanged((user) => {
+      if (user && user.uid === "rDy6MZqet8SNAS1K1Hw9YXC63No1") {
+        alert("인증에 성공하였습니다.\n관리자님 오늘도 좋은 하루 되세요.");
+      } else {
+        alert("접근 권한이 없습니다!");
+        navigate("/");
+      }
+    })
+  }, [])
 
   useEffect(() => {
     if (editorRef.current) {

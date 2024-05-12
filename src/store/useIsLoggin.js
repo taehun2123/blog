@@ -21,7 +21,7 @@ const useIsLogginStore = create(set => ({
 }))
 
 export const useLogin = () => useIsLogginStore((state) => state.isLoggedin);
-export const useUserName = () => useIsLogginStore((state) => state.userName);
+export const useUserData = () => useIsLogginStore((state) => state.userData);
 export const useUserImg = () => useIsLogginStore((state) => state.userImg);
 
 export const useLoginActions = () => useIsLogginStore((state) => state.actions);

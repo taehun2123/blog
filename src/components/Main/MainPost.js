@@ -66,8 +66,8 @@ export function MainPost() {
         <article class="post">
           <ul class="post-list">
             {includeData &&
-              includeData.map((item) => (
-                <PostCard onClick={() => navigate(`/post/${item.id}`)}>
+              includeData.map((item, key) => (
+                <PostCard key={key} onClick={() => navigate(`/post/${item.id}`)}>
                   <PostImage />
                   <PostContent>
                     <PostCategory>
