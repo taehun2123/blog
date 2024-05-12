@@ -5,6 +5,8 @@ import AOS from 'aos';
 import 'aos/dist/aos.css'; // AOS CSS styles
 import 'animate.css/animate.min.css'; // animate.css를 import
 import { useSidebarActions } from './store/useSidebarStore';
+import { authService } from './firebase'
+import { useLoginActions } from './store/useIsLoggin';
 
 function App() {
   useEffect(() => {
@@ -14,6 +16,17 @@ function App() {
   const [isFixed, setIsFixed] = useState(false); //상단바 고정 상태관리
   const targetComponentRef = useRef(null); // 특정 컴포넌트 DOM 타겟
   const {setClosed} = useSidebarActions();
+  const {setIsLoggedIn} = useLoginActions();
+
+  useEffect(() => {
+    authService.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(true)
+      } else {
+        setIsLoggedIn(false)
+      }
+    })
+  }, [])
 
   //상단바 고정을 위한 스크롤 이벤트 리스너
   useEffect(() => {

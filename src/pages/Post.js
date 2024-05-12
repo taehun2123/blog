@@ -198,12 +198,6 @@ const MetaItem = styled.span`
   }
 `;
 
-const ContentContainer = styled.div`
-  width: 100%;
-  min-height: 50vh;
-  box-sizing: border-box;
-`;
-
 const CommentContainer = styled.div`
   width: 100%;
   border-radius: 8em;
@@ -212,6 +206,7 @@ const CommentContainer = styled.div`
   min-height: 120vh;
   padding: 2em;
   box-sizing: border-box;
+  margin-top: 20vh;
 `;
 
 const CommentScreenContainer = styled.div`

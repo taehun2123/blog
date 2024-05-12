@@ -1,18 +1,50 @@
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { useSidebar, useSidebarActions } from "../store/useSidebarStore";
+import { useLogin, useLoginActions, useUserImg, useUserName } from "../store/useIsLoggin";
+import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { authService } from "../firebase";
+
 
 export function Topbar({ isFixed }) {
   const isOpened = useSidebar();
-  const {setIsOpened} = useSidebarActions();
+  const { setIsOpened } = useSidebarActions();
   const navigate = useNavigate();
-  function handleSidebar(){
-    if(window.innerWidth >= 720)
-      setIsOpened();
+  const isLoggedin = useLogin();
+  const userImg = useUserImg();
+  const {setUserData, setUserImg} = useLoginActions();
+  function handleSidebar() {
+    if (window.innerWidth >= 720) setIsOpened();
+  }
+  
+  async function handleGoogleSignIn(){
+    try {
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(authService, provider)
+      .then((data)=> {
+        setUserData(data.user);
+        setUserImg(data.user.photoURL);
+        navigate("/");
+        alert("성공적으로 로그인 되었습니다.");
+        console.log(data.user.photoURL) // console로 들어온 데이터 표시
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function handleSignOut(){
+    signOut(authService)
+    .then(() => {
+      alert("성공적으로 로그아웃 되었습니다!");
+      navigate("/");
+    })
   }
   return (
     <Wrapper>
-      <nav className={`nav ${isFixed ? "fixed" :''} ${isOpened ? "opened" : ''}`}>
+      <nav
+        className={`nav ${isFixed ? "fixed" : ""} ${isOpened ? "opened" : ""}`}
+      >
         <h2
           className="nav-logo"
           onClick={() => {
@@ -23,7 +55,9 @@ export function Topbar({ isFixed }) {
             });
           }}
         >
-          <div class="animate__animated animate__swing animate__infinite">/&gt;</div>
+          <div class="animate__animated animate__swing animate__infinite">
+            /&gt;
+          </div>
           <span>EVH WORLD</span>
         </h2>
         <Box>
@@ -63,13 +97,34 @@ export function Topbar({ isFixed }) {
               <path d="M224 202.7A53.3 53.3 0 1 0 277.4 256 53.4 53.4 0 0 0 224 202.7zm124.7-41a54 54 0 0 0 -30.4-30.4c-21-8.3-71-6.4-94.3-6.4s-73.3-1.9-94.3 6.4a54 54 0 0 0 -30.4 30.4c-8.3 21-6.4 71.1-6.4 94.3S91 329.3 99.3 350.3a54 54 0 0 0 30.4 30.4c21 8.3 71 6.4 94.3 6.4s73.2 1.9 94.3-6.4a54 54 0 0 0 30.4-30.4c8.4-21 6.4-71.1 6.4-94.3S357.1 182.7 348.8 161.7zM224 338a82 82 0 1 1 82-82A81.9 81.9 0 0 1 224 338zm85.4-148.3a19.1 19.1 0 1 1 19.1-19.1A19.1 19.1 0 0 1 309.4 189.7zM400 32H48A48 48 0 0 0 0 80V432a48 48 0 0 0 48 48H400a48 48 0 0 0 48-48V80A48 48 0 0 0 400 32zM382.9 322c-1.3 25.6-7.1 48.3-25.9 67s-41.4 24.6-67 25.9c-26.4 1.5-105.6 1.5-132 0-25.6-1.3-48.3-7.2-67-25.9s-24.6-41.4-25.9-67c-1.5-26.4-1.5-105.6 0-132 1.3-25.6 7.1-48.3 25.9-67s41.5-24.6 67-25.8c26.4-1.5 105.6-1.5 132 0 25.6 1.3 48.3 7.2 67 25.9s24.6 41.4 25.9 67.1C384.4 216.4 384.4 295.6 382.9 322z"></path>
             </svg>
           </Item>
-          <Item onClick={handleSidebar}>
-            <svg               
-            width="30"
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 512 512">
+        </Box>
+        <Box>
+        <Item onClick={handleSidebar}>
+            <svg
+              width="30"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+            >
               <path d="M149.3 216v80c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24v-80c0-13.3 10.7-24 24-24h101.3c13.3 0 24 10.7 24 24zM0 376v80c0 13.3 10.7 24 24 24h101.3c13.3 0 24-10.7 24-24v-80c0-13.3-10.7-24-24-24H24c-13.3 0-24 10.7-24 24zM125.3 32H24C10.7 32 0 42.7 0 56v80c0 13.3 10.7 24 24 24h101.3c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24zm80 448H488c13.3 0 24-10.7 24-24v-80c0-13.3-10.7-24-24-24H205.3c-13.3 0-24 10.7-24 24v80c0 13.3 10.7 24 24 24zm-24-424v80c0 13.3 10.7 24 24 24H488c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24H205.3c-13.3 0-24 10.7-24 24zm24 264H488c13.3 0 24-10.7 24-24v-80c0-13.3-10.7-24-24-24H205.3c-13.3 0-24 10.7-24 24v80c0 13.3 10.7 24 24 24z" />
             </svg>
+          </Item>
+          {isLoggedin &&
+          <Item>
+            <Icon width="30" src={userImg} alt="유저 이미지"></Icon>
+          </Item>
+          }
+          <Item onClick={()=>navigate(`${isLoggedin ? handleSignOut() : handleGoogleSignIn()}`)}>
+            {isLoggedin ?
+            <svg width="30"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M497 273L329 441c-15 15-41 4.5-41-17v-96H152c-13.3 0-24-10.7-24-24v-96c0-13.3 10.7-24 24-24h136V88c0-21.4 25.9-32 41-17l168 168c9.3 9.4 9.3 24.6 0 34zM192 436v-40c0-6.6-5.4-12-12-12H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h84c6.6 0 12-5.4 12-12V76c0-6.6-5.4-12-12-12H96c-53 0-96 43-96 96v192c0 53 43 96 96 96h84c6.6 0 12-5.4 12-12z"/></svg>
+            :
+            <svg
+              width="30"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+            >
+              <path d="M416 448h-84c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h84c17.7 0 32-14.3 32-32V160c0-17.7-14.3-32-32-32h-84c-6.6 0-12-5.4-12-12V76c0-6.6 5.4-12 12-12h84c53 0 96 43 96 96v192c0 53-43 96-96 96zm-47-201L201 79c-15-15-41-4.5-41 17v96H24c-13.3 0-24 10.7-24 24v96c0 13.3 10.7 24 24 24h136v96c0 21.5 26 32 41 17l168-168c9.3-9.4 9.3-24.6 0-34z" />
+            </svg>
+            }
           </Item>
         </Box>
       </nav>
@@ -92,7 +147,7 @@ const Box = styled.ul`
   justify-content: center;
   align-items: center;
   list-style-type: none;
-  gap: 1.2rem;
+  gap: 1.3rem;
 `;
 
 const Item = styled.li`
@@ -103,3 +158,8 @@ const Item = styled.li`
   gap: 0.5em;
   align-items: center;
 `;
+
+const Icon = styled.img`
+  border-radius: 50%;
+  border: 2px solid lightgray;
+`

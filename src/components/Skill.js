@@ -8,15 +8,14 @@ import bearImg from "./Items/bear.jpg";
 import mysqlImg from "./Items/mysql.png";
 import tanstackImg from "./Items/image.jpeg";
 import tsImg from "./Items/ts.webp";
-import fireImg from "./Items/fire.webp"
-import javaImg from "./Items/java.png"
-import mongImg from "./Items/mong.png"
-
-
+import fireImg from "./Items/fire.webp";
+import javaImg from "./Items/java.png";
+import mongImg from "./Items/mong.png";
+import githubImg from "./Items/git-hub.png";
+import gitImg from "./Items/git.png";
+import adspImg from "./Items/adsp.png";
+import istqbImg from "./Items/istqb.png";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion"
-
 
 export function Skill() {
   const navigate = useNavigate();
@@ -36,12 +35,23 @@ export function Skill() {
     { img: javaImg, name: "Java" },
     { img: mongImg, name: "MongoDB" },
   ];
-
-  
+  const version = [
+    { img: githubImg, name: "Github" },
+    { img: gitImg, name: "Git" },
+  ];
+  const certificate= [
+    {img: adspImg, name: "ADsP"},
+    {img: istqbImg, name: "ISTQB"},
+  ]
 
   return (
     <div
-      style={{ paddingBottom: "5em", borderTop: '1px solid lightgray', borderBottom: '1px solid lightgray', paddingTop: '5em'}}
+      style={{
+        paddingBottom: "5em",
+        borderTop: "1px solid lightgray",
+        borderBottom: "1px solid lightgray",
+        paddingTop: "5em",
+      }}
       data-aos="fade-up"
       aos-offset="600"
       aos-easing="ease-in-sine"
@@ -56,11 +66,11 @@ export function Skill() {
             <h3 className="effectFont">FrontEnd</h3>
           </CardTitle>
           <SkillImageBox>
-            {frontArr.map((item, index) => 
-            <SKillBall className={`b${index + 1}`}>
-              <SkillImage src={item.img} alt="Skill Image"/>
-            </SKillBall>
-            )}
+            {frontArr.map((item, index) => (
+              <SKillBall className={`b${index + 1}`}>
+                <SkillImage src={item.img} alt="Skill Image" />
+              </SKillBall>
+            ))}
           </SkillImageBox>
         </SkillCard>
         <SkillCard onClick={() => navigate(`/board/list/BackEnd`)}>
@@ -68,25 +78,39 @@ export function Skill() {
             <h3 className="effectFont">BackEnd</h3>
           </CardTitle>
           <SkillImageBox>
-            {backArr.map((item, index) => 
-            <SKillBall className={`b${index + 1}`}>
-              <SkillImage src={item.img} alt="Skill Image"/>
-            </SKillBall>
-            )}
+            {backArr.map((item, index) => (
+              <SKillBall className={`b${index + 1}`}>
+                <SkillImage src={item.img} alt="Skill Image" />
+              </SKillBall>
+            ))}
           </SkillImageBox>
         </SkillCard>
-        <SkillCard onClick={() => navigate(`/board/list/Version`)}>
-          <CardTitle>
-            <h3 className="effectFont">Version Control</h3>
-          </CardTitle>
-          <SkillImageBox>
-            {backArr.map((item, index) => 
-            <SKillBall className={`b${index + 1}`}>
-              <SkillImage src={item.img} alt="Skill Image"/>
-            </SKillBall>
-            )}
-          </SkillImageBox>
-        </SkillCard>
+        <SkillCardBox>
+          <SkillCardHalf onClick={() => navigate(`/board/list/Version-Tool`)}>
+            <CardTitle>
+              <h3 className="effectFont">Version Control</h3>
+            </CardTitle>
+            <SkillImageBoxHalf>
+              {version.map((item, index) => (
+                <SKillBall className={`b${index + 1}`}>
+                  <SkillImage src={item.img} alt="Skill Image" />
+                </SKillBall>
+              ))}
+            </SkillImageBoxHalf>
+          </SkillCardHalf>
+          <SkillCardHalf style={{cursor: 'default'}}>
+            <CardTitle>
+              <h3 className="effectFont">Certificate</h3>
+            </CardTitle>
+            <SkillImageBoxHalf>
+              {certificate.map((item, index) => (
+                <SKillBall className={`b${index + 1}`}>
+                  <SkillImage src={item.img} alt="Skill Image" />
+                </SKillBall>
+              ))}
+            </SkillImageBoxHalf>
+          </SkillCardHalf>
+        </SkillCardBox>
       </SkillContainer>
     </div>
   );
@@ -102,7 +126,7 @@ const SkillContainer = styled.div`
   min-height: 50vh;
   gap: 0.5em;
   margin-bottom: 1em;
-  flex-wrap;
+  flex-wrap: wrap;
 `;
 
 const SkillCard = styled.div`
@@ -124,6 +148,37 @@ const SkillCard = styled.div`
   }
 `;
 
+const SkillCardBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 350px;
+  min-height: 50vh;
+  box-sizing: border-box;
+  gap: 0.5em;
+`;
+
+const SkillCardHalf = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 350px;
+  min-height: 25vh;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 1em;
+  transition: transform 0.5s;
+  overflow: hidden;
+  &:hover {
+    box-shadow: 3px 5px 6px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+    cursor: pointer;
+    z-index: 990;
+  }
+`;
+
 const CardTitle = styled.div`
   width: 90%;
   height: auto;
@@ -142,14 +197,22 @@ const SkillImageBox = styled.div`
   position: relative;
 `;
 
+const SkillImageBoxHalf = styled.div`
+  width: 100%;
+  height: 25vh;
+  overflow: hidden;
+  position: relative;
+`;
+
 const SKillBall = styled.div`
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  overflow: hidden; 
-  position:absolute;
-  box-shadow: inset 0 20px 30px rgba(255, 255, 255, 0.4), inset 1em 1em 1em rgba(255, 255, 255, 0.6), 0 1em 2em rgba(0, 0, 0, 0.25);
-`
+  overflow: hidden;
+  position: absolute;
+  box-shadow: inset 0 20px 30px rgba(255, 255, 255, 0.4),
+    inset 1em 1em 1em rgba(255, 255, 255, 0.6), 0 1em 2em rgba(0, 0, 0, 0.25);
+`;
 const SkillImage = styled.img`
   width: 100%;
   height: 100%;
