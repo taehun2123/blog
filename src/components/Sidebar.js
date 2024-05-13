@@ -9,36 +9,6 @@ export function Sidebar() {
   const isOpened = useSidebar();
   const navigate = useNavigate();
 
-  const skills = [
-    {
-      icon: <i class="fab fa-html5"></i>,
-      title: "HTML",
-    },
-    {
-      icon: <i class="fab fa-css3-alt" />,
-      title: "CSS",
-    },
-    {
-      icon: <i class="fab fa-js-square"></i>,
-      title: "Java-Script",
-    },
-    {
-      icon: <i class="fab fa-react"></i>,
-      title: "React",
-    },
-    {
-      icon: <i class="fab fa-node"></i>,
-      title: "ExpressJS",
-    },
-    {
-      icon: <i class="fab fa-java"></i>,
-      title: "Java",
-    },
-    {
-      icon: <i class="fab fa-node-js"></i>,
-      title: "Java-Spring",
-    },
-  ];
   const { data: frontData } = useFetch("category.prev", "FrontEnd");
   const { data: backData } = useFetch("category.prev", "BackEnd");
   const { data: verData } = useFetch("category.prev", "Version");

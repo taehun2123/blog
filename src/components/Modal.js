@@ -51,12 +51,12 @@ const Button = styled.button`
 `;
 
 const modalVariants = {
-  hidden: { opacity: 0, y: "-100vh" },
+  hidden: { opacity: 0, y: "100vh" },
   visible: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: "100vh" }
 };
 
-const Modal = ({ isOpen, onClose, clickPosition }) => {
+const Modal = ({ type, isOpen, onClose }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -64,11 +64,11 @@ const Modal = ({ isOpen, onClose, clickPosition }) => {
           initial="hidden"
           animate="visible"
           exit="exit"
-          variants={modalVariants}
-          transition={{ duration: 0.5 }}
           onClick={onClose}
         >
           <ModalContainer
+            variants={modalVariants}
+            transition={{ duration: 0.5 }}
             onClick={(e) => e.stopPropagation()}
           >
             <ModalInput type="password" placeholder='비밀번호를 입력하세요'/>

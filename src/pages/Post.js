@@ -7,6 +7,7 @@ import {
   getDoc,
   collection,
   setDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
@@ -20,23 +21,47 @@ import { useAdmin } from "../store/useAdmin";
 import Modal from "../components/Modal";
 
 export function Post({ isFixed, targetComponentRef }) {
+  // -------------- 상태 관리 선언 변수 & Zustand -------------
   let { id } = useParams();
-  const [data, setData] = useState(null);
-  const { author, comment, passwd } = useComment();
-  const { setAuthor, setComment, setPasswd, resetCommentInput } =
-    useCommentActions();
-  const { data: comments } = useCommentFetch(id);
   const isLoggedin = useLogin();
   const userData = useUserData();
   const isAdmin = useAdmin();
+  const [data, setData] = useState(null);
+  const { author, comment, passwd } = useComment();
+  const { setAuthor, setComment, setPasswd, resetCommentInput } = useCommentActions();
+  const { data: comments } = useCommentFetch(id);
   const [isOpen, setIsOpen] = useState(false);
-  // const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
+  const [type, setType] = useState("");
 
-  const toggleModal = () => {
+  /** 
+   * Modal Toggle handler
+   * 타입 : "edit", "delete"
+   * isAdmin인 경우는 Modal을 무시한다.
+   * 작성자가 본인인 경우는 Modal을 무시한다.
+   * 작성자가 본인인 것을 확인하는 경로는 다음과 같다.,
+   * Comment(여기서는 item 변수)의 passwd가 userData의 uid와 같은 경우
+   * 이외에는 모달을 띄워 비밀번호를 확인한다.
+   */
+  const toggleModal = (item, type) => {
+    if(isAdmin && type === "edit"){
+      handleEditDoc(item);
+      return;
+    }
+    if(isAdmin && type === "delete"){
+      handleDeleteDoc(item);
+      return;
+    }
+    if(item.passwd === userData.uid && type === "edit"){
+      handleEditDoc(item);
+      return;
+    }
+    if(item.passwd === userData.uid && type === "delete"){
+      handleDeleteDoc(item);
+      return;
+    }
+    setType(type);
     setIsOpen(!isOpen);
   };
-
-
 
   useEffect(() => {
     window.scrollTo({
@@ -44,6 +69,7 @@ export function Post({ isFixed, targetComponentRef }) {
     });
   }, []);
 
+  //로그인이 된 경우(구글 로그인) -> Author과 Passwd를 userData에서 각각 displayName(이름) 과 uid로 지정한다.
   useEffect(() => {
     if(isLoggedin){
       setAuthor(userData.displayName);
@@ -51,6 +77,7 @@ export function Post({ isFixed, targetComponentRef }) {
     }
   }, [isLoggedin, setAuthor, setPasswd, userData.displayName, userData.uid])
 
+  // id가 불러지면 id에 해당하는 blogging 컬렉션의 문서를 받아옴
   useEffect(() => {
     const fetchData = async () => {
       const docData = await getDocument(); // 비동기 함수에서 데이터 받기
@@ -103,8 +130,19 @@ export function Post({ isFixed, targetComponentRef }) {
     );
   }
 
-  function handleDeleteDoc(item){
+  async function handleDeleteDoc(item){
+    const confirm = window.confirm('정말로 삭제하겠습니까?');
 
+    if (confirm) {
+      const desertRef = doc(db, 'blogging', id, 'Comments', item.commentId);
+      try {
+        await deleteDoc(desertRef);
+        alert("삭제를 성공적으로 완료하였습니다!");
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 
   function handleEditDoc(item){
@@ -181,14 +219,14 @@ export function Post({ isFixed, targetComponentRef }) {
                         </CommentPersonalComment>
                         <CommentPersonalMeta>
                           <IconBox>
-                            <span style={{cursor:'pointer'}} onClick={toggleModal}>
+                            <span style={{cursor:'pointer'}} onClick={()=>toggleModal(item, "edit")}>
                               수정
                             </span>
-                            <span style={{cursor:'pointer'}} onClick={toggleModal}>
+                            <span style={{cursor:'pointer'}} onClick={()=>toggleModal(item, "delete")}>
                               삭제
                             </span>
                           </IconBox>
-                          <Modal isOpen={isOpen} onClose={toggleModal} />
+                          <Modal type={type} isOpen={isOpen} onClose={toggleModal} />
                           <div>
                             {new Date(item.createdAt.toDate()).toLocaleString()}
                           </div>
