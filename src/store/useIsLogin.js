@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-const useIsLogginStore = create(set => ({
+const useIsLoginStore = create(set => ({
   isLoggedin: false,
   userData: "",
   userImg: "",
@@ -20,8 +20,8 @@ const useIsLogginStore = create(set => ({
 }
 }))
 
-export const useLogin = () => useIsLogginStore((state) => state.isLoggedin);
-export const useUserData = () => useIsLogginStore((state) => state.userData);
-export const useUserImg = () => useIsLogginStore((state) => state.userImg);
+export const useLogin = () => useIsLoginStore((state) => state.isLoggedin);
+export const useUserData = () => useIsLoginStore((state) => state.userData);
+export const useUserImg = () => useIsLoginStore((state) => state.userImg);
 
-export const useLoginActions = () => useIsLogginStore((state) => state.actions);
+export const useLoginActions = () => useIsLoginStore((state) => state.actions);

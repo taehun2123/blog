@@ -15,6 +15,8 @@ import githubImg from "./Items/git-hub.png";
 import gitImg from "./Items/git.png";
 import adspImg from "./Items/adsp.png";
 import istqbImg from "./Items/istqb.png";
+import comImg from "./Items/com.png";
+import linuxImg from "./Items/linux.png";
 import { useNavigate } from "react-router-dom";
 
 export function Skill() {
@@ -42,6 +44,8 @@ export function Skill() {
   const certificate= [
     {img: adspImg, name: "ADsP"},
     {img: istqbImg, name: "ISTQB"},
+    {img: comImg, name: "컴활 2급"},
+    {img: linuxImg, name: "Linux Master 2급"},
   ]
 
   return (
@@ -67,7 +71,7 @@ export function Skill() {
           </CardTitle>
           <SkillImageBox>
             {frontArr.map((item, index) => (
-              <SKillBall className={`b${index + 1}`}>
+              <SKillBall key={index} className={`b${index + 1}`}>
                 <SkillImage src={item.img} alt="Skill Image" />
               </SKillBall>
             ))}
@@ -79,7 +83,7 @@ export function Skill() {
           </CardTitle>
           <SkillImageBox>
             {backArr.map((item, index) => (
-              <SKillBall className={`b${index + 1}`}>
+              <SKillBall key={index} className={`b${index + 1}`}>
                 <SkillImage src={item.img} alt="Skill Image" />
               </SKillBall>
             ))}
@@ -92,7 +96,7 @@ export function Skill() {
             </CardTitle>
             <SkillImageBoxHalf>
               {version.map((item, index) => (
-                <SKillBall className={`b${index + 1}`}>
+                <SKillBall key={index} className={`b${index + 1}`}>
                   <SkillImage src={item.img} alt="Skill Image" />
                 </SKillBall>
               ))}
@@ -104,7 +108,7 @@ export function Skill() {
             </CardTitle>
             <SkillImageBoxHalf>
               {certificate.map((item, index) => (
-                <SKillBall className={`b${index + 1}`}>
+                <SKillBall key={index} className={`b${index + 1}`}>
                   <SkillImage src={item.img} alt="Skill Image" />
                 </SKillBall>
               ))}

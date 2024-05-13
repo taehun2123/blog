@@ -21,7 +21,6 @@ import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import {storage, db, authService} from "../firebase";
 import { addDoc, collection, getDoc, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { useLogin, useUserData } from "../store/useIsLoggin";
 
 export function EditPost({ isFixed, targetComponentRef }) {
   const {data} = useFetch();

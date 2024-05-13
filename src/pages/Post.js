@@ -15,6 +15,9 @@ import { useComment, useCommentActions } from "../store/useCommentStore";
 import useCommentFetch from "../customFn/useCommentFetch";
 import { Viewer } from "@toast-ui/react-editor";
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
+import { useLogin, useUserData } from "../store/useIsLogin";
+import { useAdmin } from "../store/useAdmin";
+import Modal from "../components/Modal";
 
 export function Post({ isFixed, targetComponentRef }) {
   let { id } = useParams();
@@ -23,12 +26,30 @@ export function Post({ isFixed, targetComponentRef }) {
   const { setAuthor, setComment, setPasswd, resetCommentInput } =
     useCommentActions();
   const { data: comments } = useCommentFetch(id);
+  const isLoggedin = useLogin();
+  const userData = useUserData();
+  const isAdmin = useAdmin();
+  const [isOpen, setIsOpen] = useState(false);
+  // const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
+
+
 
   useEffect(() => {
     window.scrollTo({
       top: 0,
     });
   }, []);
+
+  useEffect(() => {
+    if(isLoggedin){
+      setAuthor(userData.displayName);
+      setPasswd(userData.uid);
+    }
+  }, [isLoggedin, setAuthor, setPasswd, userData.displayName, userData.uid])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,6 +102,14 @@ export function Post({ isFixed, targetComponentRef }) {
       </div>
     );
   }
+
+  function handleDeleteDoc(item){
+
+  }
+
+  function handleEditDoc(item){
+
+  }
   return (
     <div className="container">
       <div className="body">
@@ -102,21 +131,30 @@ export function Post({ isFixed, targetComponentRef }) {
                 </CommentPlaceHolderBox>
                 <CommentWriterBox>
                   <CommentAuthorBox>
-                    <CommentAuthorInputBox>
-                      <CommentAuthorInput
-                        placeholder="이름"
-                        value={author}
-                        onChange={(e) => setAuthor(e.target.value)}
-                      />
-                    </CommentAuthorInputBox>
-                    <CommentAuthorInputBox>
-                      <CommentAuthorInput
-                        type="password"
-                        value={passwd}
-                        onChange={(e) => setPasswd(e.target.value)}
-                        placeholder="비밀번호"
-                      />
-                    </CommentAuthorInputBox>
+                    {isLoggedin ?
+                  <FlexBox>
+                    <CommentWriterImg width={30} src={userData.photoURL} alt="프로필"/>{userData.displayName}
+                  </FlexBox>
+                  :
+                  <>
+                  <CommentAuthorInputBox>
+                  <CommentAuthorInput
+                    placeholder="이름"
+                    value={author}
+                    onChange={(e) => setAuthor(e.target.value)}
+                  />
+                </CommentAuthorInputBox>
+                <CommentAuthorInputBox>
+                  <CommentAuthorInput
+                    type="password"
+                    value={passwd}
+                    onChange={(e) => setPasswd(e.target.value)}
+                    placeholder="비밀번호"
+                  />
+                </CommentAuthorInputBox>
+                </>
+                  }
+
                   </CommentAuthorBox>
                   <CommentBox>
                     <CommentTextarea
@@ -142,7 +180,18 @@ export function Post({ isFixed, targetComponentRef }) {
                           {item.comment}
                         </CommentPersonalComment>
                         <CommentPersonalMeta>
-                          {new Date(item.createdAt.toDate()).toLocaleString()}
+                          <IconBox>
+                            <span style={{cursor:'pointer'}} onClick={toggleModal}>
+                              수정
+                            </span>
+                            <span style={{cursor:'pointer'}} onClick={toggleModal}>
+                              삭제
+                            </span>
+                          </IconBox>
+                          <Modal isOpen={isOpen} onClose={toggleModal} />
+                          <div>
+                            {new Date(item.createdAt.toDate()).toLocaleString()}
+                          </div>
                         </CommentPersonalMeta>
                       </CommentPersonalBox>
                     ))
@@ -254,6 +303,11 @@ const CommentWriterBox = styled.div`
   box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
 `;
 
+const CommentWriterImg = styled.img`
+  border-radius: 50%;
+  border: 2px solid lightgray;
+`
+
 const CommentOtherBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -304,7 +358,7 @@ const CommentPersonalComment = styled.div`
 const CommentPersonalMeta = styled.div`
 width: 100%;
 display: flex;
-justify-content: flex-end;
+justify-content: space-between;
 align-items: center;
 min-height: 1vh;
 padding: 1em;
@@ -392,3 +446,19 @@ const CommentSubmit = styled.div`
   color: var(--font-main-color);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 `;
+
+const FlexBox = styled.div`
+display: flex;
+flex-direction: row;
+align-items: center;
+gap: 0.3em;
+font-weight: 650;
+`
+const IconBox = styled.div`
+display: flex;
+flex-direction: row;
+align-items: center;
+gap: 1em;
+font-weight: 650;
+font-size: 1em;
+`

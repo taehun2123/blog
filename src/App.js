@@ -6,7 +6,8 @@ import 'aos/dist/aos.css'; // AOS CSS styles
 import 'animate.css/animate.min.css'; // animate.css를 import
 import { useSidebarActions } from './store/useSidebarStore';
 import { authService } from './firebase'
-import { useLoginActions, useUserData } from './store/useIsLoggin';
+import { useLoginActions, useUserData } from './store/useIsLogin';
+import { useAdminActions } from './store/useAdmin';
 
 function App() {
   useEffect(() => {
@@ -17,6 +18,7 @@ function App() {
   const targetComponentRef = useRef(null); // 특정 컴포넌트 DOM 타겟
   const {setClosed} = useSidebarActions();
   const {setIsLoggedIn, setUserData, setUserImg} = useLoginActions();
+  const {setIsAdmin} = useAdminActions();
   
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
@@ -24,6 +26,9 @@ function App() {
         setUserData(user);
         setUserImg(user.photoURL)
         setIsLoggedIn(true)
+        if(user.uid === "rDy6MZqet8SNAS1K1Hw9YXC63No1"){
+          setIsAdmin(true);
+        }
       } else {
         setIsLoggedIn(false)
       }

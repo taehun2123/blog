@@ -88,8 +88,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   flex-wrap: wrap;
+  gap: 1em;
 `;
 
 const LeftSideBox = styled.div`
