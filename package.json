@@ -8,7 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@toast-ui/editor-plugin-code-syntax-highlight": "^3.1.0",
     "@toast-ui/editor-plugin-color-syntax": "^3.1.0",
-    "@toast-ui/react-editor": "^3.2.3",
+    "@uiw/react-md-editor": "^4.0.4",
     "animate.css": "^4.1.1",
     "aos": "^2.3.4",
     "firebase": "^10.11.0",
@@ -29,7 +29,7 @@
     "zustand": "^4.5.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "GENERATE_SOURCEMAP=false react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

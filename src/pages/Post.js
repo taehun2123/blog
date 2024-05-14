@@ -14,11 +14,10 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useComment, useCommentActions } from "../store/useCommentStore";
 import useCommentFetch from "../customFn/useCommentFetch";
-import { Viewer } from "@toast-ui/react-editor";
-import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { useLogin, useUserData } from "../store/useIsLogin";
 import { useAdmin } from "../store/useAdmin";
 import Modal from "../components/Modal";
+import MDEditor from "@uiw/react-md-editor";
 
 export function Post({ isFixed, targetComponentRef }) {
   // -------------- 상태 관리 선언 변수 & Zustand -------------
@@ -155,7 +154,12 @@ export function Post({ isFixed, targetComponentRef }) {
         <main className="main" ref={targetComponentRef}>
           <div className="wrapper">
             {data != null &&
-            <Viewer initialValue={data.contents}/>
+            <div data-color-mode="light" style={{padding:15}}>
+              <MDEditor.Markdown
+              style={{ padding: 10 }}
+              source={data.contents}
+              />
+            </div>
             }
             <CommentContainer data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
               <CommentScreenContainer>
