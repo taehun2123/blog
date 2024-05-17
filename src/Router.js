@@ -30,6 +30,10 @@ function Router({ isFixed, targetComponentRef }) {
                     path="/edit"
                     element={<EditPost isFixed={isFixed} targetComponentRef={targetComponentRef}/>}
                 />
+                <Route
+                    path="/edit/:id"
+                    element={<EditPost isFixed={isFixed} targetComponentRef={targetComponentRef}/>}
+                />
             </Routes>
         </Suspense>
     </BrowserRouter>

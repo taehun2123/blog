@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Backdrop = styled(motion.div)`
   position: fixed;
@@ -29,12 +29,12 @@ const ModalContainer = styled(motion.div)`
 `;
 
 const ModalInput = styled.input`
-outline: none;
-border-radius: 0.2em;
-border: 1px solid lightgray;
-padding: 1rem;
-font-size: 1.2em;
-`
+  outline: none;
+  border-radius: 0.2em;
+  border: 1px solid lightgray;
+  padding: 1rem;
+  font-size: 1.2em;
+`;
 const Button = styled.button`
   padding: 1em 2em;
   background: var(--button-main-color);
@@ -53,10 +53,31 @@ const Button = styled.button`
 const modalVariants = {
   hidden: { opacity: 0, y: "100vh" },
   visible: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: "100vh" }
+  exit: { opacity: 0, y: "100vh" },
 };
 
-const Modal = ({ type, isOpen, onClose }) => {
+const Modal = ({
+  item,
+  type,
+  isOpen,
+  onClose,
+  handleEditDoc,
+  handleDeleteDoc,
+}) => {
+  const [passwd, setPasswd] = useState("");
+
+  function handlePassModal(item, type) {
+    if (item.passwd === passwd && type === "edit") {
+      handleEditDoc(item);
+      return;
+    }
+    if (item.passwd === passwd && type === "delete") {
+      handleDeleteDoc(item);
+      return;
+    }
+    alert("비밀번호가 틀립니다.");
+    setPasswd("");
+  }
   return (
     <AnimatePresence>
       {isOpen && (
@@ -71,8 +92,25 @@ const Modal = ({ type, isOpen, onClose }) => {
             transition={{ duration: 0.5 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <ModalInput type="password" placeholder='비밀번호를 입력하세요'/>
-            <Button>확인</Button>
+            <ModalInput
+              type="password"
+              placeholder="비밀번호를 입력하세요"
+              value={passwd}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handlePassModal(item, type);
+                  return;
+                }
+              }}
+              onChange={(e) => {
+                setPasswd(e.target.value)
+              }}
+            />
+            <Button
+              onClick={() => handlePassModal(item, type)}
+            >
+              확인
+            </Button>
           </ModalContainer>
         </Backdrop>
       )}

@@ -1,14 +1,8 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Logo } from "../components/Logo";
 import { Sidebar } from "../components/Sidebar";
 import logoVideo from "../components/Items/logo_background.mp4";
-import {
-  doc,
-  getDoc,
-  collection,
-  setDoc,
-  deleteDoc,
-} from "firebase/firestore";
+import { doc, getDoc, collection, setDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -27,12 +21,15 @@ export function Post({ isFixed, targetComponentRef }) {
   const isAdmin = useAdmin();
   const [data, setData] = useState(null);
   const { author, comment, passwd } = useComment();
-  const { setAuthor, setComment, setPasswd, resetCommentInput } = useCommentActions();
+  const { setAuthor, setComment, setPasswd, resetCommentInput } =
+    useCommentActions();
   const { data: comments } = useCommentFetch(id);
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState("");
+  const [handle, setHandle] = useState();
+  const navigate = useNavigate();
 
-  /** 
+  /**
    * Modal Toggle handler
    * 타입 : "edit", "delete"
    * isAdmin인 경우는 Modal을 무시한다.
@@ -42,23 +39,24 @@ export function Post({ isFixed, targetComponentRef }) {
    * 이외에는 모달을 띄워 비밀번호를 확인한다.
    */
   const toggleModal = (item, type) => {
-    if(isAdmin && type === "edit"){
+    if (isAdmin && type === "edit") {
       handleEditDoc(item);
       return;
     }
-    if(isAdmin && type === "delete"){
+    if (isAdmin && type === "delete") {
       handleDeleteDoc(item);
       return;
     }
-    if(item.passwd === userData.uid && type === "edit"){
+    if (item.passwd === userData.uid && type === "edit") {
       handleEditDoc(item);
       return;
     }
-    if(item.passwd === userData.uid && type === "delete"){
+    if (item.passwd === userData.uid && type === "delete") {
       handleDeleteDoc(item);
       return;
     }
     setType(type);
+    setHandle(item);
     setIsOpen(!isOpen);
   };
 
@@ -70,11 +68,11 @@ export function Post({ isFixed, targetComponentRef }) {
 
   //로그인이 된 경우(구글 로그인) -> Author과 Passwd를 userData에서 각각 displayName(이름) 과 uid로 지정한다.
   useEffect(() => {
-    if(isLoggedin){
+    if (isLoggedin) {
       setAuthor(userData.displayName);
       setPasswd(userData.uid);
     }
-  }, [isLoggedin, setAuthor, setPasswd, userData.displayName, userData.uid])
+  }, [isLoggedin, setAuthor, setPasswd, userData.displayName, userData.uid]);
 
   // id가 불러지면 id에 해당하는 blogging 컬렉션의 문서를 받아옴
   useEffect(() => {
@@ -82,9 +80,9 @@ export function Post({ isFixed, targetComponentRef }) {
       const docData = await getDocument(); // 비동기 함수에서 데이터 받기
       setData(docData); // 상태 설정
     };
-  
+
     fetchData();
-  }, [id]); 
+  }, [id]);
 
   const getDocument = async () => {
     const docRef = doc(db, "blogging", id); // 문서 참조 생성
@@ -125,15 +123,39 @@ export function Post({ isFixed, targetComponentRef }) {
           <MetaItem>DEVH</MetaItem>
           <MetaItem>{new Date(data?.date.toDate()).toLocaleString()}</MetaItem>
         </MetaContainer>
+        {isAdmin && 
+        <AdminContainer>
+          <Button onClick={()=> handleEditPost()}>수정</Button>
+          <Button onClick={()=> handleDeletePost()}>삭제</Button>
+        </AdminContainer>
+        }
       </div>
     );
   }
+  function handleEditPost(){
+    navigate(`/edit/${id}`);
+  }
 
-  async function handleDeleteDoc(item){
-    const confirm = window.confirm('정말로 삭제하겠습니까?');
+  async function handleDeletePost() {
+    const confirm = window.confirm("정말로 삭제하겠습니까?");
 
     if (confirm) {
-      const desertRef = doc(db, 'blogging', id, 'Comments', item.commentId);
+      const desertRef = doc(db, "blogging", id);
+      try {
+        await deleteDoc(desertRef);
+        alert("삭제를 성공적으로 완료하였습니다!");
+        navigate("/");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  async function handleDeleteDoc(item) {
+    const confirm = window.confirm("정말로 삭제하겠습니까?");
+
+    if (confirm) {
+      const desertRef = doc(db, "blogging", id, "Comments", item.commentId);
       try {
         await deleteDoc(desertRef);
         alert("삭제를 성공적으로 완료하였습니다!");
@@ -144,26 +166,29 @@ export function Post({ isFixed, targetComponentRef }) {
     }
   }
 
-  function handleEditDoc(item){
-
-  }
+  function handleEditDoc(item) {}
   return (
     <div className="container">
       <div className="body">
         <Logo isFixed={isFixed} background={logoVideo} writer={postWriter()} />
         <main className="main" ref={targetComponentRef}>
           <div className="wrapper">
-            {data != null &&
-            <div data-color-mode="light" style={{padding:15}}>
-              <MDEditor.Markdown
-              style={{ padding: 10 }}
-              source={data.contents}
-              />
-            </div>
-            }
-            <CommentContainer data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
+            {data != null && (
+              <div data-color-mode="light" style={{ padding: 15 }}>
+                <MDEditor.Markdown
+                  style={{ padding: 10 }}
+                  source={data.contents}
+                />
+              </div>
+            )}
+            <CommentContainer
+              data-aos="fade-up"
+              aos-offset="600"
+              aos-easing="ease-in-sine"
+              aos-duration="1200"
+            >
               <CommentScreenContainer>
-                <CommentTopbar/>
+                <CommentTopbar />
                 <CommentPlaceHolderBox>
                   <i
                     style={{ fontSize: "2rem", color: "cornflowerblue" }}
@@ -173,30 +198,34 @@ export function Post({ isFixed, targetComponentRef }) {
                 </CommentPlaceHolderBox>
                 <CommentWriterBox>
                   <CommentAuthorBox>
-                    {isLoggedin ?
-                  <FlexBox>
-                    <CommentWriterImg width={30} src={userData.photoURL} alt="프로필"/>{userData.displayName}
-                  </FlexBox>
-                  :
-                  <>
-                  <CommentAuthorInputBox>
-                  <CommentAuthorInput
-                    placeholder="이름"
-                    value={author}
-                    onChange={(e) => setAuthor(e.target.value)}
-                  />
-                </CommentAuthorInputBox>
-                <CommentAuthorInputBox>
-                  <CommentAuthorInput
-                    type="password"
-                    value={passwd}
-                    onChange={(e) => setPasswd(e.target.value)}
-                    placeholder="비밀번호"
-                  />
-                </CommentAuthorInputBox>
-                </>
-                  }
-
+                    {isLoggedin ? (
+                      <FlexBox>
+                        <CommentWriterImg
+                          width={30}
+                          src={userData.photoURL}
+                          alt="프로필"
+                        />
+                        {userData.displayName}
+                      </FlexBox>
+                    ) : (
+                      <>
+                        <CommentAuthorInputBox>
+                          <CommentAuthorInput
+                            placeholder="이름"
+                            value={author}
+                            onChange={(e) => setAuthor(e.target.value)}
+                          />
+                        </CommentAuthorInputBox>
+                        <CommentAuthorInputBox>
+                          <CommentAuthorInput
+                            type="password"
+                            value={passwd}
+                            onChange={(e) => setPasswd(e.target.value)}
+                            placeholder="비밀번호"
+                          />
+                        </CommentAuthorInputBox>
+                      </>
+                    )}
                   </CommentAuthorBox>
                   <CommentBox>
                     <CommentTextarea
@@ -223,17 +252,30 @@ export function Post({ isFixed, targetComponentRef }) {
                         </CommentPersonalComment>
                         <CommentPersonalMeta>
                           <IconBox>
-                            <span style={{cursor:'pointer'}} onClick={()=>toggleModal(item, "edit")}>
+                            <span
+                              style={{ cursor: "pointer", whiteSpace: "nowrap" }}
+                              onClick={() => toggleModal(item, "edit")}
+                            >
                               수정
                             </span>
-                            <span style={{cursor:'pointer'}} onClick={()=>toggleModal(item, "delete")}>
+                            <span
+                              style={{ cursor: "pointer", whiteSpace: "nowrap" }}
+                              onClick={() => toggleModal(item, "delete")}
+                            >
                               삭제
                             </span>
                           </IconBox>
-                          <Modal type={type} isOpen={isOpen} onClose={toggleModal} />
                           <div>
                             {new Date(item.createdAt.toDate()).toLocaleString()}
                           </div>
+                          <Modal
+                            item={handle}
+                            type={type}
+                            isOpen={isOpen}
+                            onClose={toggleModal}
+                            handleEditDoc={handleEditDoc}
+                            handleDeleteDoc={handleDeleteDoc}
+                          />
                         </CommentPersonalMeta>
                       </CommentPersonalBox>
                     ))
@@ -281,11 +323,35 @@ const MetaContainer = styled.div`
   align-items: center;
 `;
 
+const AdminContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.3em;
+  gap: 0.2em;
+`;
+
 const MetaItem = styled.span`
   font-size: 16px;
   &:nth-child(1)::after {
     content: "\t·\t";
     margin: 0 8px;
+  }
+`;
+
+const Button = styled.button`
+  padding: 0.5em 1em;
+  background: var(--button-main-color);
+  border-radius: 1em;
+  cursor: pointer;
+  border: none;
+  color: white;
+  font-weight: 750;
+  transition: background 0.5s;
+  &:hover {
+    background: var(--button-hover-color);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -319,7 +385,7 @@ const CommentTopbar = styled.div`
   height: 5vh;
   border-radius: 3em;
   margin: -4% auto 4% auto;
-`
+`;
 
 const CommentPlaceHolderBox = styled.div`
   display: flex;
@@ -348,7 +414,7 @@ const CommentWriterBox = styled.div`
 const CommentWriterImg = styled.img`
   border-radius: 50%;
   border: 2px solid lightgray;
-`
+`;
 
 const CommentOtherBox = styled.div`
   display: flex;
@@ -398,17 +464,18 @@ const CommentPersonalComment = styled.div`
 `;
 
 const CommentPersonalMeta = styled.div`
-width: 100%;
-display: flex;
-justify-content: space-between;
-align-items: center;
-min-height: 1vh;
-padding: 1em;
-border-radius: 0 0 1em 1em;
-font-size: 12px;
-background: var(--site-main-color);
-box-sizing: border-box;
-`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 1vh;
+  padding: 1em;
+  border-radius: 0 0 1em 1em;
+  font-size: 12px;
+  background: var(--site-main-color);
+  box-sizing: border-box;
+  gap: 1em;
+`;
 
 const CommentAuthorBox = styled.div`
   width: 100%;
@@ -490,17 +557,17 @@ const CommentSubmit = styled.div`
 `;
 
 const FlexBox = styled.div`
-display: flex;
-flex-direction: row;
-align-items: center;
-gap: 0.3em;
-font-weight: 650;
-`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.3em;
+  font-weight: 650;
+`;
 const IconBox = styled.div`
-display: flex;
-flex-direction: row;
-align-items: center;
-gap: 1em;
-font-weight: 650;
-font-size: 1em;
-`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+  font-weight: 650;
+  font-size: 1em;
+`;

@@ -11,6 +11,7 @@ export function Sidebar() {
 
   const { data: frontData } = useFetch("category.prev", "FrontEnd");
   const { data: backData } = useFetch("category.prev", "BackEnd");
+  const { data: projData } = useFetch("category.prev", "Project");
   const { data: verData } = useFetch("category.prev", "Version");
   const categories = [
     {
@@ -26,7 +27,13 @@ export function Sidebar() {
       subCategories: backData,
     },
     {
-      icon: <i className="fab fa-node-js"></i>,
+      icon: <i className="fas fa-code-branch"></i>,
+      subIcon: <i className="fas fa-code"></i>,
+      title: "Projects",
+      subCategories: projData,
+    },
+    {
+      icon: <i className="fab fa-git"></i>,
       subIcon: <i className="fas fa-code"></i>,
       title: "Version-Control",
       subCategories: verData,
@@ -107,22 +114,22 @@ export function Sidebar() {
     );
   };
 
-  const renderSkill = (skill, index) => {
-    return (
-      <MenuItem
-        key={index}
-        onClick={() => navigate(`/board/study/${skill.title}`)}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
-          <Icon>{skill.icon}</Icon>
-          {skill.title}
-        </div>
-        <span>
-          <i className="far fa-angle-right"></i>
-        </span>
-      </MenuItem>
-    );
-  };
+  // const renderSkill = (skill, index) => {
+  //   return (
+  //     <MenuItem
+  //       key={index}
+  //       onClick={() => navigate(`/board/study/${skill.title}`)}
+  //     >
+  //       <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
+  //         <Icon>{skill.icon}</Icon>
+  //         {skill.title}
+  //       </div>
+  //       <span>
+  //         <i className="far fa-angle-right"></i>
+  //       </span>
+  //     </MenuItem>
+  //   );
+  // };
 
   return (
     <Side isOpened={isOpened}>

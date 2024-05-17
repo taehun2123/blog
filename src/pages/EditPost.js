@@ -16,15 +16,15 @@ import { storage, db, authService } from "../firebase";
 import {
   addDoc,
   collection,
+  doc,
   getDoc,
   serverTimestamp,
 } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ImageModal from "../components/ImageModal";
 
 export function EditPost({ isFixed, targetComponentRef }) {
   const { data } = useFetch();
-  const editorRef = useRef(null);
   const [images, setImages] = useState([]);
   const [api, setApi] = useState([]);
   const [modalOpen, setModalOpen] = useState(false); // 모달 상태 추가
@@ -35,6 +35,9 @@ export function EditPost({ isFixed, targetComponentRef }) {
   const uniqueCategories = Array.from(
     new Set(data.map((item) => item.category.prev))
   );
+  const {id} = useParams();
+
+
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user && user.uid === "rDy6MZqet8SNAS1K1Hw9YXC63No1") {
@@ -45,6 +48,26 @@ export function EditPost({ isFixed, targetComponentRef }) {
       }
     });
   }, []);
+
+  // id가 불러지면 id에 해당하는 blogging 컬렉션의 문서를 받아옴
+  useEffect(() => {
+    const fetchData = async () => {
+      const docData = await getDocument(); // 비동기 함수에서 데이터 받기
+      setContents(docData.contents); // 상태 설정
+      setTitle(docData.title);
+      setCategoryCurrent(docData.category.current);
+      setCategoryPrev(docData.category.prev);
+    };
+    if(id)
+      fetchData();
+  }, [id]);
+
+  const getDocument = async () => {
+    const docRef = doc(db, "blogging", id); // 문서 참조 생성
+    const docSnap = await getDoc(docRef); // 문서 조회
+
+    if (docSnap.exists()) return docSnap.data(); // 문서 데이터 반환
+  };
 
   const image = {
     name: "image",
@@ -135,6 +158,7 @@ export function EditPost({ isFixed, targetComponentRef }) {
             </h1>
             <InputBox
               list="prev"
+              value={category.prev}
               onChange={(e) => setCategoryPrev(e.target.value)}
             />
             <datalist id="prev">
@@ -144,6 +168,7 @@ export function EditPost({ isFixed, targetComponentRef }) {
             </datalist>
             <InputBox
               list="list"
+              value={category.current}
               onChange={(e) => setCategoryCurrent(e.target.value)}
             />
             <datalist id="list">
@@ -153,6 +178,7 @@ export function EditPost({ isFixed, targetComponentRef }) {
             </datalist>
             <TitleBox>
               <TitleInputBox
+                value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="제목을 입력해주세요"
               />
@@ -198,7 +224,7 @@ const TitleBox = styled.div`
 `;
 
 const TitleInputBox = styled.input`
-  width: 90%;
+  width: 95%;
   padding: 0.5em 0;
   outline: none;
   font-size: 36px;
