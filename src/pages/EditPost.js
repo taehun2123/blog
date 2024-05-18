@@ -9,7 +9,7 @@ import useFetch from "../customFn/useFetch";
 import { usePost, usePostActions } from "../store/usePostStore";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
-import MDEditor, { commands, executeCommand } from "@uiw/react-md-editor";
+import MDEditor, { commands } from "@uiw/react-md-editor";
 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage, db, authService } from "../firebase";
@@ -19,6 +19,7 @@ import {
   doc,
   getDoc,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { useNavigate, useParams } from "react-router-dom";
 import ImageModal from "../components/ImageModal";
@@ -30,7 +31,7 @@ export function EditPost({ isFixed, targetComponentRef }) {
   const [modalOpen, setModalOpen] = useState(false); // 모달 상태 추가
   const navigate = useNavigate();
   const { title, contents, category } = usePost();
-  const { setTitle, setContents, setCategoryPrev, setCategoryCurrent } =
+  const { setTitle, setContents, setCategoryPrev, setCategoryCurrent, resetPost } =
     usePostActions();
   const uniqueCategories = Array.from(
     new Set(data.map((item) => item.category.prev))
@@ -125,16 +126,26 @@ export function EditPost({ isFixed, targetComponentRef }) {
   };
 
   async function handleUploadPost() {
-    const createPostRef = await addDoc(collection(db, "blogging"), {
-      title,
-      contents,
-      date: serverTimestamp(), // 현재 날짜,시간
-      category,
-    });
-    if (createPostRef) {
-      const postSnap = await getDoc(createPostRef);
-      alert("성공적으로 게시글이 작성되었습니다!");
-      navigate(`/post/${postSnap.id}`);
+    if(id){
+      await updateDoc(doc(db,"blogging", id), {title, contents, date: serverTimestamp(), category});
+      alert("성공적으로 게시글이 수정 되었습니다!");
+      resetPost();
+      navigate(`/post/${id}`);
+      window.location.reload();
+    } else {
+      const createPostRef = await addDoc(collection(db, "blogging"), {
+        title,
+        contents,
+        date: serverTimestamp(), // 현재 날짜,시간
+        category,
+      });
+      if (createPostRef) {
+        const postSnap = await getDoc(createPostRef);
+        alert("성공적으로 게시글이 작성/변경되었습니다!");
+        resetPost();
+        navigate(`/post/${postSnap.id}`);
+        window.location.reload();
+      }
     }
   }
 

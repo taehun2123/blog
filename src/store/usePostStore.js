@@ -4,7 +4,7 @@ const usePostStore = create(set => ({
   title: "",
   contents: "",
   category: {
-    prev: "FrontEnd",
+    prev: "",
     current: ""
   },
   actions: {
