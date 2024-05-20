@@ -1,5 +1,5 @@
 {
-  "homepage" : "http://taehun2123.github.io/blog",
+  "homepage": "http://taehun2123.github.io/blog",
   "name": "devse",
   "version": "0.1.0",
   "private": true,
@@ -19,6 +19,7 @@
     "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.23.0",
     "react-scripts": "5.0.1",

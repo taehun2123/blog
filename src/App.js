@@ -6,8 +6,9 @@ import 'aos/dist/aos.css'; // AOS CSS styles
 import 'animate.css/animate.min.css'; // animate.css를 import
 import { useSidebarActions } from './store/useSidebarStore';
 import { authService } from './firebase'
-import { useLoginActions, useUserData } from './store/useIsLogin';
+import { useLoginActions } from './store/useIsLogin';
 import { useAdminActions } from './store/useAdmin';
+import MetaData from './components/MetaData';
 
 function App() {
   useEffect(() => {
@@ -62,9 +63,9 @@ function App() {
   
   
   return (
-    <>
+    <MetaData>
       <Router isFixed={isFixed} targetComponentRef={targetComponentRef}/>
-    </>
+    </MetaData>
   );
 }
 
