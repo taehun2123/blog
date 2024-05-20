@@ -1,6 +1,6 @@
 {
-  "homepage" : "https://taehun2123.github.io/",
-  "name": "devseWebBlog",
+  "homepage" : "https://taehun2123.github.io/blog",
+  "name": "devse",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

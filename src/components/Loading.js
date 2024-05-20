@@ -4,7 +4,7 @@ function Loading() {
         <div className="loading">
         <Typewriter
             options={{
-            strings: ["Loading"],
+            strings: ["Loading...", "or Not Page 404..."],
             autoStart: true,
             loop: true,
             }}

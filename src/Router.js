@@ -9,7 +9,7 @@ const Main = React.lazy(() => import("./pages/Main"));
 
 function Router({ isFixed, targetComponentRef }) {
     return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Suspense fallback={<Loading />}>
             <Routes>
                 <Route
