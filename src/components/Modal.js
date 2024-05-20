@@ -58,21 +58,24 @@ const modalVariants = {
 
 const Modal = ({
   item,
+  idx,
   type,
   isOpen,
   onClose,
-  handleEditDoc,
+  changeStateEditDoc,
   handleDeleteDoc,
 }) => {
   const [passwd, setPasswd] = useState("");
 
-  function handlePassModal(item, type) {
+  function handlePassModal(item, index, type) {
     if (item.passwd === passwd && type === "edit") {
-      handleEditDoc(item);
+      changeStateEditDoc(item, index);
+      onClose();
       return;
     }
     if (item.passwd === passwd && type === "delete") {
       handleDeleteDoc(item);
+      onClose();
       return;
     }
     alert("비밀번호가 틀립니다.");
@@ -98,7 +101,7 @@ const Modal = ({
               value={passwd}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  handlePassModal(item, type);
+                  handlePassModal(item, idx, type);
                   return;
                 }
               }}

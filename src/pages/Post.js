@@ -2,7 +2,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Logo } from "../components/Logo";
 import { Sidebar } from "../components/Sidebar";
 import logoVideo from "../components/Items/logo_background.mp4";
-import { doc, getDoc, collection, setDoc, deleteDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  setDoc,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -27,6 +34,11 @@ export function Post({ isFixed, targetComponentRef }) {
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState("");
   const [handle, setHandle] = useState();
+  const [handleIdx, setHandleIdx] = useState(null);
+    // 현재 편집 중인 댓글의 인덱스를 저장하는 상태
+    const [editingIndex, setEditingIndex] = useState(null);
+    // 댓글 내용을 변경하기 위한 상태
+    const [editedComment, setEditedComment] = useState("");
   const navigate = useNavigate();
 
   /**
@@ -38,9 +50,9 @@ export function Post({ isFixed, targetComponentRef }) {
    * Comment(여기서는 item 변수)의 passwd가 userData의 uid와 같은 경우
    * 이외에는 모달을 띄워 비밀번호를 확인한다.
    */
-  const toggleModal = (item, type) => {
+  const toggleModal = (item, index, type) => {
     if (isAdmin && type === "edit") {
-      handleEditDoc(item);
+      changeStateEditDoc(item, index);
       return;
     }
     if (isAdmin && type === "delete") {
@@ -48,7 +60,7 @@ export function Post({ isFixed, targetComponentRef }) {
       return;
     }
     if (item.passwd === userData.uid && type === "edit") {
-      handleEditDoc(item);
+      changeStateEditDoc(item, index);
       return;
     }
     if (item.passwd === userData.uid && type === "delete") {
@@ -57,6 +69,7 @@ export function Post({ isFixed, targetComponentRef }) {
     }
     setType(type);
     setHandle(item);
+    setHandleIdx(index);
     setIsOpen(!isOpen);
   };
 
@@ -123,19 +136,28 @@ export function Post({ isFixed, targetComponentRef }) {
           <MetaItem>DEVH</MetaItem>
           <MetaItem>{new Date(data?.date.toDate()).toLocaleString()}</MetaItem>
         </MetaContainer>
-        {isAdmin && 
-        <AdminContainer>
-          <Button onClick={()=> handleEditPost()}>수정</Button>
-          <Button onClick={()=> handleDeletePost()}>삭제</Button>
-        </AdminContainer>
-        }
+        {isAdmin && (
+          <AdminContainer>
+            <Button onClick={() => handleEditPost()}>수정</Button>
+            <Button onClick={() => handleDeletePost()}>삭제</Button>
+          </AdminContainer>
+        )}
       </div>
     );
   }
-  function handleEditPost(){
+
+  /**
+   * 게시글 수정 함수
+   * Params의 id값을 이용하여 수정 정보 불러옴
+   */
+  function handleEditPost() {
     navigate(`/edit/${id}`);
   }
 
+  /**
+   * 게시글 삭제 함수
+   * 현재의 Params의 id값으로 삭제함
+   */
   async function handleDeletePost() {
     const confirm = window.confirm("정말로 삭제하겠습니까?");
 
@@ -151,6 +173,10 @@ export function Post({ isFixed, targetComponentRef }) {
     }
   }
 
+  /**
+   * handling한 댓글 삭제 함수
+   * Parameter의 item은 해당 댓글에 대한 item임
+   */
   async function handleDeleteDoc(item) {
     const confirm = window.confirm("정말로 삭제하겠습니까?");
 
@@ -166,7 +192,29 @@ export function Post({ isFixed, targetComponentRef }) {
     }
   }
 
-  function handleEditDoc(item) {}
+  function changeStateEditDoc(prevItem, idx) {
+    // 편집 모드 진입 함수
+      setEditingIndex(idx);
+      setEditedComment(prevItem.comment);
+  }
+
+  /**
+   * 댓글 수정 함수
+   * Params의 id값을 이용하여 수정 정보 불러옴
+   */
+  async function handleEditDoc(item) {
+    try {
+      await updateDoc(doc(db, "blogging", id, "Comments", item.commentId), {
+        comment: editedComment,
+        createdAt: new Date(),
+      });
+      alert("해당 댓글의 수정을 성공적으로 완료하였습니다");
+      setEditingIndex(null); // 편집 모드 종료
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className="container">
       <div className="body">
@@ -247,36 +295,54 @@ export function Post({ isFixed, targetComponentRef }) {
                         <CommentPersonalAuthor>
                           {item.author}
                         </CommentPersonalAuthor>
-                        <CommentPersonalComment>
-                          {item.comment}
-                        </CommentPersonalComment>
-                        <CommentPersonalMeta>
-                          <IconBox>
-                            <span
-                              style={{ cursor: "pointer", whiteSpace: "nowrap" }}
-                              onClick={() => toggleModal(item, "edit")}
-                            >
-                              수정
-                            </span>
-                            <span
-                              style={{ cursor: "pointer", whiteSpace: "nowrap" }}
-                              onClick={() => toggleModal(item, "delete")}
-                            >
-                              삭제
-                            </span>
-                          </IconBox>
-                          <div>
-                            {new Date(item.createdAt.toDate()).toLocaleString()}
-                          </div>
-                          <Modal
-                            item={handle}
-                            type={type}
-                            isOpen={isOpen}
-                            onClose={toggleModal}
-                            handleEditDoc={handleEditDoc}
-                            handleDeleteDoc={handleDeleteDoc}
-                          />
-                        </CommentPersonalMeta>
+                        {editingIndex === index ? (
+                          <>
+                            <CommentTextarea
+                              value={editedComment}
+                              onChange={(e) => setEditedComment(e.target.value)}
+                            />
+                            <CommentSubmitBox>
+                              <CommentSubmit onClick={() => handleEditDoc(item)}>
+                                <i class="fas fa-paper-plane"></i>
+                              </CommentSubmit>
+                            </CommentSubmitBox>
+                          </>
+                        ) : (
+                          <>
+                            <CommentPersonalComment>
+                              {item.comment}
+                            </CommentPersonalComment>
+                            <CommentPersonalMeta>
+                              <IconBox>
+                                <span
+                                  style={{
+                                    cursor: "pointer",
+                                    whiteSpace: "nowrap",
+                                  }}
+                                  onClick={() => toggleModal(item, index, "edit")}
+                                >
+                                  수정
+                                </span>
+                                <span
+                                  style={{
+                                    cursor: "pointer",
+                                    whiteSpace: "nowrap",
+                                  }}
+                                  onClick={() =>
+                                    toggleModal(item, index, "delete")
+                                  }
+                                >
+                                  삭제
+                                </span>
+                              </IconBox>
+                              <div>
+                                {new Date(
+                                  item.createdAt.toDate()
+                                ).toLocaleString()}
+                              </div>
+                            </CommentPersonalMeta>
+                          </>
+                        )}
                       </CommentPersonalBox>
                     ))
                   ) : (
@@ -287,6 +353,15 @@ export function Post({ isFixed, targetComponentRef }) {
                     </CommentPersonalBox>
                   )}
                 </CommentOtherBox>
+                <Modal
+                  item={handle}
+                  idx={handleIdx}
+                  type={type}
+                  isOpen={isOpen}
+                  onClose={()=>setIsOpen(false)}
+                  changeStateEditDoc={changeStateEditDoc}
+                  handleDeleteDoc={handleDeleteDoc}
+                />
               </CommentScreenContainer>
             </CommentContainer>
           </div>
