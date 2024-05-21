@@ -1,5 +1,5 @@
 import { db } from "../../firebase";
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 // firestore의 메서드 import
 import { collection, getDocs, query } from "firebase/firestore";
 import styled from "styled-components";
@@ -7,7 +7,7 @@ import image from "../../banner.png";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../customFn/useFetch";
 
-export function MainPost() {
+const MainPost = forwardRef((props, ref) => {
   const [includeData, setIncludeData] = useState([]);
   const navigate = useNavigate();
   const { data, loading } = useFetch();
@@ -42,6 +42,7 @@ export function MainPost() {
 
   return (
     <div
+    ref={ref}
       style={{
         paddingTop: "5em",
         paddingBottom: "5em",
@@ -89,7 +90,9 @@ export function MainPost() {
       </section>
     </div>
   );
-}
+})
+
+export default MainPost;
 
 const PostCard = styled.li`
   min-width: 300px;

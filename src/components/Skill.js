@@ -18,8 +18,9 @@ import istqbImg from "./Items/istqb.png";
 import comImg from "./Items/com.png";
 import linuxImg from "./Items/linux.png";
 import { useNavigate } from "react-router-dom";
+import { forwardRef } from "react";
 
-export function Skill() {
+const Skill = forwardRef((props, ref) => {
   const navigate = useNavigate();
   const frontArr = [
     { img: htmlImg, name: "HTML" },
@@ -50,6 +51,7 @@ export function Skill() {
 
   return (
     <div
+      ref={ref}
       style={{
         paddingBottom: "5em",
         borderTop: "1px solid lightgray",
@@ -118,7 +120,9 @@ export function Skill() {
       </SkillContainer>
     </div>
   );
-}
+})
+export default Skill;
+
 
 const SkillContainer = styled.div`
   display: flex;

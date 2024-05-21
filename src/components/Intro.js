@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import profile from "./Items/profile.jpeg";
 import { motion } from 'framer-motion';
+import { forwardRef } from "react";
 
-export function Intro() {
+const Intro = forwardRef((props, ref) => {
   const introArr = [
     { icon: <i class="fas fa-user-tag"></i>, title: "이름", content: "김태훈" },
     { icon: <i class="fas fa-birthday-cake"></i>, title: "생년월일", content: "01.05.30" },
@@ -29,7 +30,7 @@ export function Intro() {
   };
 
   return (
-    <section style={{ padding: "7em 0" }}>
+    <section ref={ref} style={{ padding: "7em 0" }}>
       <Banner
         data-aos="fade-up"
         data-aos-anchor-placement="top-center"
@@ -70,7 +71,10 @@ export function Intro() {
       </Container>
     </section>
   );
-}
+})
+
+export default Intro;
+
 
 // Styled Components Source
 const Banner = styled.div`
