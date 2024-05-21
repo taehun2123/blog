@@ -48,7 +48,7 @@ function Main({ isFixed, targetComponentRef }) {
             style={{
               position: 'fixed',
               top: '0px',
-              left: `calc(${progressValue * 100}% - 11px)`,
+              left: `calc(${progressValue * 100}% - 10px)`,
               width: 0,
               height: 0,
               borderLeft: '5px solid transparent',

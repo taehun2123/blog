@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import image from '../banner.png';
 
-const Layout = ({ children }) => {
+const MetaData = ({ children }) => {
   return (
     <div>
       <Helmet>
@@ -17,4 +17,4 @@ const Layout = ({ children }) => {
   );
 };
 
-export default Layout;
+export default MetaData;
