@@ -15,9 +15,12 @@ function Router({ isFixed, targetComponentRef }) {
                 <Route
                     path="/"
                     element={
-                    <Main isFixed={isFixed} targetComponentRef={targetComponentRef} />
-                    }/>
-                    <Route path={"/*"} element={<Loading/>}/>
+                    <Main isFixed={isFixed} targetComponentRef={targetComponentRef} />}
+                />  
+                <Route 
+                    path={"/*"} 
+                    element={<Loading/>}
+                />
                 <Route
                     path="/board/:type/:name"
                     element={<Board isFixed={isFixed} targetComponentRef={targetComponentRef}/>}
