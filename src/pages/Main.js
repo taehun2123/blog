@@ -7,6 +7,7 @@ import {TypeWriter} from "../components/TypeWriter";
 import Skill from "../components/Skill";
 import { useScroll, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import Projects from "../components/Projects";
 
 function Main({ isFixed, targetComponentRef }) {
   const targetRefs = useRef([]);
@@ -66,7 +67,8 @@ function Main({ isFixed, targetComponentRef }) {
           <div className="wrapper">
             <Intro ref={(el) => (targetRefs.current[0] = el)} />
             <Skill ref={(el) => (targetRefs.current[1] = el)} />
-            <MainPost ref={(el) => (targetRefs.current[2] = el)} />
+            <Projects ref={(el) => (targetRefs.current[2] = el)}/>
+            <MainPost ref={(el) => (targetRefs.current[3] = el)} />
           </div>
         </main>
         <footer></footer>

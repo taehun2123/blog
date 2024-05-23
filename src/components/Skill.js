@@ -42,12 +42,12 @@ const Skill = forwardRef((props, ref) => {
     { img: githubImg, name: "Github" },
     { img: gitImg, name: "Git" },
   ];
-  const certificate= [
-    {img: adspImg, name: "ADsP"},
-    {img: istqbImg, name: "ISTQB"},
-    {img: comImg, name: "컴활 2급"},
-    {img: linuxImg, name: "Linux Master 2급"},
-  ]
+  const certificate = [
+    { img: adspImg, name: "ADsP" },
+    { img: istqbImg, name: "ISTQB" },
+    { img: comImg, name: "컴활 2급" },
+    { img: linuxImg, name: "Linux Master 2급" },
+  ];
 
   return (
     <div
@@ -67,7 +67,13 @@ const Skill = forwardRef((props, ref) => {
         <i class="fas fa-code"></i> Skills
       </h1>
       <SkillContainer>
-        <SkillCard onClick={() => navigate(`/board/list/FrontEnd`)}>
+        <SkillCard
+          data-aos="fade-up"
+          aos-offset="600"
+          aos-easing="ease-in-sine"
+          aos-duration="1200"
+          onClick={() => navigate(`/board/list/FrontEnd`)}
+        >
           <CardTitle>
             <h3 className="effectFont">FrontEnd</h3>
           </CardTitle>
@@ -79,7 +85,13 @@ const Skill = forwardRef((props, ref) => {
             ))}
           </SkillImageBox>
         </SkillCard>
-        <SkillCard onClick={() => navigate(`/board/list/BackEnd`)}>
+        <SkillCard
+          data-aos="fade-up"
+          aos-offset="600"
+          aos-easing="ease-in-sine"
+          aos-duration="1000"
+          onClick={() => navigate(`/board/list/BackEnd`)}
+        >
           <CardTitle>
             <h3 className="effectFont">BackEnd</h3>
           </CardTitle>
@@ -92,7 +104,13 @@ const Skill = forwardRef((props, ref) => {
           </SkillImageBox>
         </SkillCard>
         <SkillCardBox>
-          <SkillCardHalf onClick={() => navigate(`/board/list/Version-Tool`)}>
+          <SkillCardHalf
+            data-aos="fade-up"
+            aos-offset="600"
+            aos-easing="ease-in-sine"
+            aos-duration="800"
+            onClick={() => navigate(`/board/list/Version-Tool`)}
+          >
             <CardTitle>
               <h3 className="effectFont">Version Control</h3>
             </CardTitle>
@@ -104,7 +122,13 @@ const Skill = forwardRef((props, ref) => {
               ))}
             </SkillImageBoxHalf>
           </SkillCardHalf>
-          <SkillCardHalf style={{cursor: 'default'}}>
+          <SkillCardHalf
+            data-aos="fade-up"
+            aos-offset="600"
+            aos-easing="ease-in-sine"
+            aos-duration="600"
+            style={{ cursor: "default" }}
+          >
             <CardTitle>
               <h3 className="effectFont">Certificate</h3>
             </CardTitle>
@@ -120,9 +144,8 @@ const Skill = forwardRef((props, ref) => {
       </SkillContainer>
     </div>
   );
-})
+});
 export default Skill;
-
 
 const SkillContainer = styled.div`
   display: flex;
