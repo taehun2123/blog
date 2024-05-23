@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useSidebar } from "../store/useSidebarStore";
+import { useSidebar, useSidebarActions } from "../store/useSidebarStore";
 import profile from "./Items/profile.jpeg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import useFetch from "../customFn/useFetch";
 
 export function Sidebar() {
   const isOpened = useSidebar();
+  const {setClosed} = useSidebarActions();
   const navigate = useNavigate();
 
   const { data: frontData } = useFetch("category.prev", "FrontEnd");
@@ -133,6 +134,9 @@ export function Sidebar() {
 
   return (
     <Side isOpened={isOpened}>
+      <CloseWindow>
+        <i style={{cursor: 'pointer'}} onClick={()=>setClosed()} className="fas fa-times"/>
+      </CloseWindow>
       <Profile>
         <Image />
         <h4>Dev_hun</h4>
@@ -175,17 +179,30 @@ const Side = styled.aside`
   display: ${(props) => (props.isOpened ? "flex" : "none")};
   top: 0;
   right: 0;
-  width: 250px;
+  min-width: 250px;
   height: 100vh;
-  position: ${(props) => (props.isOpened ? "sticky" : "")};
+  position: ${(props) => (props.isOpened && "sticky")};
   background-color: white;
   box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
   z-index: 999;
   overflow-y: scroll;
   flex-direction: column;
   justify-content: flex-start;
-  aliens-item: center;
+  overflow-x: hidden;
+  @media (max-width: 720px) {
+    min-width: 100vw;
+    min-height: 100vh;
+    position: fixed;
+  }
 `;
+
+const CloseWindow = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  padding: 0.5em 1em;
+`
 
 const Profile = styled.div`
   display: flex;

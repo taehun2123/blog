@@ -39,12 +39,6 @@ function App() {
   //상단바 고정을 위한 스크롤 이벤트 리스너
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-    // 창이 720픽셀 아래로 줄어들면 사이드바 닫는 이벤트 리스너
-    window.addEventListener('resize', function() {
-      if (window.innerWidth <= 720) {
-        setClosed();
-      }
-    });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 

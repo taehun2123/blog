@@ -43,9 +43,6 @@ h3 {
   font-weight: 650;
 }
 
-h4 {
-}
-
 a {
   text-decoration: none;
   color: black;
@@ -76,6 +73,16 @@ code {
   background-color: #e9ecef;
   font-size: 1.6rem;
   font-family: "Pretendard", "Malgun Gothic", sans-serif;
+}
+
+/* =============== 애니메이션 키프레임 =============== */
+
+.effectFont {
+  animation: textAnim 5s ease-out infinite;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 250% 500%;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* 텍스트 레인보우 색깔변화 */
@@ -122,6 +129,8 @@ code {
   }
 }
 
+/* ============ 레이아웃 & 큰 틀 관련 스타일 ============= */
+
 .container {
   margin: 0;
   padding: 0;
@@ -139,6 +148,25 @@ code {
   flex-direction: column;
   min-height: 100vh;
 }
+
+.header {
+  display: block;
+}
+
+.header .wrapper {
+  max-width: inherit;
+  padding: 0;
+}
+
+.wrapper {
+  position: relative;
+  max-width: 1100px;
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 0 1em;
+  box-sizing: border-box;
+}
+
 
 .loading {
   display: flex;
@@ -163,14 +191,6 @@ footer {
   background-color: white;
 }
 
-.effectFont {
-  animation: textAnim 5s ease-out infinite;
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-  background-size: 250% 500%;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
 /* =-=-=-=-=-=-=-= 자주쓰는 목록 변수화 =-=-=-=-=-=-=-= */
 
 :root {
@@ -189,24 +209,6 @@ footer {
 }
 
 /* =-=-=-=-=-=-=-= 배너 스타일 =-=-=-=-=-=-=-= */
-
-.header {
-  display: block;
-}
-
-.header .wrapper {
-  max-width: inherit;
-  padding: 0;
-}
-
-.wrapper {
-  position: relative;
-  max-width: 1100px;
-  min-height: 100%;
-  margin: 0 auto;
-  padding: 0 1em;
-  box-sizing: border-box;
-}
 
 .title {
   max-width: 100%;
@@ -280,7 +282,6 @@ footer {
   box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   left: 10%;
-  /* width: 80%; <-- 이게 80%라서 그럼*/
   right: 10%;
   justify-content: space-between;
   gap: 1.3rem;
@@ -334,9 +335,22 @@ footer {
   }
 }
 
+@media (max-width: 1020px) {
+  .nav.fixed.opened {
+    right: 30vw;
+  }
+}
+
 @media (max-width: 900px) {
   .nav.fixed.opened {
     left: 2vw;
+    right: 33vw;
+  }
+}
+
+@media (max-width: 800px) {
+  .nav.fixed.opened {
+    left: 1vw;
   }
 }
 
@@ -387,6 +401,8 @@ footer {
   border: 3px dotted lightblue;
 }
 
+/* 비눗방울 버전 별 키프레임 */
+
 .b1 {
   animation: floatup 10s linear infinite,
     sideways 5s ease-in-out infinite alternate;
@@ -435,6 +451,8 @@ footer {
   top: 0%;
   transform: scale(0.6);
 }
+
+/* Skills - 비눗방울 키프레임 */
 @keyframes floatup {
   0% {
     margin-top: -100%;
