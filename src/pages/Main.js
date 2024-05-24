@@ -15,6 +15,22 @@ function Main({ isFixed, targetComponentRef }) {
   const targetRefs = useRef([]);
   const [targetPositions, setTargetPositions] = useState([]);
   const { scrollYProgress } = useScroll();
+  const variants = {
+    hidden: {
+      opacity: 0.4,
+      y: -25
+    },
+    visible: (i) => ({
+      opacity: 1,
+      y: -15,
+      transition: {
+        delay: i * 0.2,
+        duration: 1,
+        repeat: Infinity,
+        repeatType: "reverse"
+      }
+    })
+  };
 
   useEffect(() => {
     const updateTargetPositions = () => {
@@ -29,8 +45,7 @@ function Main({ isFixed, targetComponentRef }) {
     };
 
     updateTargetPositions();
-    window.addEventListener("resize", updateTargetPositions);
-    return () => window.removeEventListener("resize", updateTargetPositions);
+    window.removeEventListener("resize", updateTargetPositions);
   }, []);
 
   const handleScrollToRef = (index) => {
@@ -46,7 +61,7 @@ function Main({ isFixed, targetComponentRef }) {
         const progressValue =
           position / (document.body.scrollHeight - window.innerHeight);
         return (
-          <div
+          <motion.div
             data-tooltip-id="position"
             data-tooltip-content={
               index === 0
@@ -58,6 +73,10 @@ function Main({ isFixed, targetComponentRef }) {
                 : "Posts"
             }
             key={index}
+            initial="hidden"
+            animate="visible"
+            variants={variants}
+            custom={index}
             onClick={() => handleScrollToRef(index)}
             style={{
               position: "fixed",
@@ -66,8 +85,8 @@ function Main({ isFixed, targetComponentRef }) {
               right: '0',
               width: '0',
               height: '0',
-              borderLeft: `14px solid ${targetRefs.current === index ? "lightgray" : 'transparent'}`,
-              borderRight: `14px solid ${targetRefs.current === index ? "lightgray" : 'transparent'}`,
+              borderLeft: `14px solid transparent`,
+              borderRight: `14px solid transparent`,
               borderTop: "14px solid lightgray",
               cursor: "pointer",
               zIndex: "999",

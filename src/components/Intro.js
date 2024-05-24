@@ -30,7 +30,7 @@ const Intro = forwardRef((props, ref) => {
   };
 
   return (
-    <section ref={ref} style={{ padding: "7em 0" }}>
+    <section ref={ref} style={{ padding: "7em 0", overflowX: 'hidden' }}>
       <Banner
         data-aos="fade-up"
         data-aos-anchor-placement="top-center"

@@ -67,7 +67,9 @@ const Projects = forwardRef((props, ref) =>{
             <ProjectDate>{item.date}</ProjectDate>
           </ProjectTitleBox>
           <ProjectImage>
-            <ImageGallery items={item.image}/>
+            <ProjectImagePosition>
+              <ImageGallery items={item.image}/>
+            </ProjectImagePosition>
           </ProjectImage>
           <ProjectContents data-color-mode="light">
           <MDEditor.Markdown
@@ -79,7 +81,10 @@ const Projects = forwardRef((props, ref) =>{
 
           </ProjectDetail>
           <ProjectReadMe>
-            더 자세히 보기
+            READ.ME
+          </ProjectReadMe>
+          <ProjectReadMe>
+            GITHUB
           </ProjectReadMe>
         </ProjectBox>
         )}
@@ -143,8 +148,12 @@ const ProjectImage = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
-width: 90%;
+width: 100%;
 box-sizing: border-box;
+`
+
+const ProjectImagePosition = styled.div`
+  width: 90%;
 `
 
 
