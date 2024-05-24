@@ -115,23 +115,6 @@ export function Sidebar() {
     );
   };
 
-  // const renderSkill = (skill, index) => {
-  //   return (
-  //     <MenuItem
-  //       key={index}
-  //       onClick={() => navigate(`/board/study/${skill.title}`)}
-  //     >
-  //       <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
-  //         <Icon>{skill.icon}</Icon>
-  //         {skill.title}
-  //       </div>
-  //       <span>
-  //         <i className="far fa-angle-right"></i>
-  //       </span>
-  //     </MenuItem>
-  //   );
-  // };
-
   return (
     <Side isOpened={isOpened}>
       <CloseWindow>
