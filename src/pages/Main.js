@@ -66,9 +66,9 @@ function Main({ isFixed, targetComponentRef }) {
               right: '0',
               width: '0',
               height: '0',
-              borderLeft: "8px solid transparent",
-              borderRight: "8px solid transparent",
-              borderTop: "8px solid lightgray",
+              borderLeft: `14px solid ${targetRefs.current === index ? "lightgray" : 'transparent'}`,
+              borderRight: `14px solid ${targetRefs.current === index ? "lightgray" : 'transparent'}`,
+              borderTop: "14px solid lightgray",
               cursor: "pointer",
               zIndex: "999",
             }}

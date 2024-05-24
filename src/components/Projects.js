@@ -143,7 +143,7 @@ const ProjectImage = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
-width: 100%;
+width: 90%;
 box-sizing: border-box;
 `
 
