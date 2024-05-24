@@ -135,7 +135,7 @@ export function Sidebar() {
   return (
     <Side isOpened={isOpened}>
       <CloseWindow>
-        <i style={{cursor: 'pointer'}} onClick={()=>setClosed()} className="fas fa-times"/>
+        <CloseButton onClick={()=>setClosed()} className="fas fa-times"/>
       </CloseWindow>
       <Profile>
         <Image />
@@ -305,3 +305,11 @@ const ErrIcon = styled.span`
     -webkit-text-fill-color: transparent;
   }
 `;
+
+const CloseButton = styled.i`
+  cursor: pointer;
+  font-size: 1.5em;
+  &:hover{
+    color: red;
+  }
+`

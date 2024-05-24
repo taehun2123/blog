@@ -79,6 +79,7 @@ function Main({ isFixed, targetComponentRef }) {
             custom={index}
             onClick={() => handleScrollToRef(index)}
             style={{
+              display: "block",
               position: "fixed",
               bottom: "0",
               left: `calc(${progressValue * 100}% - 10px)`,
