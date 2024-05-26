@@ -80,11 +80,12 @@ export function Sidebar() {
             category.subCategories.map((subCategory, index) => (
               <SubCategoryItem
                 key={index}
-                onClick={() =>
+                onClick={() => {
                   navigate(
                     `/board/${subCategory.category.prev}/${subCategory.category.current}`
                   )
-                }
+                  setClosed();
+                }}
               >
                 <div
                   style={{
