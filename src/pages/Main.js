@@ -6,7 +6,7 @@ import logoVideo from "../components/Items/logo_background.mp4";
 import { TypeWriter } from "../components/TypeWriter";
 import Skill from "../components/Skill";
 import { useScroll, motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Projects from "../components/Projects";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css"; //툴팁
@@ -32,20 +32,33 @@ function Main({ isFixed, targetComponentRef }) {
     })
   };
 
-  useEffect(() => {
-    const updateTargetPositions = () => {
-      const positions = targetRefs.current.map((ref) => {
-        if (ref) {
-          const rect = ref.getBoundingClientRect();
-          return rect.top + window.scrollY;
-        }
-        return 0;
-      });
-      setTargetPositions(positions);
+  const updateTargetPositions = () => {
+    const positions = targetRefs.current.map((ref) => {
+      if (ref) {
+        const rect = ref.getBoundingClientRect();
+        return rect.top + window.scrollY;
+      }
+      return 0;
+    });
+    setTargetPositions(positions);
+  };
+  useLayoutEffect(() => {
+    const handleResize = () => {
+      updateTargetPositions();
     };
 
-    updateTargetPositions();
-    window.removeEventListener("resize", updateTargetPositions);
+    const handleInitialUpdate = () => {
+      setTimeout(() => {
+        updateTargetPositions();
+      }, 1000);
+    };
+
+    handleInitialUpdate();
+    window.addEventListener("resize", handleResize);
+    
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const handleScrollToRef = (index) => {
@@ -82,7 +95,7 @@ function Main({ isFixed, targetComponentRef }) {
               display: "block",
               position: "fixed",
               bottom: "0",
-              left: `calc(${progressValue * 100}% - 10px)`,
+              left: `calc(${progressValue * 100}% - 20px)`,
               right: '0',
               width: '0',
               height: '0',
@@ -118,7 +131,7 @@ function Main({ isFixed, targetComponentRef }) {
             <Intro ref={(el) => (targetRefs.current[0] = el)} />
             <Skill ref={(el) => (targetRefs.current[1] = el)} />
             <Projects ref={(el) => (targetRefs.current[2] = el)} />
-            <MainPost ref={(el) => (targetRefs.current[3] = el)} />
+            <MainPost ref={(el) => (targetRefs.current[3] = el)}/>
           </div>
         </main>
         <footer></footer>

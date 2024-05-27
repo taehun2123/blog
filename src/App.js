@@ -40,9 +40,8 @@ function App() {
     const handleScroll = () => {
       const targetComponentTop =
         targetComponentRef.current?.getBoundingClientRect().top;
-      const windowHeight = window.innerHeight;
-
-      if (window.scrollY >= targetComponentTop + windowHeight) {
+        
+      if (window.scrollY >= targetComponentTop + window.innerHeight) {
         setIsFixed(true);
       } else {
         setIsFixed(false);

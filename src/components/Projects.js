@@ -71,7 +71,8 @@ const Projects = forwardRef((props, ref) => {
       aos-easing="ease-in-sine"
       aos-duration="1200"
     >
-      <h1 className="effectFont">
+      <h1       
+        className="effectFont">
         <i class="fas fa-code"></i> Projects
       </h1>
       {dolist()}

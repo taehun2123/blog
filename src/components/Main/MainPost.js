@@ -42,7 +42,7 @@ const MainPost = forwardRef((props, ref) => {
 
   return (
     <div
-    ref={ref}
+      ref={ref}
       style={{
         paddingTop: "5em",
         paddingBottom: "5em",
