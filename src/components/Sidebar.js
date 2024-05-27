@@ -49,6 +49,7 @@ export function Sidebar() {
 
   const renderCategory = (category, index) => {
     const isExpanded = index === expandedCategoryIndex;
+    const uniqueCategories = [...new Set(category.subCategories.map(subCategory => subCategory.category.current))];
 
     return (
       <div key={index}>
@@ -74,31 +75,34 @@ export function Sidebar() {
 
         <SubCategoryList
           isExpanded={isExpanded}
-          su={category.subCategories.length}
+          su={uniqueCategories.length}
         >
-          {category.subCategories.length > 0 ? (
-            category.subCategories.map((subCategory, index) => (
-              <SubCategoryItem
-                key={index}
-                onClick={() => {
-                  navigate(
-                    `/board/${subCategory.category.prev}/${subCategory.category.current}`
-                  )
-                  setClosed();
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "1em",
-                  }}
-                >
-                  <SubIcon>{category.subIcon}</SubIcon>
-                  {subCategory.category.current}
-                </div>
-              </SubCategoryItem>
-            ))
+          {uniqueCategories.length > 0 ? (
+            uniqueCategories.map((currentCategory, index) => {
+                const subCategory = category.subCategories.find(sub => sub.category.current === currentCategory);
+                return (
+                  <SubCategoryItem
+                    key={index}
+                    onClick={() => {
+                      navigate(
+                        `/board/${subCategory.category.prev}/${subCategory.category.current}`
+                      )
+                      setClosed();
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1em",
+                      }}
+                    >
+                      <SubIcon>{category.subIcon}</SubIcon>
+                      {subCategory.category.current}
+                    </div>
+                  </SubCategoryItem>
+                );
+              })
           ) : (
             <SubCategoryItem key={index}>
               <div

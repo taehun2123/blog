@@ -127,7 +127,7 @@ export function Post({ isFixed, targetComponentRef }) {
     return (
       <div className="logo-text">
         <CategoryContainer>
-          <CategoryBox>
+          <CategoryBox onClick={()=> navigate(`/board/${data?.category.prev}/${data?.category.current}`)}>
             {data?.category.prev} - {data?.category.current}
           </CategoryBox>
         </CategoryContainer>
@@ -389,6 +389,7 @@ const CategoryBox = styled.div`
   background-color: cornflowerblue;
   border-radius: 3em;
   padding: 0.4em 0.9em;
+  cursor:pointer;
 `;
 
 const MetaContainer = styled.div`
