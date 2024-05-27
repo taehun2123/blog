@@ -82,10 +82,10 @@ export function Post({ isFixed, targetComponentRef }) {
   //로그인이 된 경우(구글 로그인) -> Author과 Passwd를 userData에서 각각 displayName(이름) 과 uid로 지정한다.
   useEffect(() => {
     if (isLoggedin) {
-      setAuthor(userData.displayName);
+      setAuthor(userData.providerData[0].displayName);
       setPasswd(userData.uid);
     }
-  }, [isLoggedin, setAuthor, setPasswd, userData.displayName, userData.uid]);
+  }, [isLoggedin, setAuthor, setPasswd, userData.displayName, userData.providerData, userData.uid]);
 
   // id가 불러지면 id에 해당하는 blogging 컬렉션의 문서를 받아옴
   useEffect(() => {
@@ -253,7 +253,7 @@ export function Post({ isFixed, targetComponentRef }) {
                           src={userData.photoURL}
                           alt="프로필"
                         />
-                        {userData.displayName}
+                        {userData.providerData[0].displayName}
                       </FlexBox>
                     ) : (
                       <>

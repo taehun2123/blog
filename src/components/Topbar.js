@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { useSidebar, useSidebarActions } from "../store/useSidebarStore";
-import { useLogin, useLoginActions, useUserImg, useUserName } from "../store/useIsLogin";
-import { GoogleAuthProvider, signInWithPopup, signOut} from "firebase/auth";
+import { useLogin, useLoginActions, useUserImg } from "../store/useIsLogin";
+import { GoogleAuthProvider, browserSessionPersistence, setPersistence, signInWithPopup, signOut} from "firebase/auth";
 import { authService } from "../firebase";
 
 
@@ -20,11 +20,14 @@ export function Topbar({ isFixed }) {
   async function handleGoogleSignIn(){
     try {
       const provider = new GoogleAuthProvider();
-      signInWithPopup(authService, provider)
-      .then((data)=> {
-        navigate("/");
-        alert("성공적으로 로그인 되었습니다.");
-        window.location.reload();
+      setPersistence(authService, browserSessionPersistence).then(() => {
+        signInWithPopup(authService, provider)
+        .then((data)=> {
+          setUserData(data.user);
+          navigate("/");
+          alert("성공적으로 로그인 되었습니다.");
+          window.location.reload();
+        })
       })
     } catch (error) {
       console.error(error);

@@ -23,7 +23,6 @@ const Projects = forwardRef((props, ref) => {
     };
     fetchData();
   }, []);
-  console.log(data);
 
   function dolist() {
     return (
