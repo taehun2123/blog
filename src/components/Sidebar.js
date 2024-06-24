@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useSidebar, useSidebarActions } from "../store/useSidebarStore";
 import profile from "./Items/profile.jpeg";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useHref, useNavigate } from "react-router-dom";
 import useFetch from "../customFn/useFetch";
 
 export function Sidebar() {
@@ -13,7 +13,7 @@ export function Sidebar() {
   const { data: frontData } = useFetch("category.prev", "FrontEnd");
   const { data: backData } = useFetch("category.prev", "BackEnd");
   const { data: projData } = useFetch("category.prev", "Project");
-  const { data: verData } = useFetch("category.prev", "Version");
+  const { data: verData } = useFetch("category.prev", "ETC");
   const categories = [
     {
       icon: <i className="fab fa-css3-alt" />,
@@ -36,7 +36,7 @@ export function Sidebar() {
     {
       icon: <i className="fab fa-git"></i>,
       subIcon: <i className="fas fa-code"></i>,
-      title: "Version-Control",
+      title: "ETC",
       subCategories: verData,
     },
   ];
@@ -125,10 +125,16 @@ export function Sidebar() {
       <CloseWindow>
         <CloseButton onClick={()=>setClosed()} className="fas fa-times"/>
       </CloseWindow>
+      {/* 상단 부분 */}
       <Profile>
         <Image />
         <h4>Dev_hun</h4>
+        <IconBox>
+          <BoxIcon><a href="https://github.com/taehun2123" target="_blank" rel="noreferrer"><i class="fab fa-github-square fa-2xl"/></a></BoxIcon>
+          <BoxIcon><a href="https://instagram.com/1aehun2_" target="_blank" rel="noreferrer"><i class="fab fa-instagram-square fa-2xl"></i></a></BoxIcon>
+        </IconBox>
       </Profile>
+      {/* 중단 - 메뉴 */}
       <Menu>
         <h4 className="effectFont">About Me</h4>
         <MenuList>
@@ -197,7 +203,6 @@ const Profile = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 150px;
   padding: 2em 0;
   border-bottom: 2px dotted lightblue;
   gap: 0.5em;
@@ -209,7 +214,7 @@ const Image = styled.div`
   width: 100px;
   height: 100px;
   background: url(${profile});
-  background-size: contain;
+  background-size: cover;
 `;
 
 const Menu = styled.div`
@@ -300,4 +305,24 @@ const CloseButton = styled.i`
   &:hover{
     color: red;
   }
+`
+const IconBox = styled.div`
+  margin-top: 0.5em;
+  padding: 0.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  width: 80%;
+  border-radius: 1em;
+  box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
+`
+
+const BoxIcon = styled.div`
+&:hover{
+  background: linear-gradient(-45deg, #ee7752, #e73c7e);
+  background-clip: text;
+  animation: swing 0.5s ease-out;
+  -webkit-text-fill-color: transparent;
+}
 `

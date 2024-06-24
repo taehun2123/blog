@@ -109,7 +109,7 @@ const Skill = forwardRef((props, ref) => {
             aos-offset="600"
             aos-easing="ease-in-sine"
             aos-duration="800"
-            onClick={() => navigate(`/board/list/Version-Tool`)}
+            onClick={() => navigate(`/board/list/ETC`)}
           >
             <CardTitle>
               <h3 className="effectFont">Version Control</h3>
