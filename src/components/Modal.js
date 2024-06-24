@@ -110,7 +110,10 @@ const Modal = ({
               }}
             />
             <Button
-              onClick={() => handlePassModal(item, type)}
+              onClick={() => {
+                handlePassModal(item, idx, type);
+                return;
+              }}
             >
               확인
             </Button>
