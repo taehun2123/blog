@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
-import MDEditor, { commands } from "@uiw/react-md-editor";
+import MDEditor from "@uiw/react-md-editor";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { addDoc, collection, doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { storage, db, authService } from "../firebase";
-import { Logo } from "../components/Logo";
-import { Sidebar } from "../components/Sidebar";
-import { TypeWriter } from "../components/TypeWriter";
-import ImageModal from "../components/ImageModal";
 import useFetch from "../customFn/useFetch";
 import { usePost, usePostActions } from "../store/usePostStore";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
+import { Logo } from "../components/Logo";
+import { Sidebar } from "../components/Sidebar";
+import ImageModal from "../components/ImageModal";
+import {TypeWriter} from "../components/TypeWriter";
 
 export function EditPost({ isFixed, targetComponentRef }) {
   const { data } = useFetch();
-  const [images, setImages] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
   const { title, contents, category } = usePost();
   const { setTitle, setContents, setCategoryPrev, setCategoryCurrent, resetPost } = usePostActions();
   const uniqueCategories = Array.from(new Set(data.map((item) => item.category.prev)));
   const { id } = useParams();
+  const [editorInstance, setEditorInstance] = useState(null);
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
@@ -54,38 +54,26 @@ export function EditPost({ isFixed, targetComponentRef }) {
     return docSnap.exists() ? docSnap.data() : null;
   };
 
-  const handleImageUpload = async (file) => {
+  const handleImageUpload = useCallback(async (file) => {
     const imageRef = ref(storage, `images/${Date.now()}_${file.name || "image.png"}`);
     const snapshot = await uploadBytes(imageRef, file);
-    const url = await getDownloadURL(snapshot.ref);
-    setImages((prevImages) => [...prevImages, url]);
-    return url;
-  };
+    return getDownloadURL(snapshot.ref);
+  }, []);
 
-  const insertImage = async (file, api) => {
+  const insertImage = useCallback(async (file) => {
     try {
       const url = await handleImageUpload(file);
-      api.replaceSelection(`![](${url})\n`);
+      const imageMarkdown = `![${file.name}](${url})`;
+      if (editorInstance) {
+        const newContent = `${contents}\n${imageMarkdown}`;
+        setContents(newContent);
+      }
     } catch (error) {
       console.error("Error uploading image:", error);
       alert("이미지 업로드에 실패했습니다.");
     }
     setModalOpen(false);
-  };
-
-  const imageCommand = {
-    name: "image",
-    keyCommand: "image",
-    buttonProps: { "aria-label": "Insert Image" },
-    icon: (
-      <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-        <path fill="#000000" d="M480 416v16c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V176c0-26.5 21.5-48 48-48h16v208c0 44.1 35.9 80 80 80h336zm96-80V80c0-26.5-21.5-48-48-48H144c-26.5 0-48 21.5-48 48v256c0 26.5 21.5 48 48 48h384c26.5 0 48-21.5 48-48zM256 128c0 26.5-21.5 48-48 48s-48-21.5-48-48 21.5-48 48-48 48 21.5 48 48zm-96 144l55.5-55.5c4.7-4.7 12.3-4.7 17 0L272 256l135.5-135.5c4.7-4.7 12.3-4.7 17 0L512 208v112H160v-48z" />
-      </svg>
-    ),
-    execute: (state, api) => {
-      setModalOpen(true);
-    },
-  };
+  }, [contents, editorInstance, handleImageUpload, setContents]);
 
   const handleUploadPost = async () => {
     try {
@@ -101,8 +89,8 @@ export function EditPost({ isFixed, targetComponentRef }) {
         alert("성공적으로 게시글이 수정되었습니다!");
       } else {
         const createPostRef = await addDoc(collection(db, "blogging"), postData);
-        id = createPostRef.id;
         alert("성공적으로 게시글이 작성되었습니다!");
+        id = createPostRef.id;
       }
 
       resetPost();
@@ -159,20 +147,34 @@ export function EditPost({ isFixed, targetComponentRef }) {
             </TitleBox>
             <div data-color-mode="light">
               <MDEditor
-                commands={[...commands.getCommands(), imageCommand]}
-                height={865}
                 value={contents}
                 onChange={setContents}
+                height={865}
+                preview="edit"
+                commands={[
+                  ...MDEditor.commands,
+                  {
+                    name: "insertImage",
+                    keyCommand: "insertImage",
+                    buttonProps: { "aria-label": "Insert image" },
+                    icon: (
+                      <svg width="12" height="12" viewBox="0 0 20 20">
+                        <path fill="currentColor" d="M15 9c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4-7H1c-.55 0-1 .45-1 1v14c0 .55.45 1 1 1h18c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 13l-6-5-2 2-4-5-4 8V4h16v11z" />
+                      </svg>
+                    ),
+                    execute: () => {
+                      setModalOpen(true);
+                    },
+                  },
+                ]}
+                onMount={(editor) => {
+                  setEditorInstance(editor);
+                }}
               />
               <ImageModal
                 isOpen={modalOpen}
                 onClose={() => setModalOpen(false)}
-                handleFileChange={(event) => {
-                  const file = event.target.files[0];
-                  if (file) {
-                    insertImage(file, MDEditor.commands.getCommand("image").execute);
-                  }
-                }}
+                onImageSelect={insertImage}
               />
             </div>
             <ButtonBox>
