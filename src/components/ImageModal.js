@@ -2,25 +2,30 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const ModalOverlay = styled(motion.div)`
+const Backdrop = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
-  z-index: 1000;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
 `;
 
-const ModalContent = styled(motion.div)`
+const ModalContainer = styled(motion.div)`
+  padding: 3em;
   background-color: white;
-  padding: 20px;
-  border-radius: 5px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   max-width: 500px;
   width: 100%;
+  gap: 1em;
 `;
 
 const ModalInput = styled.input`
@@ -45,33 +50,33 @@ const Button = styled.button`
   }
 `;
 
+const modalVariants = {
+  hidden: { opacity: 0, y: "100vh" },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: "100vh" }
+};
 
-const ImageModal = ({ isOpen, onClose, onImageSelect }) => {
-  if (!isOpen) return null;
-
-  const modalVariants = {
-    hidden: { opacity: 0, y: "100vh" },
-    visible: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: "100vh" }
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      onImageSelect(file);
-    }
-  };
-
+const ImageModal = ({api, isOpen, onClose, handleFileChange }) => {
   return (
-    <ModalOverlay 
-    variants={modalVariants}
-    transition={{ duration: 0.5 }}
-    onClick={onClose}>
-      <ModalContent onClick={(e) => e.stopPropagation()}>
-        <h2>이미지 업로드</h2>
-        <input type="file" accept="image/*" onChange={handleFileChange} />
-      </ModalContent>
-    </ModalOverlay>
+    <AnimatePresence>
+      {isOpen && (
+        <Backdrop
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          onClick={onClose}
+        >
+          <ModalContainer
+            variants={modalVariants}
+            transition={{ duration: 0.5 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2>이미지 업로드</h2>
+            <ModalInput type="file" accept="image/*" onChange={(e)=>handleFileChange(e, api)} />
+          </ModalContainer>
+        </Backdrop>
+      )}
+    </AnimatePresence>
   );
 };
 
