@@ -9,6 +9,7 @@ import useFetch from "../../customFn/useFetch";
 
 const MainPost = forwardRef((props, ref) => {
   const [includeData, setIncludeData] = useState([]);
+  const [listData, setListData] = useState([]);
   const navigate = useNavigate();
   const { data, loading } = useFetch();
   // async - await로 데이터 fetch 대기
@@ -16,7 +17,7 @@ const MainPost = forwardRef((props, ref) => {
     if (!loading && data.length > 0) {
       try {
         const newData = await Promise.all(
-          data?.splice(0, 3)?.map(async (item) => {
+          data?.splice(0, 4)?.map(async (item) => {
             const q = query(collection(db, "blogging", item.id, "Comments"));
             const querySnapshot = await getDocs(q);
             const comments = querySnapshot.docs.map((doc) => ({
@@ -29,6 +30,21 @@ const MainPost = forwardRef((props, ref) => {
             };
           })
         );
+        const allData = await Promise.all(
+          data?.splice(0)?.map(async (item) => {
+            const q = query(collection(db, "blogging", item.id, "Comments"));
+            const querySnapshot = await getDocs(q);
+            const comments = querySnapshot.docs.map((doc) => ({
+              ...doc.data(),
+              commentId: doc.id,
+            }));
+            return {
+              ...item,
+              commentSu: comments.length,
+            };
+          })
+        );
+        setListData(allData);
         setIncludeData(newData);
       } catch (error) {
         console.error("Error fetching data: ", error);
@@ -58,14 +74,14 @@ const MainPost = forwardRef((props, ref) => {
         <i class="fas fa-pencil-alt"></i> Posts
       </h1>
       <section
-        class="section"
+        className="section"
         data-aos="fade-up"
         aos-offset="600"
         aos-easing="ease-in-sine"
         aos-duration="1200"
       >
-        <article class="post">
-          <ul class="post-list">
+        <article className="post">
+          <ul className="post-list">
             {includeData &&
               includeData.map((item, key) => (
                 <PostCard key={key} onClick={() => navigate(`/post/${item.id}`)}>
@@ -77,7 +93,7 @@ const MainPost = forwardRef((props, ref) => {
                         <i class="fas fa-comments-alt"></i> {item.commentSu}{" "}
                       </PostComment>
                     </PostCategory>
-                    <h4>{item.title}</h4>
+                    <PostTitle>{item.title}</PostTitle>
                     <PostMeta>
                       <span>DEVH</span>|
                       <span>{new Date(item.date).toLocaleDateString()}</span>
@@ -87,6 +103,22 @@ const MainPost = forwardRef((props, ref) => {
               ))}
           </ul>
         </article>
+        <article>
+          <PostListGroup>
+            {listData && listData.map((item, key) => (
+              <PostListItem key={key} onClick={() => navigate(`/post/${item.id}`)}>
+                <PostListContents>
+                  <PostComment>{item.category.current}</PostComment>
+                  <PostListTitle>{item.title}</PostListTitle>
+                  <PostMeta>
+                    <span>DEVH</span>|
+                    <span>{new Date(item.date).toLocaleDateString()}</span>
+                  </PostMeta>
+                </PostListContents>
+              </PostListItem>
+            ))}
+          </PostListGroup>
+        </article>
       </section>
     </div>
   );
@@ -94,8 +126,28 @@ const MainPost = forwardRef((props, ref) => {
 
 export default MainPost;
 
+const PostListGroup = styled.ul`
+  width: 90vw;
+`
+
+const PostListItem = styled.li`
+  width: 100%;
+  box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 1em;
+  cursor: pointer;
+  transition: background 0.5s, color 0.5s, box-shadow 0.5s, transform 0.5s;
+    &:hover {
+    background: cornflowerblue;
+    color: white;
+    box-shadow: 3px 5px 6px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-10px);
+  }
+`
+
 const PostCard = styled.li`
-  min-width: 300px;
+  min-width: 330px;
+  max-width: 330px;
+  max-height: 400px;
   min-height: 400px;
   border-radius: 2em;
   box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
@@ -133,9 +185,19 @@ const PostContent = styled.div`
   align-items: flex-start;
 `;
 
+const PostListContents = styled.div`
+  padding: 1em;
+  display: flex;
+  flex-direction: row;
+  gap: 1.5em;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
 const PostMeta = styled.div`
+  flex:2;
+  width:100%;
   font-size: 11px;
-  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -156,4 +218,20 @@ const PostComment = styled.div`
   background-color: rgb(219 234 254);
   border-radius: 2em;
   color: var(--font-main-color);
+`;
+
+const PostTitle = styled.h4`
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space : nowrap;
+`;
+
+const PostListTitle = styled.h4`
+  flex: 1;
+  width: 100%;
+  font-size: 12px;
+  white-space : nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

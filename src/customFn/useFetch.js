@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
 
 function useFetch(category, value) {
@@ -13,7 +13,9 @@ function useFetch(category, value) {
         if (!category || !value) {
             fetchData = async () => {
                 try {
-                    const q = query(collection(db, "blogging"));
+                    const q = query(collection(db, "blogging"),                                 
+                    orderBy("date", "desc") // 날짜를 기준으로 내림차순 정렬
+                );
                     const querySnapshot = await getDocs(q);
                     const result = querySnapshot.docs.map(doc => ({
                         ...doc.data(), 
@@ -35,11 +37,13 @@ function useFetch(category, value) {
         else {
             fetchData = async () => {
                 try {
-                    const q = query(collection(db, "blogging"), where(category, "==", value));
+                    const q = query(collection(db, "blogging"), 
+                                where(category, "==", value)
+                                );
                     const querySnapshot = await getDocs(q);
                     const result = querySnapshot.docs.map(doc => ({
                         ...doc.data(), 
-                        date: doc.data().date.toDate(), // Ensure you handle date conversion correctly
+                        date: doc.data().date.toDate(),
                         id: doc.id
                     }));
                     setData(result);

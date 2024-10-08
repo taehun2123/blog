@@ -375,9 +375,10 @@ footer {
 
 .section {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
 }
 
 /* =-=-=-=-=-=-=-= 게시글 =-=-=-=-=-=-=-= */
@@ -405,50 +406,37 @@ footer {
 .b1 {
   animation: floatup 10s linear infinite,
     sideways 5s ease-in-out infinite alternate;
-  left: 5%;
-  top: 10%;
+  transform: translate3d(5%, 10%, 0);
 }
 .b2 {
   animation: floatup 5s linear infinite,
     sideways 4s ease-in-out 1s infinite alternate;
-  left: 10%;
-  top: 20%;
-  transform: scale(0.7);
+  transform: translate3d(10%, 20%, 0) scale(0.7);
 }
 .b3 {
   animation: floatup 4s linear infinite,
     sideways 6s ease-in-out 6s infinite alternate;
-  left: 20%;
-  top: 20%;
-  transform: scale(1.2);
+  transform: translate3d(20%, 20%, 0) scale(1.2);
 }
 .b4 {
   animation: floatup 6s linear infinite,
     sideways 5s ease-in-out 3s infinite alternate;
-  left: 0%;
-  top: 0%;
-  transform: scale(0.8);
+  transform: translate3d(0, 0, 0) scale(0.8);
 }
 .b5 {
   animation: floatup 8s linear infinite,
     sideways 6s ease-in-out 3s infinite alternate;
-  left: 0%;
-  top: 30%;
-  transform: scale(1.1);
+  transform: translate3d(0%, 30%, 0) scale(1.1);
 }
 .b6 {
   animation: floatup 7s linear infinite,
     sideways 4s ease-in-out 3.5s infinite alternate;
-  left: 10%;
-  top: 5%;
-  transform: scale(0.7);
+  transform: translate3d(5%, 10%, 0) scale(0.7);
 }
 .b7 {
   animation: floatup 6s linear infinite,
     sideways 5s ease-in-out 4s infinite alternate;
-  left: 10%;
-  top: 0%;
-  transform: scale(0.6);
+  transform: translate3d(10%, 0%, 0) scale(0.6);
 }
 
 /* Skills - 비눗방울 키프레임 */
