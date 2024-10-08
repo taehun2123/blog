@@ -1,4 +1,3 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Allow: /
-Sitemap: https://taehun2123.github.io/blog
+Disallow:
