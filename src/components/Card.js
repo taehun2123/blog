@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 // firestore의 메서드 import
 import styled from "styled-components";
-import image from "../banner.png";
+import defaultImage from "../banner.png";
 import useFetch from "../customFn/useFetch";
 import { useNavigate } from "react-router-dom";
 import { collection, query, getDocs } from 'firebase/firestore';
@@ -10,6 +10,12 @@ import { db } from '../firebase';
 export function Card({category, value}){
   const {data} = useFetch(category, value);
   const [includeData, setIncludeData] = useState([]);
+
+  const extractImageFromMarkdown = (markdown) => {
+    const imageRegex = /!\[.*?\]\((.*?)\)/;
+    const match = imageRegex.exec(markdown);
+    return match ? match[1] : null;  // 이미지 URL 반환
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,22 +43,27 @@ export function Card({category, value}){
     <section class="section" data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
         <article class="post" >
           <ul class="post-list">
-            {includeData && includeData.map((item) => 
-              <PostCard key={item.id} onClick={()=>navigate(`/post/${item.id}`)}>
-                <PostImage/>
-                <PostContent>
-                  <PostCategory>
-                    <PostComment>{item.category.current}</PostComment>
-                    <PostComment><i class="fas fa-comments-alt"></i> {item.commentSu}</PostComment>
-                  </PostCategory>
-                  <h4>{item.title}</h4>
-                  <PostMeta>
-                    <span>DEVH</span>|
-                    <span>{new Date(item.date).toLocaleDateString()}</span>
-                  </PostMeta>
-                </PostContent>
-              </PostCard>
-            )}
+          {includeData &&
+              includeData.map((item, key) => {
+                const imageUrl = extractImageFromMarkdown(item.contents); // 이미지 URL 추출
+                return(
+                <PostCard key={key} onClick={() => navigate(`/post/${item.id}`)}>
+                  <PostImage image={imageUrl} />
+                  <PostContent>
+                    <PostCategory>
+                      <PostComment>{item.category.current}</PostComment>
+                      <PostComment>
+                        <i class="fas fa-comments-alt"></i> {item.commentSu}{" "}
+                      </PostComment>
+                    </PostCategory>
+                    <PostTitle>{item.title}</PostTitle>
+                    <PostMeta>
+                      <span>DEVH</span>|
+                      <span>{new Date(item.date).toLocaleDateString()}</span>
+                    </PostMeta>
+                  </PostContent>
+                </PostCard>
+              )})}
           </ul>
         </article>
       </section>
@@ -82,7 +93,7 @@ const PostImage = styled.div`
   height: 270px;
   overflow: hidden;
   border-radius: 2em 2em 0 0;
-  background: url(${image}) no-repeat 50%;
+  background: ${({ image }) => image ? `url(${image}) no-repeat 50%` : `url(${defaultImage}) no-repeat 50%`};
   background-size: cover;
   background-color: black;
   object-fit: contain;
@@ -121,4 +132,11 @@ padding: 0.5em 1em;
 background-color: rgb(219 234 254);
 border-radius: 2em;
 color: var(--font-main-color);
-`
+`;
+
+const PostTitle = styled.h4`
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space : nowrap;
+`;

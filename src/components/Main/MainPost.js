@@ -3,7 +3,7 @@ import { forwardRef, useEffect, useState } from "react";
 // firestore의 메서드 import
 import { collection, getDocs, query } from "firebase/firestore";
 import styled from "styled-components";
-import image from "../../banner.png";
+import defaultImage from "../../banner.png";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../customFn/useFetch";
 
@@ -12,6 +12,13 @@ const MainPost = forwardRef((props, ref) => {
   const [listData, setListData] = useState([]);
   const navigate = useNavigate();
   const { data, loading } = useFetch();
+
+  const extractImageFromMarkdown = (markdown) => {
+    const imageRegex = /!\[.*?\]\((.*?)\)/;
+    const match = imageRegex.exec(markdown);
+    return match ? match[1] : null;  // 이미지 URL 반환
+  };
+
   // async - await로 데이터 fetch 대기
   async function fetchData() {
     if (!loading && data.length > 0) {
@@ -83,9 +90,11 @@ const MainPost = forwardRef((props, ref) => {
         <article className="post">
           <ul className="post-list">
             {includeData &&
-              includeData.map((item, key) => (
+              includeData.map((item, key) => {
+                const imageUrl = extractImageFromMarkdown(item.contents); // 이미지 URL 추출
+                return(
                 <PostCard key={key} onClick={() => navigate(`/post/${item.id}`)}>
-                  <PostImage />
+                  <PostImage image={imageUrl} />
                   <PostContent>
                     <PostCategory>
                       <PostComment>{item.category.current}</PostComment>
@@ -100,7 +109,7 @@ const MainPost = forwardRef((props, ref) => {
                     </PostMeta>
                   </PostContent>
                 </PostCard>
-              ))}
+              )})}
           </ul>
         </article>
         <article>
@@ -169,9 +178,8 @@ const PostImage = styled.div`
   height: 270px;
   overflow: hidden;
   border-radius: 2em 2em 0 0;
-  background: url(${image}) no-repeat 50%;
+  background: ${({ image }) => image ? `url(${image}) no-repeat 50%` : `url(${defaultImage}) no-repeat 50%`};
   background-size: cover;
-  background-color: black;
   object-fit: contain;
 `;
 
