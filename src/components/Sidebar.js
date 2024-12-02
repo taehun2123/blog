@@ -138,7 +138,7 @@ export function Sidebar() {
       <Menu>
         <h4 className="effectFont">About Me</h4>
         <MenuList>
-          <MenuItem>
+          <MenuItem onClick={()=>window.open("https://taehun2123.notion.site/Taehun-14b0b4f1603a80faa51cfca9eeded39a", '_blank')}>
             <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
               <Icon>
                 <i class="fas fa-file-user"></i>
@@ -149,7 +149,7 @@ export function Sidebar() {
               <i className="far fa-angle-right"></i>
             </span>
           </MenuItem>
-          <MenuItem>
+          <MenuItem onClick={()=>window.open("https://taehun2123.notion.site/14b0b4f1603a810792d2da9875c1e5b4?v=14b0b4f1603a8103a278000c8ca9c354", '_blank')}>
             <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
               <Icon>
                 <i class="fas fa-file-chart-line"></i>

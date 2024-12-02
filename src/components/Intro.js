@@ -29,6 +29,10 @@ const Intro = forwardRef((props, ref) => {
     visible: { opacity: 1, y: 0 }
   };
 
+  function handleViewResume(){
+    window.open("https://taehun2123.notion.site/Taehun-14b0b4f1603a80faa51cfca9eeded39a", "_blank");
+  }
+
   return (
     <section ref={ref} style={{ padding: "7em 0", overflowX: 'hidden' }}>
       <Banner
@@ -51,8 +55,7 @@ const Intro = forwardRef((props, ref) => {
         <LeftSideBox>
           <ImageWrapper />
           <LinkBox>
-            <IntroLink>이력서 열람하기</IntroLink>
-            <IntroLink>프로젝트 열람하기</IntroLink>
+            <IntroLink onClick={()=> handleViewResume()}>이력서 열람하기</IntroLink>
           </LinkBox>
         </LeftSideBox>
         <RightSideBox>
