@@ -132,8 +132,8 @@ const Side = styled.aside`
   top: 0;
   right: 0;
   min-width: 250px;
-  height: 100vh;
-  position: ${(props) => (props.$isOpened && "sticky")};
+  height: 100dvh;
+  position: fixed;
   background: rgba(15, 23, 42, 0.9);
   border-left: 1px solid var(--surface-border-color);
   box-shadow: -18px 0 44px rgba(2, 6, 23, 0.36);
@@ -146,8 +146,7 @@ const Side = styled.aside`
   overflow-x: hidden;
   @media (max-width: 720px) {
     min-width: 100vw;
-    min-height: 100vh;
-    position: fixed;
+    min-height: 100dvh;
   }
 `;
 

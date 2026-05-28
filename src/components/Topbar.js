@@ -61,7 +61,7 @@ export function Topbar({ isFixed }) {
           <div className="animate__animated animate__swing animate__infinite">
             /&gt;
           </div>
-          <span>EVH WORLD</span>
+          <span>EVTH SPACE</span>
         </h2>
         <Box>
           {/* 사이드바 아이콘 */}

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Topbar } from "./Topbar";
 import { TypeWriter } from "./TypeWriter";
 
-export function BlogHeader({ isFixed = false, eyebrow = "DEVH BLOG", prev = "", writer = [], children }) {
+export function BlogHeader({ isFixed = false, eyebrow = "DEVTH SPACE :: DEV-TaeHun SPACE", prev = "", writer = [], children }) {
   const headerRef = useRef(null);
   const scrollLockRef = useRef(false);
 

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 // firestore의 메서드 import
 import styled from "styled-components";
-import defaultImage from "../banner.png";
 import useFetch from "../customFn/useFetch";
 import { useNavigate } from "react-router-dom";
 import { collection, query, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
+import planetFallback from "../assets/planet-fallback.png";
 
 export function Card({category, value}){
   const {data} = useFetch(category, value);
@@ -48,7 +48,7 @@ export function Card({category, value}){
                 const imageUrl = extractImageFromMarkdown(item.contents); // 이미지 URL 추출
                 return(
                 <PostCard key={key} onClick={() => navigate(`/post/${item.id}`)}>
-                  <PostImage image={imageUrl} />
+                  <PostImage $image={imageUrl} />
                   <PostContent>
                     <PostCategory>
                       <PostComment>{item.category.current}</PostComment>
@@ -90,14 +90,13 @@ const PostCard = styled.li`
 const PostImage = styled.div`
   display: flex;
   justify-content: center;
-  alien-items: center;
+  align-items: center;
   width: 100%;
   height: 270px;
   overflow: hidden;
   border-radius: 2em 2em 0 0;
-  background: ${({ image }) => image ? `url(${image}) no-repeat 50%` : `url(${defaultImage}) no-repeat 50%`};
+  background: ${({ $image }) => `url(${$image || planetFallback}) no-repeat 50%`};
   background-size: cover;
-  background-color: black;
   object-fit: contain;
 `
 

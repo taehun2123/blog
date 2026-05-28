@@ -22,7 +22,7 @@ export function Board({ isFixed, targetComponentRef }) {
       <div className="body">
         <BlogHeader
           isFixed={isFixed}
-          eyebrow="DEVH BOARD"
+          eyebrow="DEVTH BOARD"
           writer={[`${name} 관련 게시글`, `${name} 이야기`]}
         />
         <main className="main" ref={targetComponentRef}>

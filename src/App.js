@@ -10,6 +10,7 @@ import { useLoginActions } from './store/useIsLogin';
 import { useAdminActions } from './store/useAdmin';
 import MetaData from './components/MetaData';
 import { SpaceBackground } from './components/SpaceBackground';
+import { Footer } from './components/Footer';
 
 function App() {
   useEffect(() => {
@@ -62,6 +63,7 @@ function App() {
       <SpaceBackground fixed />
       <motion.div style={{ scaleX: scrollYProgress }} className="bar" />
       <Router isFixed={isFixed} targetComponentRef={targetComponentRef}/>
+      <Footer />
     </MetaData>
   );
 }

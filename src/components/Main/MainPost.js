@@ -3,9 +3,9 @@ import { forwardRef, useCallback, useEffect, useState } from "react";
 // firestore의 메서드 import
 import { collection, getDocs, query } from "firebase/firestore";
 import styled from "styled-components";
-import defaultImage from "../../banner.png";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../customFn/useFetch";
+import planetFallback from "../../assets/planet-fallback.png";
 
 const MainPost = forwardRef(({ headerAction }, ref) => {
   const [includeData, setIncludeData] = useState([]);
@@ -204,12 +204,12 @@ const EmptyMessage = styled.p`
 const PostImage = styled.div`
   display: flex;
   justify-content: center;
-  alien-items: center;
+  align-items: center;
   width: 100%;
   height: 270px;
   overflow: hidden;
   border-radius: 2em 2em 0 0;
-  background: ${({ $image }) => $image ? `url(${$image}) no-repeat 50%` : `url(${defaultImage}) no-repeat 50%`};
+  background: ${({ $image }) => `url(${$image || planetFallback}) no-repeat 50%`};
   background-size: cover;
   object-fit: contain;
 `;
