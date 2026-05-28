@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { motion, useScroll } from "framer-motion";
 import './App.css';
 import Router from "./Router";
 import AOS from 'aos';
@@ -8,6 +9,7 @@ import { authService } from './firebase'
 import { useLoginActions } from './store/useIsLogin';
 import { useAdminActions } from './store/useAdmin';
 import MetaData from './components/MetaData';
+import { SpaceBackground } from './components/SpaceBackground';
 
 function App() {
   useEffect(() => {
@@ -16,6 +18,7 @@ function App() {
 
   const [isFixed, setIsFixed] = useState(false); //상단바 고정 상태관리
   const targetComponentRef = useRef(null); // 특정 컴포넌트 DOM 타겟
+  const { scrollYProgress } = useScroll();
   const {setIsLoggedIn, setUserData, setUserImg} = useLoginActions();
   const {setIsAdmin} = useAdminActions();
   
@@ -56,6 +59,8 @@ function App() {
   
   return (
     <MetaData>
+      <SpaceBackground fixed />
+      <motion.div style={{ scaleX: scrollYProgress }} className="bar" />
       <Router isFixed={isFixed} targetComponentRef={targetComponentRef}/>
     </MetaData>
   );

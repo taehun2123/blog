@@ -1,5 +1,5 @@
 import { db } from "../../firebase";
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useCallback, useEffect, useState } from "react";
 // firestore의 메서드 import
 import { collection, getDocs, query } from "firebase/firestore";
 import styled from "styled-components";
@@ -7,7 +7,7 @@ import defaultImage from "../../banner.png";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../customFn/useFetch";
 
-const MainPost = forwardRef((props, ref) => {
+const MainPost = forwardRef(({ headerAction }, ref) => {
   const [includeData, setIncludeData] = useState([]);
   const [listData, setListData] = useState([]);
   const navigate = useNavigate();
@@ -20,11 +20,11 @@ const MainPost = forwardRef((props, ref) => {
   };
 
   // async - await로 데이터 fetch 대기
-  async function fetchData() {
+  const fetchData = useCallback(async () => {
     if (!loading && data.length > 0) {
       try {
         const newData = await Promise.all(
-          data?.splice(0, 4)?.map(async (item) => {
+          data?.slice(0, 4)?.map(async (item) => {
             const q = query(collection(db, "blogging", item.id, "Comments"));
             const querySnapshot = await getDocs(q);
             const comments = querySnapshot.docs.map((doc) => ({
@@ -38,7 +38,7 @@ const MainPost = forwardRef((props, ref) => {
           })
         );
         const allData = await Promise.all(
-          data?.splice(0)?.map(async (item) => {
+          data?.slice(4)?.map(async (item) => {
             const q = query(collection(db, "blogging", item.id, "Comments"));
             const querySnapshot = await getDocs(q);
             const comments = querySnapshot.docs.map((doc) => ({
@@ -56,12 +56,15 @@ const MainPost = forwardRef((props, ref) => {
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
+    } else if (!loading) {
+      setListData([]);
+      setIncludeData([]);
     }
-  }
+  }, [data, loading]);
   // 최초 마운트 시에 getTest import
   useEffect(() => {
     fetchData();
-  }, [loading, data]);
+  }, [fetchData]);
 
   return (
     <div
@@ -71,22 +74,17 @@ const MainPost = forwardRef((props, ref) => {
         paddingBottom: "5em",
       }}
     >
-      <h1
-        className="effectFont"
-        data-aos="fade-down"
-        aos-offset="600"
-        aos-easing="ease-in-sine"
-        aos-duration="1200"
-      >
-        <i class="fas fa-pencil-alt"></i> Posts
-      </h1>
-      <section
-        className="section"
-        data-aos="fade-up"
-        aos-offset="600"
-        aos-easing="ease-in-sine"
-        aos-duration="1200"
-      >
+      <PostHeader>
+        <h1 className="effectFont">
+          <i className="fas fa-pencil-alt"></i> Posts
+        </h1>
+        {headerAction}
+      </PostHeader>
+      <section className="section">
+        {loading && <EmptyMessage>게시글을 불러오는 중입니다.</EmptyMessage>}
+        {!loading && includeData.length === 0 && listData.length === 0 && (
+          <EmptyMessage>아직 작성된 게시글이 없습니다.</EmptyMessage>
+        )}
         <article className="post">
           <ul className="post-list">
             {includeData &&
@@ -94,12 +92,12 @@ const MainPost = forwardRef((props, ref) => {
                 const imageUrl = extractImageFromMarkdown(item.contents); // 이미지 URL 추출
                 return(
                 <PostCard key={key} onClick={() => navigate(`/post/${item.id}`)}>
-                  <PostImage image={imageUrl} />
+                  <PostImage $image={imageUrl} />
                   <PostContent>
                     <PostCategory>
                       <PostComment>{item.category.current}</PostComment>
                       <PostComment>
-                        <i class="fas fa-comments-alt"></i> {item.commentSu}{" "}
+                        <i className="fas fa-comments-alt"></i> {item.commentSu}{" "}
                       </PostComment>
                     </PostCategory>
                     <PostTitle>{item.title}</PostTitle>
@@ -135,20 +133,43 @@ const MainPost = forwardRef((props, ref) => {
 
 export default MainPost;
 
+const PostHeader = styled.div`
+  width: 90vw;
+  max-width: 1100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  margin-bottom: 0.5em;
+
+  h1 {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 640px) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+`;
+
 const PostListGroup = styled.ul`
   width: 90vw;
+  max-width: 1100px;
+  margin-top: 2em;
 `
 
 const PostListItem = styled.li`
   width: 100%;
-  box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.1);
+  background: rgba(15, 23, 42, 0.78);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.24);
   border-radius: 1em;
   cursor: pointer;
   transition: background 0.5s, color 0.5s, box-shadow 0.5s, transform 0.5s;
     &:hover {
-    background: cornflowerblue;
+    background: rgba(37, 99, 235, 0.82);
     color: white;
-    box-shadow: 3px 5px 6px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 24px 50px rgba(37, 99, 235, 0.22);
     transform: translateY(-10px);
   }
 `
@@ -159,15 +180,25 @@ const PostCard = styled.li`
   max-height: 400px;
   min-height: 400px;
   border-radius: 2em;
-  box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.28);
   transition: background 0.5s, color 0.5s, box-shadow 0.5s, transform 0.5s;
   cursor: pointer;
   &:hover {
-    background: cornflowerblue;
+    background: rgba(37, 99, 235, 0.82);
     color: white;
-    box-shadow: 3px 5px 6px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 24px 50px rgba(37, 99, 235, 0.22);
     transform: translateY(-10px);
   }
+`;
+
+const EmptyMessage = styled.p`
+  width: 100%;
+  padding: 3em 1em;
+  box-sizing: border-box;
+  text-align: center;
+  color: #cbd5e1;
 `;
 
 const PostImage = styled.div`
@@ -178,7 +209,7 @@ const PostImage = styled.div`
   height: 270px;
   overflow: hidden;
   border-radius: 2em 2em 0 0;
-  background: ${({ image }) => image ? `url(${image}) no-repeat 50%` : `url(${defaultImage}) no-repeat 50%`};
+  background: ${({ $image }) => $image ? `url(${$image}) no-repeat 50%` : `url(${defaultImage}) no-repeat 50%`};
   background-size: cover;
   object-fit: contain;
 `;
@@ -223,9 +254,10 @@ const PostCategory = styled.div`
 const PostComment = styled.div`
   font-size: 12px;
   padding: 0.5em 1em;
-  background-color: rgb(219 234 254);
+  background: rgba(59, 130, 246, 0.16);
+  border: 1px solid rgba(147, 197, 253, 0.22);
   border-radius: 2em;
-  color: var(--font-main-color);
+  color: #bfdbfe;
 `;
 
 const PostTitle = styled.h4`

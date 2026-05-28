@@ -1,9 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Logo } from "../components/Logo";
+import { BlogHeader } from "../components/BlogHeader";
 import { Sidebar } from "../components/Sidebar";
 import { Card } from "../components/Card";
-import logoVideo from "../components/Items/logo_background.mp4";
-import { TypeWriter } from "../components/TypeWriter";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { useAdmin } from "../store/useAdmin";
@@ -22,7 +20,11 @@ export function Board({ isFixed, targetComponentRef }) {
   return (
     <div className="container">
       <div className="body">
-        <Logo isFixed={isFixed} background={logoVideo} writer={<TypeWriter prev={'할 수 있다,'} writer={[`${name} !!`, 'Developer !!']}/>}/>
+        <BlogHeader
+          isFixed={isFixed}
+          eyebrow="DEVH BOARD"
+          writer={[`${name} 관련 게시글`, `${name} 이야기`]}
+        />
         <main className="main" ref={targetComponentRef}>
           <div className="wrapper">
             <BoardTitle>
@@ -39,7 +41,6 @@ export function Board({ isFixed, targetComponentRef }) {
             }
           </div>
         </main>
-        <footer></footer>
       </div>
       <Sidebar />
     </div>

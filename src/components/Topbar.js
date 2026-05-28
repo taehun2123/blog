@@ -58,7 +58,7 @@ export function Topbar({ isFixed }) {
             });
           }}
         >
-          <div class="animate__animated animate__swing animate__infinite">
+          <div className="animate__animated animate__swing animate__infinite">
             /&gt;
           </div>
           <span>EVH WORLD</span>

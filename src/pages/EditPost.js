@@ -1,9 +1,7 @@
-import { Logo } from "../components/Logo";
+import { BlogHeader } from "../components/BlogHeader";
 import { Sidebar } from "../components/Sidebar";
-import { TypeWriter } from "../components/TypeWriter";
-import logoVideo from "../components/Items/logo_background.mp4";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import useFetch from "../customFn/useFetch";
 import { usePost, usePostActions } from "../store/usePostStore";
@@ -152,20 +150,16 @@ export function EditPost({ isFixed, targetComponentRef }) {
   return (
     <div className="container">
       <div className="body">
-        <Logo
+        <BlogHeader
           isFixed={isFixed}
-          background={logoVideo}
-          writer={
-            <TypeWriter
-              prev={"[ 글 쓰기 공간 ]"}
-              writer={["오늘 하루도", "수고했어", "정말 고생했어"]}
-            />
-          }
+          eyebrow="DEVH EDITOR"
+          prev="[ 글 쓰기 공간 ]"
+          writer={["오늘 하루도", "수고했어", "정말 고생했어"]}
         />
         <main className="main" ref={targetComponentRef}>
           <div className="wrapper">
             <h1 className="effectFont">
-              <i class="fas fa-pencil-paintbrush"></i> 포스트 작성하기
+              <i className="fas fa-pencil-paintbrush"></i> 포스트 작성하기
             </h1>
             <InputBox
               list="prev"
@@ -194,7 +188,7 @@ export function EditPost({ isFixed, targetComponentRef }) {
                 placeholder="제목을 입력해주세요"
               />
             </TitleBox>
-            <div data-color-mode="light">
+            <EditorPanel data-color-mode="dark">
               <MDEditor
                 commands={[...commands.getCommands(), image]}
                 height={865}
@@ -207,14 +201,13 @@ export function EditPost({ isFixed, targetComponentRef }) {
                 onClose={closeModal}
                 handleFileChange={handleFileChange}
               />
-            </div>
+            </EditorPanel>
             <ButtonBox>
               <SaveButton>임시저장</SaveButton>
               <Button onClick={() => handleUploadPost()}>게시하기</Button>
             </ButtonBox>
           </div>
         </main>
-        <footer></footer>
       </div>
       <Sidebar />
     </div>
@@ -222,7 +215,7 @@ export function EditPost({ isFixed, targetComponentRef }) {
 }
 
 const TitleBox = styled.div`
-  border: 1px solid lightgray;
+  border: 1px solid rgba(148, 163, 184, 0.22);
   border-radius: 0.5em;
   width: 100%;
   padding: 1em 0;
@@ -232,6 +225,7 @@ const TitleBox = styled.div`
   align-items: center;
   box-sizing: border-box;
   margin-bottom: 0.5em;
+  background: rgba(15, 23, 42, 0.78);
 `;
 
 const TitleInputBox = styled.input`
@@ -240,6 +234,20 @@ const TitleInputBox = styled.input`
   outline: none;
   font-size: 36px;
   border: none;
+  background: transparent;
+  color: #e5e7eb;
+
+  &::placeholder {
+    color: #94a3b8;
+  }
+`;
+
+const EditorPanel = styled.div`
+  padding: 1em;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 1.2em;
+  background: rgba(15, 23, 42, 0.82);
+  box-shadow: 0 24px 60px rgba(2, 6, 23, 0.28);
 `;
 
 const ButtonBox = styled.div`
@@ -269,15 +277,15 @@ const Button = styled.button`
 
 const SaveButton = styled.button`
   padding: 1em 2em;
-  background: var(--button-sub-color);
+  background: rgba(148, 163, 184, 0.18);
   border-radius: 1em;
   cursor: pointer;
-  border: none;
-  color: black;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  color: #e5e7eb;
   font-weight: 750;
   transition: background 0.5s;
   &:hover {
-    background: var(--button-sub-hover-color);
+    background: rgba(148, 163, 184, 0.28);
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
 `;
@@ -286,5 +294,7 @@ const InputBox = styled.input`
   border-radius: 0.5em;
   padding: 0.5em;
   box-sizing: border-box;
-  border: 1px solid lightgray;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(15, 23, 42, 0.78);
+  color: #e5e7eb;
 `;

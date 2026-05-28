@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { useSidebar, useSidebarActions } from "../store/useSidebarStore";
-import profile from "./Items/profile.jpeg";
 import { useState } from "react";
-import { useHref, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useFetch from "../customFn/useFetch";
 
 export function Sidebar() {
@@ -53,13 +52,7 @@ export function Sidebar() {
 
     return (
       <div key={index}>
-        <MenuItem
-          style={{
-            background: isExpanded && "rgb(240, 240, 255)",
-            color: isExpanded && "var(--font-main-color)",
-          }}
-          onClick={() => handleCategoryClick(index)}
-        >
+        <MenuItem $isExpanded={isExpanded} onClick={() => handleCategoryClick(index)}>
           <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
             <Icon>{category.icon}</Icon>
             {category.title}
@@ -74,8 +67,8 @@ export function Sidebar() {
         </MenuItem>
 
         <SubCategoryList
-          isExpanded={isExpanded}
-          su={uniqueCategories.length}
+          $isExpanded={isExpanded}
+          $su={uniqueCategories.length}
         >
           {uniqueCategories.length > 0 ? (
             uniqueCategories.map((currentCategory, index) => {
@@ -121,47 +114,12 @@ export function Sidebar() {
   };
 
   return (
-    <Side isOpened={isOpened}>
+    <Side $isOpened={isOpened}>
       <CloseWindow>
         <CloseButton onClick={()=>setClosed()} className="fas fa-times"/>
       </CloseWindow>
-      {/* 상단 부분 */}
-      <Profile>
-        <Image />
-        <h4>Dev_hun</h4>
-        <IconBox>
-          <BoxIcon><a href="https://github.com/taehun2123" target="_blank" rel="noreferrer"><i class="fab fa-github-square fa-2xl"/></a></BoxIcon>
-          <BoxIcon><a href="https://instagram.com/1aehun2_" target="_blank" rel="noreferrer"><i class="fab fa-instagram-square fa-2xl"></i></a></BoxIcon>
-        </IconBox>
-      </Profile>
-      {/* 중단 - 메뉴 */}
       <Menu>
-        <h4 className="effectFont">About Me</h4>
-        <MenuList>
-          <MenuItem onClick={()=>window.open("https://taehun2123.notion.site/Taehun-14b0b4f1603a80faa51cfca9eeded39a", '_blank')}>
-            <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
-              <Icon>
-                <i class="fas fa-file-user"></i>
-              </Icon>
-              View Resume
-            </div>
-            <span>
-              <i className="far fa-angle-right"></i>
-            </span>
-          </MenuItem>
-          <MenuItem onClick={()=>window.open("https://taehun2123.notion.site/14b0b4f1603a810792d2da9875c1e5b4?v=14b0b4f1603a8103a278000c8ca9c354", '_blank')}>
-            <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
-              <Icon>
-                <i class="fas fa-file-chart-line"></i>
-              </Icon>
-              View Project
-            </div>
-            <span>
-              <i className="far fa-angle-right"></i>
-            </span>
-          </MenuItem>
-        </MenuList>
-        <h4 className="effectFont">Stack-Blog</h4>
+        <h4 className="effectFont">Categories</h4>
         <MenuList>{categories.map(renderCategory)}</MenuList>
       </Menu>
     </Side>
@@ -170,14 +128,17 @@ export function Sidebar() {
 
 // Styled Components Source
 const Side = styled.aside`
-  display: ${(props) => (props.isOpened ? "flex" : "none")};
+  display: ${(props) => (props.$isOpened ? "flex" : "none")};
   top: 0;
   right: 0;
   min-width: 250px;
   height: 100vh;
-  position: ${(props) => (props.isOpened && "sticky")};
-  background-color: white;
-  box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
+  position: ${(props) => (props.$isOpened && "sticky")};
+  background: rgba(15, 23, 42, 0.9);
+  border-left: 1px solid var(--surface-border-color);
+  box-shadow: -18px 0 44px rgba(2, 6, 23, 0.36);
+  color: var(--text-main-color);
+  backdrop-filter: blur(18px);
   z-index: 999;
   overflow-y: scroll;
   flex-direction: column;
@@ -198,25 +159,6 @@ const CloseWindow = styled.div`
   padding: 0.5em 1em;
 `
 
-const Profile = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2em 0;
-  border-bottom: 2px dotted lightblue;
-  gap: 0.5em;
-`;
-
-const Image = styled.div`
-  border-radius: 1em;
-  border: 3px solid lightblue;
-  width: 100px;
-  height: 100px;
-  background: url(${profile});
-  background-size: cover;
-`;
-
 const Menu = styled.div`
   padding: 1em;
   display: flex;
@@ -226,7 +168,7 @@ const Menu = styled.div`
 
 const MenuList = styled.ul`
   padding-bottom: 1em;
-  border-bottom: 2px dotted lightblue;
+  border-bottom: 2px dotted rgba(147, 197, 253, 0.42);
 `;
 
 const MenuItem = styled.li`
@@ -236,8 +178,11 @@ const MenuItem = styled.li`
   margin-top: 0.2em;
   cursor: pointer;
   border-radius: 0.5em;
+  background: ${({ $isExpanded }) => ($isExpanded ? "rgba(37, 99, 235, 0.2)" : "transparent")};
+  color: ${({ $isExpanded }) => ($isExpanded ? "#bfdbfe" : "inherit")};
   &:hover {
-    color: cornflowerblue;
+    background: rgba(59, 130, 246, 0.12);
+    color: #bfdbfe;
   }
 `;
 
@@ -247,9 +192,9 @@ const SubCategoryList = styled.ul`
   padding: 0 1rem;
   overflow: hidden;
   ${(props) =>
-    props.isExpanded
+    props.$isExpanded
       ? `
-  height: ${props.su ? props.su * 50 : 50}px ;
+  height: ${props.$su ? props.$su * 50 : 50}px ;
   opacity: 1;
   padding: 0.2rem 1rem;
   `
@@ -266,7 +211,7 @@ const SubCategoryItem = styled.li`
   margin-bottom: 0.5rem;
   padding: 0.5rem;
   &:hover {
-    background: linear-gradient(-45deg, cornflowerblue, #23a6d5, #23d5ab);
+    background: linear-gradient(-45deg, #93c5fd, #22d3ee, #5eead4);
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -303,26 +248,6 @@ const CloseButton = styled.i`
   cursor: pointer;
   font-size: 1.5em;
   &:hover{
-    color: red;
+    color: #f87171;
   }
-`
-const IconBox = styled.div`
-  margin-top: 0.5em;
-  padding: 0.5em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1em;
-  width: 80%;
-  border-radius: 1em;
-  box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
-`
-
-const BoxIcon = styled.div`
-&:hover{
-  background: linear-gradient(-45deg, #ee7752, #e73c7e);
-  background-clip: text;
-  animation: swing 0.5s ease-out;
-  -webkit-text-fill-color: transparent;
-}
 `

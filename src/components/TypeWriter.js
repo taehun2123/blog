@@ -1,7 +1,7 @@
 import Typewriter from "typewriter-effect";
-export function TypeWriter({prev, writer}){
+export function TypeWriter({prev, writer, className = "logo-text"}){
   return(
-    <div className="logo-text">
+    <div className={className}>
     {prev}
     <span style={{ color: "lightblue" }}>
       <Typewriter

@@ -40,9 +40,9 @@ export function Card({category, value}){
   const navigate = useNavigate();
   
   return(
-    <section class="section" data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
-        <article class="post" >
-          <ul class="post-list">
+    <section className="section" data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
+        <article className="post" >
+          <ul className="post-list">
           {includeData &&
               includeData.map((item, key) => {
                 const imageUrl = extractImageFromMarkdown(item.contents); // 이미지 URL 추출
@@ -53,7 +53,7 @@ export function Card({category, value}){
                     <PostCategory>
                       <PostComment>{item.category.current}</PostComment>
                       <PostComment>
-                        <i class="fas fa-comments-alt"></i> {item.commentSu}{" "}
+                        <i className="fas fa-comments-alt"></i> {item.commentSu}{" "}
                       </PostComment>
                     </PostCategory>
                     <PostTitle>{item.title}</PostTitle>
@@ -74,13 +74,15 @@ const PostCard = styled.li`
   min-width: 300px;
   min-height: 400px;
   border-radius: 2em;
-  box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.28);
   transition: background 0.5s, color 0.5s, box-shadow 0.5s, transform 0.5s;
   cursor: pointer;
   &:hover {
-    background: cornflowerblue;
+    background: rgba(37, 99, 235, 0.82);
     color: white;
-    box-shadow: 3px 5px 6px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 24px 50px rgba(37, 99, 235, 0.22);
     transform: translateY(-10px);
   }
 `
@@ -129,9 +131,10 @@ alien-items: center;
 const PostComment = styled.div`
 font-size: 12px;
 padding: 0.5em 1em;
-background-color: rgb(219 234 254);
+background: rgba(59, 130, 246, 0.16);
+border: 1px solid rgba(147, 197, 253, 0.22);
 border-radius: 2em;
-color: var(--font-main-color);
+color: #bfdbfe;
 `;
 
 const PostTitle = styled.h4`

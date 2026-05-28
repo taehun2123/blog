@@ -11,12 +11,14 @@ const Backdrop = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(2, 6, 23, 0.68);
 `;
 
 const ModalContainer = styled(motion.div)`
   padding: 3em;
-  background-color: white;
+  background: rgba(15, 23, 42, 0.94);
+  border: 1px solid var(--surface-border-color);
+  color: var(--text-main-color);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -31,7 +33,9 @@ const ModalContainer = styled(motion.div)`
 const ModalInput = styled.input`
 outline: none;
 border-radius: 0.2em;
-border: 1px solid lightgray;
+border: 1px solid var(--surface-border-color);
+background: var(--background-input-color);
+color: var(--text-main-color);
 padding: 1rem;
 font-size: 1.2em;
 `

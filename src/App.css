@@ -5,7 +5,7 @@
 html {
   padding: 0;
   margin: 0;
-  background-color: white;
+  background: #020617;
   font-family: "NanumSquare";
 }
 
@@ -14,6 +14,8 @@ body {
   margin: 0;
   overflow-x: hidden;
   z-index: 1;
+  background: #020617;
+  color: #e5e7eb;
 }
 
 h1,
@@ -45,7 +47,7 @@ h3 {
 
 a {
   text-decoration: none;
-  color: black;
+  color: inherit;
 }
 
 article,
@@ -70,7 +72,8 @@ code {
   padding: 3px 6px;
   border: none;
   border-radius: 3px;
-  background-color: #e9ecef;
+  background-color: rgba(15, 23, 42, 0.86);
+  color: #bfdbfe;
   font-size: 1.6rem;
   font-family: "Pretendard", "Malgun Gothic", sans-serif;
 }
@@ -132,6 +135,8 @@ code {
 /* ============ 레이아웃 & 큰 틀 관련 스타일 ============= */
 
 .container {
+  position: relative;
+  z-index: 1;
   margin: 0;
   padding: 0;
   max-width: 100%;
@@ -187,8 +192,8 @@ footer {
   display: block;
   z-index: 990;
   height: 200px;
-  border-top: 1px solid lightgray;
-  background-color: white;
+  border-top: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(2, 6, 23, 0.94);
 }
 
 /* =-=-=-=-=-=-=-= 자주쓰는 목록 변수화 =-=-=-=-=-=-=-= */
@@ -200,12 +205,17 @@ footer {
   --button-hover-color: rgb(108, 141, 240);
   --button-sub-color: lightgray;
   --button-sub-hover-color: rgb(222, 220, 220);
-  --site-main-color: rgb(171, 199, 251);
-  --site-sub-color: rgb(152, 186, 249);
-  --background-main-color: rgb(247, 250, 255);
-  --background-sub-color: rgb(211, 234, 250);
-  --background-input-color: rgb(225, 241, 251);
-  --font-icon-color: lightgray;
+  --site-main-color: rgba(37, 99, 235, 0.72);
+  --site-sub-color: rgba(59, 130, 246, 0.8);
+  --background-main-color: rgba(15, 23, 42, 0.82);
+  --background-sub-color: rgba(30, 41, 59, 0.76);
+  --background-input-color: rgba(15, 23, 42, 0.86);
+  --font-icon-color: #cbd5e1;
+  --surface-main-color: rgba(15, 23, 42, 0.82);
+  --surface-sub-color: rgba(30, 41, 59, 0.76);
+  --surface-border-color: rgba(148, 163, 184, 0.2);
+  --text-main-color: #e5e7eb;
+  --text-muted-color: #94a3b8;
 }
 
 /* =-=-=-=-=-=-=-= 배너 스타일 =-=-=-=-=-=-=-= */
@@ -236,7 +246,7 @@ footer {
   position: absolute;
   top: 100vh; /* 페이지 하단에 위치하도록 설정 */
   width: 100%;
-  background-color: white;
+  background-color: #020617;
   z-index: 0;
 }
 
@@ -274,12 +284,14 @@ footer {
 
 /* 상단바가 고정됐을 때 */
 .nav.fixed {
-  background-color: #fff;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(18px);
   position: fixed;
   max-width: inherit;
   top: 10px;
   transition: 0.5s ease-in-out;
-  box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.34);
   border-radius: 10px;
   left: 10%;
   right: 10%;
@@ -298,10 +310,10 @@ footer {
 
 .nav.fixed .nav-logo {
   transition: 0.5s ease-in-out;
-  color: var(--font-main-color);
+  color: #dbeafe;
 }
 .nav.fixed svg {
-  fill: var(--font-main-color);
+  fill: #bfdbfe;
 }
 
 .bar {
@@ -368,9 +380,10 @@ footer {
 /* =-=-=-=-=-=-=-= 중단 메인 =-=-=-=-=-=-=-= */
 
 .main {
-  padding: 60px 0 10px 0;
+  padding: 0 0 10px 0;
   flex: 1;
-  background-color: white;
+  background: transparent;
+  color: #e5e7eb;
 }
 
 .section {
