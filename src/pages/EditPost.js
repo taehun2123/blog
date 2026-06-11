@@ -75,11 +75,11 @@ export function EditPost({ isFixed, targetComponentRef }) {
   const image = {
     name: "image",
     keyCommand: "image",
-    buttonProps: { "aria-label": "Insert Image" },
+    buttonProps: { "aria-label": "이미지 업로드", title: "이미지 업로드" },
     icon: (
       <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
         <path
-          fill="#000000"
+          fill="currentColor"
           d="M480 416v16c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V176c0-26.5 21.5-48 48-48h16v208c0 44.1 35.9 80 80 80h336zm96-80V80c0-26.5-21.5-48-48-48H144c-26.5 0-48 21.5-48 48v256c0 26.5 21.5 48 48 48h384c26.5 0 48-21.5 48-48zM256 128c0 26.5-21.5 48-48 48s-48-21.5-48-48 21.5-48 48-48 48 21.5 48 48zm-96 144l55.5-55.5c4.7-4.7 12.3-4.7 17 0L272 256l135.5-135.5c4.7-4.7 12.3-4.7 17 0L512 208v112H160v-48z"
         />
       </svg>
@@ -92,11 +92,11 @@ export function EditPost({ isFixed, targetComponentRef }) {
   const htmlAttachment = {
     name: "htmlAttachment",
     keyCommand: "htmlAttachment",
-    buttonProps: { "aria-label": "Insert HTML Attachment" },
+    buttonProps: { "aria-label": "HTML 첨부", title: "HTML 첨부" },
     icon: (
       <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
         <path
-          fill="#000000"
+          fill="currentColor"
           d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zM164.6 121.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L75.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3zm310.7 0c-12.5 12.5-12.5 32.8 0 45.3l89.4 89.3-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0z"
         />
       </svg>
@@ -117,6 +117,15 @@ export function EditPost({ isFixed, targetComponentRef }) {
     setModalOpen(false); // 모달 닫기
   };
 
+  const insertEditorContent = (api, value) => {
+    if (api?.replaceSelection) {
+      api.replaceSelection(value);
+      return;
+    }
+
+    setContents((prevContents = "") => `${prevContents}${prevContents ? "\n" : ""}${value}`);
+  };
+
   const handleFileChange = (event, api) => {
     const file = event.target.files[0];
     if (file) {
@@ -130,13 +139,14 @@ export function EditPost({ isFixed, targetComponentRef }) {
 
       handleFileUpload(file, uploadType, (url) => {
         if (uploadType === "html") {
-          api.replaceSelection(
+          insertEditorContent(
+            api,
             `<div class="html-attachment">\n  <iframe title="${escapeHtmlAttribute(file.name)}" src="${url}" loading="lazy" sandbox="allow-scripts allow-forms allow-popups"></iframe>\n  <a href="${url}" target="_blank" rel="noreferrer">HTML 첨부 새 탭에서 열기</a>\n</div>\n`
           );
           return;
         }
 
-        api.replaceSelection(`![](${url})\n`);
+        insertEditorContent(api, `![](${url})\n`);
       });
     }
     closeModal(); // 파일 선택 후 모달 닫기
@@ -228,6 +238,16 @@ export function EditPost({ isFixed, targetComponentRef }) {
               />
             </TitleBox>
             <EditorPanel data-color-mode="dark">
+              <UploadActionBar>
+                <UploadActionButton type="button" onClick={() => openUploadModal(null, "image")}>
+                  <i className="fas fa-image" aria-hidden="true"></i>
+                  이미지 업로드
+                </UploadActionButton>
+                <UploadActionButton type="button" onClick={() => openUploadModal(null, "html")}>
+                  <i className="fas fa-code" aria-hidden="true"></i>
+                  HTML 첨부
+                </UploadActionButton>
+              </UploadActionBar>
               <MDEditor
                 commands={[...commands.getCommands(), image, htmlAttachment]}
                 height={865}
@@ -289,6 +309,47 @@ const EditorPanel = styled.div`
   border-radius: 1.2em;
   background: rgba(15, 23, 42, 0.82);
   box-shadow: 0 24px 60px rgba(2, 6, 23, 0.28);
+`;
+
+const UploadActionBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65em;
+  margin-bottom: 0.85em;
+
+  @media (max-width: 640px) {
+    align-items: stretch;
+    flex-direction: column;
+  }
+`;
+
+const UploadActionButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55em;
+  min-height: 42px;
+  padding: 0 1em;
+  border: 1px solid rgba(147, 197, 253, 0.28);
+  border-radius: 999px;
+  background: rgba(30, 41, 59, 0.78);
+  color: #dbeafe;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 900;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    border-color: rgba(94, 234, 212, 0.56);
+    background: rgba(37, 99, 235, 0.42);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #93c5fd;
+    outline-offset: 3px;
+  }
 `;
 
 const ButtonBox = styled.div`
