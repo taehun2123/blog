@@ -22,11 +22,15 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import ImageModal from "../components/ImageModal";
 
+const escapeHtmlAttribute = (value = "") =>
+  value.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
 export function EditPost({ isFixed, targetComponentRef }) {
   const { data } = useFetch();
   const [images, setImages] = useState([]);
   const [api, setApi] = useState([]);
   const [modalOpen, setModalOpen] = useState(false); // 모달 상태 추가
+  const [uploadType, setUploadType] = useState("image");
   const navigate = useNavigate();
   const { title, contents, category } = usePost();
   const { setTitle, setContents, setCategoryPrev, setCategoryCurrent, resetPost } =
@@ -81,12 +85,30 @@ export function EditPost({ isFixed, targetComponentRef }) {
       </svg>
     ),
     execute: (state, api) => {
-      uploadImage(api);
+      openUploadModal(api, "image");
     },
   };
 
-  const uploadImage = (api) => {
+  const htmlAttachment = {
+    name: "htmlAttachment",
+    keyCommand: "htmlAttachment",
+    buttonProps: { "aria-label": "Insert HTML Attachment" },
+    icon: (
+      <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+        <path
+          fill="#000000"
+          d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zM164.6 121.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L75.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3zm310.7 0c-12.5 12.5-12.5 32.8 0 45.3l89.4 89.3-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0z"
+        />
+      </svg>
+    ),
+    execute: (state, api) => {
+      openUploadModal(api, "html");
+    },
+  };
+
+  const openUploadModal = (api, type) => {
     setModalOpen(true); // 모달 열기
+    setUploadType(type);
     setApi(api);
     return handleFileChange;
   };
@@ -98,22 +120,39 @@ export function EditPost({ isFixed, targetComponentRef }) {
   const handleFileChange = (event, api) => {
     const file = event.target.files[0];
     if (file) {
-      handleImageUpload(file, (url) => {
+      const isHtmlFile = file.type === "text/html" || file.name.toLowerCase().endsWith(".html");
+
+      if (uploadType === "html" && !isHtmlFile) {
+        alert("HTML 파일만 첨부할 수 있습니다.");
+        closeModal();
+        return;
+      }
+
+      handleFileUpload(file, uploadType, (url) => {
+        if (uploadType === "html") {
+          api.replaceSelection(
+            `<div class="html-attachment">\n  <iframe title="${escapeHtmlAttribute(file.name)}" src="${url}" loading="lazy" sandbox="allow-scripts allow-forms allow-popups"></iframe>\n  <a href="${url}" target="_blank" rel="noreferrer">HTML 첨부 새 탭에서 열기</a>\n</div>\n`
+          );
+          return;
+        }
+
         api.replaceSelection(`![](${url})\n`);
       });
     }
     closeModal(); // 파일 선택 후 모달 닫기
   };
 
-  const handleImageUpload = (file, callback) => {
+  const handleFileUpload = (file, type, callback) => {
     const formData = new FormData();
-    formData.append("image", file);
+    formData.append(type, file);
 
-    const imageRef = ref(
+    const uploadRef = ref(
       storage,
-      `images/${Date.now()}_${file.name || "image.png"}`
+      `${type === "html" ? "html" : "images"}/${Date.now()}_${file.name || (type === "html" ? "attachment.html" : "image.png")}`
     );
-    uploadBytes(imageRef, file).then((snapshot) => {
+    const metadata = type === "html" ? { contentType: "text/html; charset=utf-8" } : undefined;
+
+    uploadBytes(uploadRef, file, metadata).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {
         // 콜백 함수를 이용하여 이미지 URL을 에디터에 삽입
         // 이미지 상태 업데이트
@@ -190,16 +229,18 @@ export function EditPost({ isFixed, targetComponentRef }) {
             </TitleBox>
             <EditorPanel data-color-mode="dark">
               <MDEditor
-                commands={[...commands.getCommands(), image]}
+                commands={[...commands.getCommands(), image, htmlAttachment]}
                 height={865}
                 value={contents}
                 onChange={setContents}
               />
               <ImageModal
+                accept={uploadType === "html" ? ".html,text/html" : "image/*"}
                 api={api}
                 isOpen={modalOpen}
                 onClose={closeModal}
                 handleFileChange={handleFileChange}
+                title={uploadType === "html" ? "HTML 첨부 업로드" : "이미지 업로드"}
               />
             </EditorPanel>
             <ButtonBox>

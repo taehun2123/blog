@@ -39,28 +39,20 @@ color: var(--text-main-color);
 padding: 1rem;
 font-size: 1.2em;
 `
-const Button = styled.button`
-  padding: 1em 2em;
-  background: var(--button-main-color);
-  border-radius: 0.5em;
-  cursor: pointer;
-  border: none;
-  color: white;
-  font-weight: 750;
-  transition: background 0.5s;
-  &:hover {
-    background: var(--button-hover-color);
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  }
-`;
-
 const modalVariants = {
   hidden: { opacity: 0, y: "100vh" },
   visible: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: "100vh" }
 };
 
-const ImageModal = ({api, isOpen, onClose, handleFileChange }) => {
+const ImageModal = ({
+  api,
+  accept = "image/*",
+  isOpen,
+  onClose,
+  handleFileChange,
+  title = "이미지 업로드",
+}) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -75,8 +67,8 @@ const ImageModal = ({api, isOpen, onClose, handleFileChange }) => {
             transition={{ duration: 0.5 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2>이미지 업로드</h2>
-            <ModalInput type="file" accept="image/*" onChange={(e)=>handleFileChange(e, api)} />
+            <h2>{title}</h2>
+            <ModalInput type="file" accept={accept} onChange={(e)=>handleFileChange(e, api)} />
           </ModalContainer>
         </Backdrop>
       )}

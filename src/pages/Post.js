@@ -625,6 +625,36 @@ const PostBody = styled.div`
   .wmde-markdown code {
     background: rgba(15, 23, 42, 0.9);
   }
+
+  .wmde-markdown .html-attachment {
+    margin: 1.4em 0;
+    overflow: hidden;
+    border: 1px solid rgba(147, 197, 253, 0.22);
+    border-radius: 1em;
+    background: rgba(2, 6, 23, 0.72);
+    box-shadow: 0 24px 60px rgba(2, 6, 23, 0.26);
+  }
+
+  .wmde-markdown .html-attachment iframe {
+    display: block;
+    width: 100%;
+    min-height: min(70vh, 720px);
+    border: 0;
+    background: white;
+  }
+
+  .wmde-markdown .html-attachment a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 44px;
+    padding: 0 1em;
+    border-top: 1px solid rgba(148, 163, 184, 0.16);
+    background: rgba(15, 23, 42, 0.86);
+    color: #bfdbfe;
+    font-size: 13px;
+    font-weight: 800;
+  }
 `;
 
 const HeadingMarkerGroup = styled.div`
