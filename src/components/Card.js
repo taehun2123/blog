@@ -6,10 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { collection, query, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import planetFallback from "../assets/planet-fallback.png";
+import Loading from "./Loading";
 
 export function Card({category, value}){
-  const {data} = useFetch(category, value);
+  const {data, loading, error} = useFetch(category, value);
   const [includeData, setIncludeData] = useState([]);
+  const [isPreparingCards, setIsPreparingCards] = useState(true);
 
   const extractImageFromMarkdown = (markdown) => {
     const imageRegex = /!\[.*?\]\((.*?)\)/;
@@ -18,8 +20,26 @@ export function Card({category, value}){
   };
 
   useEffect(() => {
+    let isActive = true;
+
+    if (loading) {
+      setIsPreparingCards(true);
+      return () => {
+        isActive = false;
+      };
+    }
+
+    setIsPreparingCards(true);
+
     const fetchData = async () => {
-      const newData = await Promise.all(data?.map(async (item) => {
+      if (data.length === 0) {
+        setIncludeData([]);
+        setIsPreparingCards(false);
+        return;
+      }
+
+      try {
+        const newData = await Promise.all(data?.map(async (item) => {
           const q = query(collection(db, 'blogging', item.id, 'Comments'));
           const querySnapshot = await getDocs(q);
           const comments = querySnapshot.docs.map((doc) => ({
@@ -31,16 +51,37 @@ export function Card({category, value}){
           commentSu: comments.length
         };
       }));
-      setIncludeData(newData);
+        if (!isActive) return;
+        setIncludeData(newData);
+      } catch (error) {
+        console.error("Error fetching card data: ", error);
+        if (!isActive) return;
+        setIncludeData([]);
+      } finally {
+        if (isActive) setIsPreparingCards(false);
+      }
     };
 
     fetchData();
-  }, [data]);
+
+    return () => {
+      isActive = false;
+    };
+  }, [data, loading]);
 
   const navigate = useNavigate();
+  const isBusy = loading || isPreparingCards;
   
   return(
     <section className="section" data-aos="fade-up" aos-offset="600" aos-easing="ease-in-sine" aos-duration="1200">
+        {isBusy && <Loading message="게시글을 불러오는 중입니다." />}
+        {!isBusy && error && (
+          <EmptyMessage>게시글을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</EmptyMessage>
+        )}
+        {!isBusy && !error && includeData.length === 0 && (
+          <EmptyMessage>해당 게시글이 없습니다.</EmptyMessage>
+        )}
+        {!isBusy && !error && (
         <article className="post" >
           <ul className="post-list">
           {includeData &&
@@ -66,9 +107,18 @@ export function Card({category, value}){
               )})}
           </ul>
         </article>
+        )}
       </section>
   )
 }
+
+const EmptyMessage = styled.p`
+  width: 100%;
+  padding: 3em 1em;
+  box-sizing: border-box;
+  text-align: center;
+  color: #cbd5e1;
+`;
 
 const PostCard = styled.li`
   min-width: 300px;

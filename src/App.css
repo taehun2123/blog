@@ -173,21 +173,6 @@ code {
 }
 
 
-.loading {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
-  margin: 0 auto;
-  color: brown;
-  align-items: center;
-  background-color: black;
-  opacity: 0.8;
-  font-size: 100px;
-}
-
 footer {
   display: block;
   z-index: 990;

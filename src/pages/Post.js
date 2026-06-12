@@ -18,6 +18,7 @@ import { useLogin, useUserData } from "../store/useIsLogin";
 import { useAdmin } from "../store/useAdmin";
 import Modal from "../components/Modal";
 import MDEditor from "@uiw/react-md-editor";
+import Loading from "../components/Loading";
 
 const formatPhoneTime = () =>
   new Date().toLocaleTimeString("ko-KR", {
@@ -71,10 +72,12 @@ export function Post({ isFixed, targetComponentRef }) {
   const userData = useUserData();
   const isAdmin = useAdmin();
   const [data, setData] = useState(null);
+  const [postLoading, setPostLoading] = useState(true);
+  const [postError, setPostError] = useState(null);
   const { author, comment, passwd } = useComment();
   const { setAuthor, setComment, setPasswd, resetCommentInput } =
     useCommentActions();
-  const { data: comments } = useCommentFetch(id);
+  const { data: comments, loading: commentsLoading, error: commentsError } = useCommentFetch(id);
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState("");
   const [handle, setHandle] = useState();
@@ -146,20 +149,34 @@ export function Post({ isFixed, targetComponentRef }) {
 
   // id가 불러지면 id에 해당하는 blogging 컬렉션의 문서를 받아옴
   useEffect(() => {
+    let isActive = true;
+
     const fetchData = async () => {
-      const docData = await getDocument(); // 비동기 함수에서 데이터 받기
-      setData(docData); // 상태 설정
+      setPostLoading(true);
+      setPostError(null);
+
+      try {
+        const docRef = doc(db, "blogging", id); // 문서 참조 생성
+        const docSnap = await getDoc(docRef); // 문서 조회
+        const docData = docSnap.exists() ? docSnap.data() : null;
+        if (!isActive) return;
+        setData(docData || null); // 상태 설정
+      } catch (error) {
+        console.error("게시글을 불러오는 데 실패했습니다:", error);
+        if (!isActive) return;
+        setData(null);
+        setPostError(error);
+      } finally {
+        if (isActive) setPostLoading(false);
+      }
     };
 
     fetchData();
+
+    return () => {
+      isActive = false;
+    };
   }, [id]);
-
-  const getDocument = async () => {
-    const docRef = doc(db, "blogging", id); // 문서 참조 생성
-    const docSnap = await getDoc(docRef); // 문서 조회
-
-    if (docSnap.exists()) return docSnap.data(); // 문서 데이터 반환
-  };
 
   const updateHeadingMarkers = useCallback(() => {
     const contentsElement = contentsRef.current;
@@ -321,7 +338,7 @@ export function Post({ isFixed, targetComponentRef }) {
         <BlogHeader
           isFixed={isFixed}
           eyebrow={data ? `${data.category.prev} - ${data.category.current}` : "DEVH POST"}
-          writer={[data?.title || "게시글을 불러오는 중입니다"]}
+          writer={[data?.title || (postLoading ? "게시글을 불러오는 중입니다" : "게시글을 찾을 수 없습니다")]}
         >
           {data && (
             <>
@@ -345,7 +362,14 @@ export function Post({ isFixed, targetComponentRef }) {
         </BlogHeader>
         <main className="main" ref={targetComponentRef}>
           <div className="wrapper">
-            {data != null && (
+            {postLoading && <Loading message="게시글을 불러오는 중입니다." />}
+            {!postLoading && postError && (
+              <PostStateMessage>게시글을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</PostStateMessage>
+            )}
+            {!postLoading && !postError && data == null && (
+              <PostStateMessage>존재하지 않는 게시글입니다.</PostStateMessage>
+            )}
+            {!postLoading && !postError && data != null && (
               <PostBody ref={contentsRef} data-color-mode="dark">
                 <MDEditor.Markdown
                   source={data.contents}
@@ -386,7 +410,19 @@ export function Post({ isFixed, targetComponentRef }) {
                   <h2>댓글</h2>
                 </CommentPlaceHolderBox>
                 <CommentOtherBox>
-                  {comments.length > 0 ? (
+                  {commentsLoading ? (
+                    <CommentPersonalBox>
+                      <CommentPersonalComment>
+                        댓글을 불러오는 중입니다.
+                      </CommentPersonalComment>
+                    </CommentPersonalBox>
+                  ) : commentsError ? (
+                    <CommentPersonalBox>
+                      <CommentPersonalComment>
+                        댓글을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.
+                      </CommentPersonalComment>
+                    </CommentPersonalBox>
+                  ) : comments.length > 0 ? (
                     comments.map((item, index) => (
                       <CommentPersonalBox key={index}>
                         <CommentPersonalAuthor>
@@ -571,6 +607,14 @@ const Button = styled.button`
     background: var(--button-hover-color);
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
+`;
+
+const PostStateMessage = styled.p`
+  width: 100%;
+  padding: 3em 1em;
+  box-sizing: border-box;
+  text-align: center;
+  color: #cbd5e1;
 `;
 
 const PostBody = styled.div`

@@ -1,17 +1,19 @@
 import { db } from "../../firebase";
-import { forwardRef, useCallback, useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 // firestore의 메서드 import
 import { collection, getDocs, query } from "firebase/firestore";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../customFn/useFetch";
 import planetFallback from "../../assets/planet-fallback.png";
+import Loading from "../Loading";
 
 const MainPost = forwardRef(({ headerAction }, ref) => {
   const [includeData, setIncludeData] = useState([]);
   const [listData, setListData] = useState([]);
+  const [isPreparingPosts, setIsPreparingPosts] = useState(true);
   const navigate = useNavigate();
-  const { data, loading } = useFetch();
+  const { data, loading, error } = useFetch();
 
   const extractImageFromMarkdown = (markdown) => {
     const imageRegex = /!\[.*?\]\((.*?)\)/;
@@ -20,8 +22,26 @@ const MainPost = forwardRef(({ headerAction }, ref) => {
   };
 
   // async - await로 데이터 fetch 대기
-  const fetchData = useCallback(async () => {
-    if (!loading && data.length > 0) {
+  useEffect(() => {
+    let isActive = true;
+
+    if (loading) {
+      setIsPreparingPosts(true);
+      return () => {
+        isActive = false;
+      };
+    }
+
+    setIsPreparingPosts(true);
+
+    const fetchData = async () => {
+      if (data.length === 0) {
+        setListData([]);
+        setIncludeData([]);
+        setIsPreparingPosts(false);
+        return;
+      }
+
       try {
         const newData = await Promise.all(
           data?.slice(0, 4)?.map(async (item) => {
@@ -51,20 +71,27 @@ const MainPost = forwardRef(({ headerAction }, ref) => {
             };
           })
         );
+        if (!isActive) return;
         setListData(allData);
         setIncludeData(newData);
       } catch (error) {
         console.error("Error fetching data: ", error);
+        if (!isActive) return;
+        setListData([]);
+        setIncludeData([]);
+      } finally {
+        if (isActive) setIsPreparingPosts(false);
       }
-    } else if (!loading) {
-      setListData([]);
-      setIncludeData([]);
-    }
-  }, [data, loading]);
-  // 최초 마운트 시에 getTest import
-  useEffect(() => {
+    };
+
     fetchData();
-  }, [fetchData]);
+
+    return () => {
+      isActive = false;
+    };
+  }, [data, loading]);
+
+  const isBusy = loading || isPreparingPosts;
 
   return (
     <div
@@ -81,11 +108,14 @@ const MainPost = forwardRef(({ headerAction }, ref) => {
         {headerAction}
       </PostHeader>
       <section className="section">
-        {loading && <EmptyMessage>게시글을 불러오는 중입니다.</EmptyMessage>}
-        {!loading && includeData.length === 0 && listData.length === 0 && (
+        {isBusy && <Loading message="게시글을 불러오는 중입니다." />}
+        {!isBusy && error && (
+          <EmptyMessage>게시글을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</EmptyMessage>
+        )}
+        {!isBusy && !error && includeData.length === 0 && listData.length === 0 && (
           <EmptyMessage>아직 작성된 게시글이 없습니다.</EmptyMessage>
         )}
-        <article className="post">
+        {!isBusy && !error && <article className="post">
           <ul className="post-list">
             {includeData &&
               includeData.map((item, key) => {
@@ -109,8 +139,8 @@ const MainPost = forwardRef(({ headerAction }, ref) => {
                 </PostCard>
               )})}
           </ul>
-        </article>
-        <article>
+        </article>}
+        {!isBusy && !error && <article>
           <PostListGroup>
             {listData && listData.map((item, key) => (
               <PostListItem key={key} onClick={() => navigate(`/post/${item.id}`)}>
@@ -125,7 +155,7 @@ const MainPost = forwardRef(({ headerAction }, ref) => {
               </PostListItem>
             ))}
           </PostListGroup>
-        </article>
+        </article>}
       </section>
     </div>
   );

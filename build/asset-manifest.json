@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/blog/static/css/main.9ac2b247.css",
-    "main.js": "/blog/static/js/main.81cb6937.js",
-    "static/js/195.0409ee0b.chunk.js": "/blog/static/js/195.0409ee0b.chunk.js",
+    "main.css": "/blog/static/css/main.93bdb191.css",
+    "main.js": "/blog/static/js/main.f3ede45b.js",
+    "static/js/195.b6b78a94.chunk.js": "/blog/static/js/195.b6b78a94.chunk.js",
     "static/js/453.cd8a1016.chunk.js": "/blog/static/js/453.cd8a1016.chunk.js",
     "static/media/planet-fallback.png": "/blog/static/media/planet-fallback.3a9799e3c07b8fff78c3.png",
     "index.html": "/blog/index.html",
-    "main.9ac2b247.css.map": "/blog/static/css/main.9ac2b247.css.map",
-    "main.81cb6937.js.map": "/blog/static/js/main.81cb6937.js.map",
-    "195.0409ee0b.chunk.js.map": "/blog/static/js/195.0409ee0b.chunk.js.map",
+    "main.93bdb191.css.map": "/blog/static/css/main.93bdb191.css.map",
+    "main.f3ede45b.js.map": "/blog/static/js/main.f3ede45b.js.map",
+    "195.b6b78a94.chunk.js.map": "/blog/static/js/195.b6b78a94.chunk.js.map",
     "453.cd8a1016.chunk.js.map": "/blog/static/js/453.cd8a1016.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9ac2b247.css",
-    "static/js/main.81cb6937.js"
+    "static/css/main.93bdb191.css",
+    "static/js/main.f3ede45b.js"
   ]
 }
